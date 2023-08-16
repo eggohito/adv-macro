@@ -15,7 +15,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"io.github.eggohito.advancement_macros.AdvancementMacro"
+			"io.github.eggohito.advancement_macros.AdvancementMacros"
 		]
 	},
 	"mixins": [
