@@ -7,7 +7,10 @@
 		"ItemCriterionMixin",
 		"OnKilledCriterionMixin",
 		"impl.AbstractCriterionMixin",
+		"impl.AdvancementMixin",
 		"impl.AdvancementRewardsMixin",
+		"impl.CommandFunctionMixin",
+		"impl.ConditionsContainerAccessor",
 		"impl.PlayerAdvancementTrackerMixin"
 	],
 	"injectors": {

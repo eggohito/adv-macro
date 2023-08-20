@@ -49,18 +49,21 @@ public class VanillaCriteriaTriggerCallbacks {
             AdvancementMacros.VANILLA_PHASE,
             (context, nbtToWriteTo) -> {
 
-                if (!(context.getCriterion() instanceof OnKilledCriterion onKilled)) {
+                if (!(context.getCriterionTrigger() instanceof OnKilledCriterion onKilled)) {
                     return;
                 }
 
+                boolean playerKilledEntity = onKilled.getId().equals(Criteria.PLAYER_KILLED_ENTITY.getId());
+                boolean entityKilledPlayer = onKilled.getId().equals(Criteria.ENTITY_KILLED_PLAYER.getId());
+
                 for (Object obj : context.getData()) {
 
-                    if (obj instanceof ServerPlayerEntity player) {
-                        nbtToWriteTo.putString(onKilled.getId().equals(Criteria.PLAYER_KILLED_ENTITY.getId()) ? "killer" : "victim", player.getUuidAsString());
-                    }
-
-                    if (obj instanceof Entity entity) {
-                        nbtToWriteTo.putString(onKilled.getId().equals(Criteria.ENTITY_KILLED_PLAYER.getId()) ? "victim" : "killer", entity.getUuidAsString());
+                    if (playerKilledEntity || entityKilledPlayer) {
+                        if (obj instanceof ServerPlayerEntity player) {
+                            nbtToWriteTo.putString(playerKilledEntity ? "killer" : "victim", player.getUuidAsString());
+                        } else if (obj instanceof Entity entity) {
+                            nbtToWriteTo.putString(entityKilledPlayer ? "killer" : "victim", entity.getUuidAsString());
+                        }
                     }
 
                     if (obj instanceof DamageSource source) {
@@ -79,7 +82,7 @@ public class VanillaCriteriaTriggerCallbacks {
             AdvancementMacros.VANILLA_PHASE,
             (context, nbtToWriteTo) -> {
 
-                if (!(context.getCriterion() instanceof ChangedDimensionCriterion)) {
+                if (!(context.getCriterionTrigger() instanceof ChangedDimensionCriterion)) {
                     return;
                 }
 

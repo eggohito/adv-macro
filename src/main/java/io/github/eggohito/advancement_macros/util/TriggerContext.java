@@ -27,11 +27,11 @@ public final class TriggerContext {
         this.mappedData = new HashMap<>();
     }
 
-    public Criterion<?> getCriterion() {
+    public Criterion<?> getCriterionTrigger() {
         return criterion;
     }
 
-    public Identifier getId() {
+    public Identifier getCriterionTriggerId() {
         return criterion.getId();
     }
 

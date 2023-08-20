@@ -24,14 +24,16 @@ public abstract class AdvancementRewardsMixin implements RewardMacroData {
     }
 
     @ModifyExpressionValue(method = "method_17978", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/function/CommandFunctionManager;execute(Lnet/minecraft/server/function/CommandFunction;Lnet/minecraft/server/command/ServerCommandSource;)I"))
-    private static int advancement_macros$passDataToFunction(int original, MinecraftServer server, ServerPlayerEntity player, CommandFunction function) {
-        try {
-            return server.getCommandFunctionManager().execute(function, player.getCommandSource().withSilent().withLevel(2), null, advancement_macros$data);
-        } catch (MacroException ignored) {
+    private static int advancement_macros$passDataToFunction(int original, MinecraftServer server, ServerPlayerEntity player, CommandFunction function) throws MacroException {
+
+        if (advancement_macros$data == null) {
             return original;
-        } finally {
-            advancement_macros$data = new NbtCompound();
         }
+
+        return server
+            .getCommandFunctionManager()
+            .execute(function, player.getCommandSource().withSilent().withLevel(2), null, advancement_macros$data);
+
     }
 
 }
