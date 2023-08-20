@@ -3,7 +3,12 @@
 	"package": "io.github.eggohito.advancement_macros.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ChangedDimensionCriterionMixin",
+		"ItemCriterionMixin",
+		"OnKilledCriterionMixin",
+		"impl.AbstractCriterionMixin",
+		"impl.AdvancementRewardsMixin",
+		"impl.PlayerAdvancementTrackerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
