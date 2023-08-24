@@ -38,49 +38,54 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
 
+        //  If there is no stored trigger context or if the trigger context is empty, skip
         TriggerContext context;
         if (!advancement_macros$context.containsKey(player) || (context = advancement_macros$context.get(player)).isEmpty()) {
             return;
         }
 
-        Identifier conditionsId = conditionsContainer.getConditions().getId();
-        if (!context.getId().equals(conditionsId)) {
+        //  If the criterion trigger ID of the target criterion (e.g: the criterion to be granted) is NOT the same
+        //  as the criterion trigger ID from the stored context, skip
+        Identifier criterionTriggerId = conditionsContainer.getConditions().getId();
+        if (!context.getId().equals(criterionTriggerId)) {
             return;
         }
 
-        String criterionName = ((ConditionsContainerAccessor) conditionsContainer).getId();
+        //  Get the name of the target criterion (e.g: the criterion to be granted) and its corresponding advancement
+        String targetCriterionName = ((ConditionsContainerAccessor) conditionsContainer).getId();
         Advancement advancement = ((ConditionsContainerAccessor) conditionsContainer).getAdvancement();
 
-        advancement.getCriteria()
-            .entrySet()
-            .stream()
-            .filter(entry -> advancement_macros$isValid(entry.getValue(), conditionsContainer))
-            .map(entry -> Map.entry(entry.getKey(), ((MacroStorage) entry.getValue()).advancement_macros$getMacro()))
-            .forEach(entry -> {
+        //  Iterate through all the advancement's criteria
+        for (Map.Entry<String, AdvancementCriterion> entry : advancement.getCriteria().entrySet()) {
 
-                NbtCompound nbt = new NbtCompound();
-                String processedName = AdvancementMacros.CRITERION_NAME_REGEX
-                    .matcher(entry.getKey())
-                    .replaceAll("_");
+            //  Get the name of the criterion and itself
+            String criterionName = entry.getKey();
+            AdvancementCriterion criterion = entry.getValue();
 
-                if (entry.getKey().equals(criterionName)) {
-                    context.process(nbt, entry.getValue());
-                    advancement_macros$context.remove(player);
-                }
+            //  If the criterion does not have a macro or if its criterion trigger ID is not the same as the criterion
+            //  trigger of the target criterion, continue the loop
+            Macro macro = ((MacroStorage) criterion).advancement_macros$getMacro();
+            if (macro == null || !macro.getId().equals(criterionTriggerId)) {
+                continue;
+            }
 
-                ((MacroData) advancement.getRewards()).advancement_macros$getData().put(processedName, nbt);
+            //  Transform the name of the criterion into a valid function macro
+            String processedName = AdvancementMacros.CRITERION_NAME_REGEX
+                .matcher(criterionName)
+                .replaceAll("_");
 
-            });
+            //  If the name of the criterion matches the name of the target criterion,
+            //  write the data of its macro to NBT
+            NbtCompound nbt = new NbtCompound();
+            if (criterionName.equals(targetCriterionName)) {
+                context.process(nbt, macro);
+                advancement_macros$context.remove(player);
+            }
 
-    }
+            //  Pass the written NBT to the rewards of the advancement
+            ((MacroData) advancement.getRewards()).advancement_macros$getData().put(processedName, nbt);
 
-    @Unique
-    private boolean advancement_macros$isValid(AdvancementCriterion advancementCriterion, Criterion.ConditionsContainer<T> conditionsContainer) {
-
-        MacroStorage macroStorage = ((MacroStorage) advancementCriterion);
-        Macro macro = macroStorage.advancement_macros$getMacro();
-
-        return macro != null && macro.getId().equals(conditionsContainer.getConditions().getId());
+        }
 
     }
 
