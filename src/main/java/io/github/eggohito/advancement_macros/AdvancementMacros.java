@@ -1,9 +1,6 @@
 package io.github.eggohito.advancement_macros;
 
-import io.github.eggohito.advancement_macros.macro.EntityKilledPlayerMacro;
-import io.github.eggohito.advancement_macros.macro.Macro;
-import io.github.eggohito.advancement_macros.macro.PlacedBlockMacro;
-import io.github.eggohito.advancement_macros.macro.PlayerKilledEntityMacro;
+import io.github.eggohito.advancement_macros.macro.*;
 import io.github.eggohito.advancement_macros.util.MacroSupplier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -37,6 +34,7 @@ public class AdvancementMacros implements ModInitializer {
 		register(PlacedBlockMacro::getFactory);
 		register(PlayerKilledEntityMacro::getFactory);
 		register(EntityKilledPlayerMacro::getFactory);
+		register(ChangedDimensionMacro::getFactory);
 
 		LOGGER.info("Initialized");
 

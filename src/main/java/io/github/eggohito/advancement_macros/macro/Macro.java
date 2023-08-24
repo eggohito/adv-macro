@@ -17,7 +17,9 @@ public abstract class Macro {
 
     public abstract Type getType();
 
-    public abstract void writeToNbt(NbtCompound rootNbt, Object object);
+    public void writeToNbt(NbtCompound rootNbt, Object object) {}
+
+    public void writeToNbt(NbtCompound rootNbt, String name, Object object) {}
 
     public interface Type {
         Codec<? extends Macro> getCodec();
