@@ -3,7 +3,9 @@ package io.github.eggohito.advancement_macros.macro;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
@@ -21,11 +23,17 @@ public class EntityKilledPlayerMacro extends OnKilledCriterionMacro {
 
     @Override
     public Type getType() {
-        return null;
+        return () -> CODEC;
     }
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, Object object) {
+
+        if (object instanceof ServerPlayerEntity player) {
+            rootNbt.putString(getVictimKey(), player.getUuidAsString());
+        } else if (object instanceof Entity entity) {
+            rootNbt.putString(getKillerKey(), entity.getUuidAsString());
+        }
 
     }
 
