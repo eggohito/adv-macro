@@ -40,8 +40,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         String containerName = ((ConditionsContainerAccessor) container)
             .getId()
             .toLowerCase(Locale.ROOT)
-            .replace(':', '.')
-            .replaceAll("[\\s/-]", "_");
+            .replaceAll("[\\s/-:]", "_");
 
         Advancement advancement = ((ConditionsContainerAccessor) container).getAdvancement();
         NbtCompound contextNbt = new NbtCompound();
