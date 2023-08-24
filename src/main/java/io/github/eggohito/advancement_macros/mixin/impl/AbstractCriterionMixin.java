@@ -1,9 +1,10 @@
 package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.eggohito.advancement_macros.access.RewardMacroData;
-import io.github.eggohito.advancement_macros.event.CriteriaTriggerCallback;
-import io.github.eggohito.advancement_macros.util.TriggerContext;
+import io.github.eggohito.advancement_macros.AdvancementMacros;
+import io.github.eggohito.advancement_macros.access.MacroContext;
+import io.github.eggohito.advancement_macros.access.MacroData;
+import io.github.eggohito.advancement_macros.access.MacroStorage;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
@@ -16,38 +17,53 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Mixin(AbstractCriterion.class)
-public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditions> implements RewardMacroData {
+public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditions> implements MacroContext {
 
     @Unique
-    private TriggerContext advancement_macros$triggerContext;
+    private final Map<ServerPlayerEntity, List<Object>> advancement_macros$context = new HashMap<>();
 
     @Override
-    public void advancement_macros$setContext(TriggerContext context) {
-        this.advancement_macros$triggerContext = context;
+    public void advancement_macros$add(ServerPlayerEntity player, Object... objects) {
+        advancement_macros$context.put(player, new LinkedList<>(Arrays.asList(objects)));
     }
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    private void advancement_macros$passContextToContainer(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> container) {
+    private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
 
-        if (advancement_macros$triggerContext == null || !advancement_macros$triggerContext.getCriterionTriggerId().equals(container.getConditions().getId())) {
+        List<Object> objects;
+        if (!advancement_macros$context.containsKey(player) || (objects = advancement_macros$context.get(player)).isEmpty()) {
             return;
         }
 
-        String containerName = ((ConditionsContainerAccessor) container)
-            .getId()
-            .toLowerCase(Locale.ROOT)
-            .replaceAll("[\\s/-:]", "_");
+        String criterionName = ((ConditionsContainerAccessor) conditionsContainer).getId();
+        Advancement advancement = ((ConditionsContainerAccessor) conditionsContainer).getAdvancement();
 
-        Advancement advancement = ((ConditionsContainerAccessor) container).getAdvancement();
-        NbtCompound contextNbt = new NbtCompound();
+        advancement.getCriteria()
+            .entrySet()
+            .stream()
+            .filter(entry -> ((MacroStorage) entry.getValue()).advancement_macros$getMacro() != null)
+            .map(entry -> Map.entry(entry.getKey(), ((MacroStorage) entry.getValue()).advancement_macros$getMacro()))
+            .forEach(entry -> {
 
-        CriteriaTriggerCallback.EVENT.invoker().writeToNbt(advancement_macros$triggerContext, contextNbt);
-        ((RewardMacroData) advancement).advancement_macros$getData().put(containerName, contextNbt);
+                NbtCompound nbt = new NbtCompound();
+                String processedName = AdvancementMacros.CRITERION_NAME_REGEX
+                    .matcher(entry.getKey())
+                    .replaceAll("_");
 
+                if (entry.getKey().equals(criterionName)) {
+                    objects.removeIf(obj -> {
+                        entry.getValue().writeToNbt(nbt, obj);
+                        return true;
+                    });
+                }
+
+                ((MacroData) advancement.getRewards()).advancement_macros$getData().put(processedName, nbt);
+
+            });
 
     }
 
