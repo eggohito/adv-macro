@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"ItemCriterionMixin",
+		"OnKilledCriterionMixin",
 		"impl.AbstractCriterionMixin",
 		"impl.AdvancementCriterionMixin",
 		"impl.AdvancementRewardsMixin",
