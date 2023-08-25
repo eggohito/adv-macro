@@ -24,6 +24,8 @@ public class EntityKilledPlayerMacro extends OnKilledCriterionMacro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, Object object) {
 
+        super.writeToNbt(rootNbt, object);
+
         if (object instanceof ServerPlayerEntity player) {
             rootNbt.putString(getVictimKey(), player.getUuidAsString());
         } else if (object instanceof Entity entity) {

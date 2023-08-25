@@ -1,6 +1,8 @@
 package io.github.eggohito.advancement_macros.util;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
@@ -26,6 +28,12 @@ public final class NbtUtil {
         rootNbt.putInt(name + "_y", y);
         rootNbt.putInt(name + "_z", z);
 
+    }
+
+    public static void writeDamageSourceToNbt(NbtCompound rootNbt, String name, DamageSource damageSource) {
+        DamageType.CODEC.encodeStart(NbtOps.INSTANCE, damageSource.getType())
+            .resultOrPartial(AdvancementMacros.LOGGER::error)
+            .ifPresent(damageTypeNbt -> rootNbt.put(name, damageTypeNbt));
     }
 
 }
