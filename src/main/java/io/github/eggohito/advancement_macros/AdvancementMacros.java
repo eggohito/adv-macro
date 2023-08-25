@@ -36,6 +36,7 @@ public class AdvancementMacros implements ModInitializer {
 		register(EntityKilledPlayerMacro::getFactory);
 		register(ChangedDimensionMacro::getFactory);
 		register(AllayDropItemOnBlockMacro::getFactory);
+		register(UsedEnderEyeMacro::getFactory);
 
 		LOGGER.info("Initialized");
 

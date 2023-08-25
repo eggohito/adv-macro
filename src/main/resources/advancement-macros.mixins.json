@@ -6,6 +6,7 @@
 		"ChangedDimensionCriterionMixin",
 		"ItemCriterionMixin",
 		"OnKilledCriterionMixin",
+		"UsedEnderEyeCriterionMixin",
 		"impl.AbstractCriterionMixin",
 		"impl.AdvancementCriterionMixin",
 		"impl.AdvancementRewardsMixin",
