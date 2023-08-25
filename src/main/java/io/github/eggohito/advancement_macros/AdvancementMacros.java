@@ -38,6 +38,7 @@ public class AdvancementMacros implements ModInitializer {
 		register(AllayDropItemOnBlockCriterionMacro::getFactory);
 		register(UsedEnderEyeCriterionMacro::getFactory);
 		register(BredAnimalsCriterionMacro::getFactory);
+		register(ConsumeItemCriterionMacro::getFactory);
 
 		LOGGER.info("Initialized");
 

@@ -5,6 +5,7 @@
 	"mixins": [
 		"BredAnimalsCriterionMixin",
 		"ChangedDimensionCriterionMixin",
+		"ConsumeItemCriterionMixin",
 		"ItemCriterionMixin",
 		"OnKilledCriterionMixin",
 		"UsedEnderEyeCriterionMixin",
