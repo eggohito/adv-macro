@@ -5,11 +5,11 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-public class PlacedBlockMacro extends ItemCriterionMacro {
+public class PlacedBlockCriterionMacro extends ItemCriterionMacro {
 
-    public static final Codec<ItemCriterionMacro> CODEC = getCodec(PlacedBlockMacro::new);
+    public static final Codec<ItemCriterionMacro> CODEC = getCodec(PlacedBlockCriterionMacro::new);
 
-    public PlacedBlockMacro(String locationKey, String itemKey) {
+    public PlacedBlockCriterionMacro(String locationKey, String itemKey) {
         super(Criteria.PLACED_BLOCK.getId(), locationKey, itemKey);
     }
 

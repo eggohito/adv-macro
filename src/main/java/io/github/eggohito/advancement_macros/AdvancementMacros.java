@@ -31,12 +31,12 @@ public class AdvancementMacros implements ModInitializer {
 	@Override
 	public void onInitialize() {
 
-		register(PlacedBlockMacro::getFactory);
-		register(PlayerKilledEntityMacro::getFactory);
-		register(EntityKilledPlayerMacro::getFactory);
-		register(ChangedDimensionMacro::getFactory);
-		register(AllayDropItemOnBlockMacro::getFactory);
-		register(UsedEnderEyeMacro::getFactory);
+		register(PlacedBlockCriterionMacro::getFactory);
+		register(PlayerKilledEntityCriterionMacro::getFactory);
+		register(EntityKilledPlayerCriterionMacro::getFactory);
+		register(ChangedDimensionCriterionMacro::getFactory);
+		register(AllayDropItemOnBlockCriterionMacro::getFactory);
+		register(UsedEnderEyeCriterionMacro::getFactory);
 
 		LOGGER.info("Initialized");
 

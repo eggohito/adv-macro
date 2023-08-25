@@ -8,11 +8,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-public class PlayerKilledEntityMacro extends OnKilledCriterionMacro {
+public class PlayerKilledEntityCriterionMacro extends OnKilledCriterionMacro {
 
-    public static final Codec<OnKilledCriterionMacro> CODEC = getCodec(PlayerKilledEntityMacro::new);
+    public static final Codec<OnKilledCriterionMacro> CODEC = getCodec(PlayerKilledEntityCriterionMacro::new);
 
-    public PlayerKilledEntityMacro(String killerKey, String victimKey, String killingBlowKey) {
+    public PlayerKilledEntityCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
         super(Criteria.PLAYER_KILLED_ENTITY.getId(), killerKey, victimKey, killingBlowKey);
     }
 

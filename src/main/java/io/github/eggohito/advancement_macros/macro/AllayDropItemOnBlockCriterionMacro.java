@@ -5,11 +5,11 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-public class AllayDropItemOnBlockMacro extends ItemCriterionMacro {
+public class AllayDropItemOnBlockCriterionMacro extends ItemCriterionMacro {
 
-    public static final Codec<ItemCriterionMacro> CODEC = getCodec(AllayDropItemOnBlockMacro::new);
+    public static final Codec<ItemCriterionMacro> CODEC = getCodec(AllayDropItemOnBlockCriterionMacro::new);
 
-    public AllayDropItemOnBlockMacro(String locationKey, String itemKey) {
+    public AllayDropItemOnBlockCriterionMacro(String locationKey, String itemKey) {
         super(Criteria.ALLAY_DROP_ITEM_ON_BLOCK.getId(), locationKey, itemKey);
     }
 

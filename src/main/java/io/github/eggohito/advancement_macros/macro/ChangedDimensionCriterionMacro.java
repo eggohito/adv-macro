@@ -8,17 +8,17 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-public class ChangedDimensionMacro extends Macro {
+public class ChangedDimensionCriterionMacro extends Macro {
 
-    public static final Codec<ChangedDimensionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf("from_dimension_key", "from_dimension").forGetter(ChangedDimensionMacro::getFromDimensionKey),
-        Codec.STRING.optionalFieldOf("to_dimension_key", "to_dimension").forGetter(ChangedDimensionMacro::getToDimensionKey)
-    ).apply(instance, ChangedDimensionMacro::new));
+    public static final Codec<ChangedDimensionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        Codec.STRING.optionalFieldOf("from_dimension_key", "from_dimension").forGetter(ChangedDimensionCriterionMacro::getFromDimensionKey),
+        Codec.STRING.optionalFieldOf("to_dimension_key", "to_dimension").forGetter(ChangedDimensionCriterionMacro::getToDimensionKey)
+    ).apply(instance, ChangedDimensionCriterionMacro::new));
 
     private final String fromDimensionKey;
     private final String toDimensionKey;
 
-    public ChangedDimensionMacro(String fromDimensionKey, String toDimensionKey) {
+    public ChangedDimensionCriterionMacro(String fromDimensionKey, String toDimensionKey) {
         super(Criteria.CHANGED_DIMENSION.getId());
         this.fromDimensionKey = fromDimensionKey;
         this.toDimensionKey = toDimensionKey;
