@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.util.TriggerContext;
+import io.github.eggohito.advancement_macros.api.TriggerContext;
 import net.minecraft.advancement.criterion.UsedEnderEyeCriterion;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;

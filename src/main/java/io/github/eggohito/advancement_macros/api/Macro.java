@@ -1,4 +1,4 @@
-package io.github.eggohito.advancement_macros.macro;
+package io.github.eggohito.advancement_macros.api;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.NbtCompound;

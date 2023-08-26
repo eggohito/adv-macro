@@ -1,5 +1,6 @@
 package io.github.eggohito.advancement_macros;
 
+import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.macro.*;
 import io.github.eggohito.advancement_macros.util.MacroSupplier;
 import net.fabricmc.api.ModInitializer;

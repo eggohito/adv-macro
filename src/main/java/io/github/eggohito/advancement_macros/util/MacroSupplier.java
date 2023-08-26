@@ -1,6 +1,6 @@
 package io.github.eggohito.advancement_macros.util;
 
-import io.github.eggohito.advancement_macros.macro.Macro;
+import io.github.eggohito.advancement_macros.api.Macro;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 

@@ -1,6 +1,6 @@
 package io.github.eggohito.advancement_macros.access;
 
-import io.github.eggohito.advancement_macros.util.TriggerContext;
+import io.github.eggohito.advancement_macros.api.TriggerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public interface MacroContext {

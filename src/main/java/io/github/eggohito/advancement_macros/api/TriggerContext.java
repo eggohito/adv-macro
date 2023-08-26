@@ -1,6 +1,5 @@
-package io.github.eggohito.advancement_macros.util;
+package io.github.eggohito.advancement_macros.api;
 
-import io.github.eggohito.advancement_macros.macro.Macro;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 

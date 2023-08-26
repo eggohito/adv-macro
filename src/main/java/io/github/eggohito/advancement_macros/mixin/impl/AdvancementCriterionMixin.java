@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
-import io.github.eggohito.advancement_macros.macro.Macro;
+import io.github.eggohito.advancement_macros.api.Macro;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;

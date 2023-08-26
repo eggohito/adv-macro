@@ -2,6 +2,7 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
