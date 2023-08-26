@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.ConsumeItemCriterionMacro;
 import net.minecraft.advancement.criterion.ConsumeItemCriterion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,8 +22,8 @@ public abstract class ConsumeItemCriterionMixin {
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ConsumeItemCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack stack, CallbackInfo ci) {
-        TriggerContext context = TriggerContext.create(ID).addData(stack);
-        ((MacroContext) this).advancement_macros$add(player, context);
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(ConsumeItemCriterionMacro.CONSUMED_ITEM_KEY_FIELD, stack));
     }
 
 }

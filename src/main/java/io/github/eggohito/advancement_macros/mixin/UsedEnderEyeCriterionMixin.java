@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.UsedEnderEyeCriterionMacro;
 import net.minecraft.advancement.criterion.UsedEnderEyeCriterion;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -22,9 +22,8 @@ public abstract class UsedEnderEyeCriterionMixin {
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/UsedEnderEyeCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockPos strongholdPos, CallbackInfo ci) {
-        TriggerContext context = TriggerContext.create(ID)
-            .addData(strongholdPos);
-        ((MacroContext) this).advancement_macros$add(player, context);
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(UsedEnderEyeCriterionMacro.STRONGHOLD_LOCATION_KEY_FIELD, strongholdPos));
     }
 
 }

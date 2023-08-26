@@ -3,6 +3,7 @@ package io.github.eggohito.advancement_macros.macro;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
@@ -12,19 +13,19 @@ import net.minecraft.util.math.BlockPos;
 
 public class UsedEnderEyeCriterionMacro extends Macro {
 
+    public static final String STRONGHOLD_LOCATION_KEY_FIELD = "stronghold_location_key";
     public static final Codec<UsedEnderEyeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf("stronghold_location_key", "stronghold_location").forGetter(UsedEnderEyeCriterionMacro::getStrongholdPosKey)
+        Codec.STRING.optionalFieldOf(STRONGHOLD_LOCATION_KEY_FIELD, "stronghold_location").forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
     ).apply(instance, UsedEnderEyeCriterionMacro::new));
 
-    private final String strongholdPosKey;
-
-    public UsedEnderEyeCriterionMacro(String strongholdPosKey) {
+    private final String strongholdLocationKey;
+    public UsedEnderEyeCriterionMacro(String strongholdLocationKey) {
         super(Criteria.USED_ENDER_EYE.getId());
-        this.strongholdPosKey = strongholdPosKey;
+        this.strongholdLocationKey = strongholdLocationKey;
     }
 
-    public String getStrongholdPosKey() {
-        return strongholdPosKey;
+    public String getStrongholdLocationKey() {
+        return strongholdLocationKey;
     }
 
     @Override
@@ -33,10 +34,10 @@ public class UsedEnderEyeCriterionMacro extends Macro {
     }
 
     @Override
-    public void writeToNbt(NbtCompound rootNbt, Object object) {
-        if (object instanceof BlockPos blockPos) {
-            NbtUtil.writeBlockPosToNbt(rootNbt, strongholdPosKey, blockPos);
-        }
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
+        context.<BlockPos>ifPresent(STRONGHOLD_LOCATION_KEY_FIELD, strongholdLocation ->
+            NbtUtil.writeBlockPosToNbt(rootNbt, strongholdLocationKey, strongholdLocation)
+        );
     }
 
     public static Pair<Identifier, Type> getFactory() {

@@ -3,6 +3,7 @@ package io.github.eggohito.advancement_macros.macro;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
@@ -13,22 +14,25 @@ import net.minecraft.util.Pair;
 
 public class PlayerInteractedWithEntityCriterionMacro extends Macro {
 
+    public static final String USED_ITEM_KEY_FIELD = "used_item_key";
+    public static final String INTERACTED_ENTITY_KEY_FIELD = "interacted_entity_key";
+
     public static Codec<PlayerInteractedWithEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf("item_key", "item").forGetter(PlayerInteractedWithEntityCriterionMacro::getItemKey),
-        Codec.STRING.optionalFieldOf("interacted_entity_key", "interacted_entity").forGetter(PlayerInteractedWithEntityCriterionMacro::getInteractedEntityKey)
+        Codec.STRING.optionalFieldOf(USED_ITEM_KEY_FIELD, "used_item").forGetter(PlayerInteractedWithEntityCriterionMacro::getUsedItemKey),
+        Codec.STRING.optionalFieldOf(INTERACTED_ENTITY_KEY_FIELD, "interacted_entity").forGetter(PlayerInteractedWithEntityCriterionMacro::getInteractedEntityKey)
     ).apply(instance, PlayerInteractedWithEntityCriterionMacro::new));
 
-    private final String itemKey;
+    private final String usedItemKey;
     private final String interactedEntityKey;
 
-    public PlayerInteractedWithEntityCriterionMacro(String itemKey, String interactedEntityKey) {
+    public PlayerInteractedWithEntityCriterionMacro(String usedItemKey, String interactedEntityKey) {
         super(Criteria.PLAYER_INTERACTED_WITH_ENTITY.getId());
-        this.itemKey = itemKey;
+        this.usedItemKey = usedItemKey;
         this.interactedEntityKey = interactedEntityKey;
     }
 
-    public String getItemKey() {
-        return itemKey;
+    public String getUsedItemKey() {
+        return usedItemKey;
     }
 
     public String getInteractedEntityKey() {
@@ -41,15 +45,15 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
     }
 
     @Override
-    public void writeToNbt(NbtCompound rootNbt, Object object) {
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        if (object instanceof ItemStack stack) {
-            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, stack);
-        }
+        context.<ItemStack>ifPresent(USED_ITEM_KEY_FIELD, usedItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, usedItemKey, usedItemStack)
+        );
 
-        if (object instanceof Entity interactedEntity) {
-            rootNbt.putString(interactedEntityKey, interactedEntity.getUuidAsString());
-        }
+        context.<Entity>ifPresent(INTERACTED_ENTITY_KEY_FIELD, interactedEntity ->
+            rootNbt.putString(interactedEntityKey, interactedEntity.getUuidAsString())
+        );
 
     }
 

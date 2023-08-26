@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.ChangedDimensionCriterionMacro;
 import net.minecraft.advancement.criterion.ChangedDimensionCriterion;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,11 +22,10 @@ public abstract class ChangedDimensionCriterionMixin {
     static Identifier ID;
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ChangedDimensionCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
-    private void advancement_macros$passContext(ServerPlayerEntity player, RegistryKey<World> from, RegistryKey<World> _to, CallbackInfo ci) {
-        TriggerContext context = TriggerContext.create(ID)
-            .addMappedData("to_dimension", _to)
-            .addMappedData("from_dimension", from);
-        ((MacroContext) this).advancement_macros$add(player, context);
+    private void advancement_macros$passContext(ServerPlayerEntity player, RegistryKey<World> from, RegistryKey<World> to, CallbackInfo ci) {
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(ChangedDimensionCriterionMacro.TO_DIMENSION_KEY_FIELD, to)
+            .add(ChangedDimensionCriterionMacro.FROM_DIMENSION_KEY_FIELD, from));
     }
 
 }

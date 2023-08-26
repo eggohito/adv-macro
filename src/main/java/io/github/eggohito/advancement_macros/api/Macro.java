@@ -1,6 +1,7 @@
 package io.github.eggohito.advancement_macros.api;
 
 import com.mojang.serialization.Codec;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
@@ -30,25 +31,13 @@ public abstract class Macro {
     public abstract Type getType();
 
     /**
-     *      <p>Serialize the passed {@linkplain Object object} to the passed {@linkplain NbtCompound NBT} using this
-     *      macro. This is used for serializing data in the way specifically for this macro (or rather, for the
-     *      criterion trigger this macro associates with).</p>
+     *      <p>Serialize the passed {@linkplain TriggerContext trigger context} into the
+     *      passed {@linkplain NbtCompound NBT} using this macro.</p>
      *
-     *      @param rootNbt  The {@linkplain NbtCompound NBT} to serialize the object to.
-     *      @param object   The {@linkplain Object object} to serialize.
+     *      @param rootNbt  The {@linkplain NbtCompound NBT} to serialize the map to.
+     *      @param context  The {@linkplain TriggerContext trigger context} to serialize.
      */
-    public void writeToNbt(NbtCompound rootNbt, Object object) {}
-
-    /**
-     *      <p>Same as {@link #writeToNbt(NbtCompound, Object)}, except the {@linkplain Object object} is mapped with
-     *      a {@linkplain String string}. This is used for when the data that will be serialized is of the same type
-     *      and need to be distinguished from one another.</p>
-     *
-     *      @param rootNbt  The {@linkplain NbtCompound NBT} to serialize the object to.
-     *      @param name     The name of the mapping for the object.
-     *      @param object   The {@linkplain Object object} to serialize.
-     */
-    public void writeToNbt(NbtCompound rootNbt, String name, Object object) {}
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {}
 
     /**
      *      <p>Represents the codec for the macro, used for taking the custom mappings that a user specifies within

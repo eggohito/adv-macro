@@ -3,17 +3,22 @@ package io.github.eggohito.advancement_macros.macro;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.world.World;
 
 public class ChangedDimensionCriterionMacro extends Macro {
 
+    public static final String FROM_DIMENSION_KEY_FIELD = "from_dimension_key";
+    public static final String TO_DIMENSION_KEY_FIELD = "to_dimension_key";
+
     public static final Codec<ChangedDimensionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf("from_dimension_key", "from_dimension").forGetter(ChangedDimensionCriterionMacro::getFromDimensionKey),
-        Codec.STRING.optionalFieldOf("to_dimension_key", "to_dimension").forGetter(ChangedDimensionCriterionMacro::getToDimensionKey)
+        Codec.STRING.optionalFieldOf(FROM_DIMENSION_KEY_FIELD, "from_dimension").forGetter(ChangedDimensionCriterionMacro::getFromDimensionKey),
+        Codec.STRING.optionalFieldOf(TO_DIMENSION_KEY_FIELD, "to_dimension").forGetter(ChangedDimensionCriterionMacro::getToDimensionKey)
     ).apply(instance, ChangedDimensionCriterionMacro::new));
 
     private final String fromDimensionKey;
@@ -39,15 +44,15 @@ public class ChangedDimensionCriterionMacro extends Macro {
     }
 
     @Override
-    public void writeToNbt(NbtCompound rootNbt, String name, Object object) {
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        if (name.equals("to_dimension") && object instanceof RegistryKey<?> toRegKey) {
-            rootNbt.putString(toDimensionKey, toRegKey.getValue().toString());
-        }
+        context.<RegistryKey<World>>ifPresent(FROM_DIMENSION_KEY_FIELD, fromDimensionRegKey ->
+            rootNbt.putString(fromDimensionKey, fromDimensionRegKey.getValue().toString())
+        );
 
-        if (name.equals("from_dimension") && object instanceof RegistryKey<?> fromRegKey) {
-            rootNbt.putString(fromDimensionKey, fromRegKey.getValue().toString());
-        }
+        context.<RegistryKey<World>>ifPresent(TO_DIMENSION_KEY_FIELD, toDimensionRegKey ->
+            rootNbt.putString(toDimensionKey, toDimensionRegKey.getValue().toString())
+        );
 
     }
 

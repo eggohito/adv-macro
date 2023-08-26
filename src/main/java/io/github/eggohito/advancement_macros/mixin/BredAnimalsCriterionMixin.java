@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.BredAnimalsCriterionMacro;
 import net.minecraft.advancement.criterion.BredAnimalsCriterion;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -23,16 +23,10 @@ public abstract class BredAnimalsCriterionMixin {
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/BredAnimalsCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, AnimalEntity parent, AnimalEntity partner, PassiveEntity child, CallbackInfo ci) {
-
-        TriggerContext context = TriggerContext.create(ID)
-            .addMappedData("parent", parent)
-            .addMappedData("partner", partner);
-        if (child != null) {
-            context.addMappedData("child", child);
-        }
-
-        ((MacroContext) this).advancement_macros$add(player, context);
-
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(BredAnimalsCriterionMacro.PARENT_KEY_FIELD, parent)
+            .add(BredAnimalsCriterionMacro.PARTNER_KEY_FIELD, partner)
+            .add(BredAnimalsCriterionMacro.CHILD_KEY_FIELD, child));
     }
 
 }

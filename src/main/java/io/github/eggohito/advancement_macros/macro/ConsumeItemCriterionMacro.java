@@ -3,6 +3,7 @@ package io.github.eggohito.advancement_macros.macro;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
@@ -12,18 +13,19 @@ import net.minecraft.util.Pair;
 
 public class ConsumeItemCriterionMacro extends Macro {
 
+    public static final String CONSUMED_ITEM_KEY_FIELD = "consumed_item_key";
     public static final Codec<ConsumeItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf("item_key", "item").forGetter(ConsumeItemCriterionMacro::getItemKey)
+        Codec.STRING.optionalFieldOf(CONSUMED_ITEM_KEY_FIELD, "consumed_item").forGetter(ConsumeItemCriterionMacro::getConsumedItemKey)
     ).apply(instance, ConsumeItemCriterionMacro::new));
 
-    private final String itemKey;
-    public ConsumeItemCriterionMacro(String itemKey) {
+    private final String consumedItemKey;
+    public ConsumeItemCriterionMacro(String consumedItemKey) {
         super(Criteria.CONSUME_ITEM.getId());
-        this.itemKey = itemKey;
+        this.consumedItemKey = consumedItemKey;
     }
 
-    public String getItemKey() {
-        return itemKey;
+    public String getConsumedItemKey() {
+        return consumedItemKey;
     }
 
     @Override
@@ -32,10 +34,10 @@ public class ConsumeItemCriterionMacro extends Macro {
     }
 
     @Override
-    public void writeToNbt(NbtCompound rootNbt, Object object) {
-        if (object instanceof ItemStack stack) {
-            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, stack);
-        }
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
+        context.<ItemStack>ifPresent(CONSUMED_ITEM_KEY_FIELD, consumedItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, consumedItemKey, consumedItemStack)
+        );
     }
 
     public static Pair<Identifier, Type> getFactory() {

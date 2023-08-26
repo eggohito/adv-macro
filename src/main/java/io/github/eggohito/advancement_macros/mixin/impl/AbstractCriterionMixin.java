@@ -6,7 +6,7 @@ import io.github.eggohito.advancement_macros.access.MacroContext;
 import io.github.eggohito.advancement_macros.access.MacroData;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.api.Macro;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
@@ -21,7 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Mixin(AbstractCriterion.class)
@@ -30,9 +32,19 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     @Unique
     private final Map<ServerPlayerEntity, TriggerContext> advancement_macros$context = new HashMap<>();
 
-    @Override
-    public void advancement_macros$add(ServerPlayerEntity player, TriggerContext context) {
+    @Unique
+    private void advancement_macros$add(ServerPlayerEntity player, TriggerContext context) {
         advancement_macros$context.put(player, context);
+    }
+
+    @Override
+    public void advancement_macros$add(ServerPlayerEntity player, Identifier id, Consumer<TriggerContext> contextConsumer) {
+
+        TriggerContext context = TriggerContext.create(id);
+        contextConsumer.accept(context);
+
+        advancement_macros$add(player, context);
+
     }
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
@@ -79,7 +91,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
             //  the target criterion
             NbtCompound nbt = new NbtCompound();
             if (criterionName.equals(targetCriterionName)) {
-                context.process(nbt, macro);
+                macro.writeToNbt(nbt, context);
                 advancement_macros$context.remove(player);
             }
 

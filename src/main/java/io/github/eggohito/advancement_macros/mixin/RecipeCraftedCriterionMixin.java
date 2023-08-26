@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.RecipeCraftedCriterionMacro;
 import net.minecraft.advancement.criterion.RecipeCraftedCriterion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -24,10 +24,9 @@ public abstract class RecipeCraftedCriterionMixin {
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/RecipeCraftedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Identifier recipeId, List<ItemStack> ingredients, CallbackInfo ci) {
-        TriggerContext context = TriggerContext.create(ID)
-            .addData(recipeId)
-            .addData(ingredients);
-        ((MacroContext) this).advancement_macros$add(player, context);
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(RecipeCraftedCriterionMacro.RECIPE_ID_KEY_FIELD, recipeId)
+            .add(RecipeCraftedCriterionMacro.INGREDIENTS_KEY_FIELD, ingredients));
     }
 
 }

@@ -1,10 +1,10 @@
 package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
+import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
@@ -22,15 +22,18 @@ public class EntityKilledPlayerCriterionMacro extends OnKilledCriterionMacro {
     }
 
     @Override
-    public void writeToNbt(NbtCompound rootNbt, Object object) {
+    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        super.writeToNbt(rootNbt, object);
+        super.writeToNbt(rootNbt, context);
 
-        if (object instanceof ServerPlayerEntity player) {
-            rootNbt.putString(getVictimKey(), player.getUuidAsString());
-        } else if (object instanceof Entity entity) {
-            rootNbt.putString(getKillerKey(), entity.getUuidAsString());
-        }
+        //  Context of killer and victim is swapped here
+        context.<Entity>ifPresent(KILLER_KEY_FIELD, victimEntity ->
+            rootNbt.putString(getVictimKey(), victimEntity.getUuidAsString())
+        );
+
+        context.<Entity>ifPresent(VICTIM_KEY_FIELD, killerEntity ->
+            rootNbt.putString(getKillerKey(), killerEntity.getUuidAsString())
+        );
 
     }
 

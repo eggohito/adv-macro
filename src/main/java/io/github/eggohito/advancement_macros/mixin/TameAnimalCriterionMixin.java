@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.api.TriggerContext;
+import io.github.eggohito.advancement_macros.macro.TameAnimalCriterionMacro;
 import net.minecraft.advancement.criterion.TameAnimalCriterion;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,9 +22,8 @@ public abstract class TameAnimalCriterionMixin {
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/TameAnimalCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, AnimalEntity entity, CallbackInfo ci) {
-        TriggerContext context = TriggerContext.create(ID)
-            .addData(entity);
-        ((MacroContext) this).advancement_macros$add(player, context);
+        ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
+            .add(TameAnimalCriterionMacro.TAMED_ANIMAL_KEY_FIELD, entity));
     }
 
 }
