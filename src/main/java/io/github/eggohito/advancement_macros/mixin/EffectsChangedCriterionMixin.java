@@ -1,6 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin;
 
 import io.github.eggohito.advancement_macros.access.MacroContext;
+import io.github.eggohito.advancement_macros.macro.EffectsChangedCriterionMacro;
 import net.minecraft.advancement.criterion.EffectsChangedCriterion;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +23,7 @@ public abstract class EffectsChangedCriterionMixin {
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/EffectsChangedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity source, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
-            .add("source", source));
+            .add(EffectsChangedCriterionMacro.STATUS_EFFECTS_SOURCE_KEY_FIELD, source));
     }
 
 }
