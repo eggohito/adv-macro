@@ -42,6 +42,7 @@ public class AdvancementMacros implements ModInitializer {
 		register(ConsumeItemCriterionMacro::getFactory);
 		register(TameAnimalCriterionMacro::getFactory);
 		register(PlayerInteractedWithEntityCriterionMacro::getFactory);
+		register(RecipeCraftedCriterionMacro::getFactory);
 
 		LOGGER.info("Initialized");
 
