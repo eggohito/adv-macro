@@ -2,13 +2,12 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
+import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
@@ -61,9 +60,7 @@ public class TargetHitCriterionMacro extends Macro {
         );
 
         context.<Vec3d>ifPresent(HIT_LOCATION_KEY_FIELD, hitLocation ->
-            Vec3d.CODEC.encodeStart(NbtOps.INSTANCE, hitLocation)
-                .resultOrPartial(AdvancementMacros.LOGGER::error)
-                .ifPresent(vec3dNbt -> rootNbt.put(hitLocationKey, vec3dNbt))
+            NbtUtil.writeVec3dToNbt(rootNbt, hitLocationKey, hitLocation)
         );
 
         context.<Integer>ifPresent(SIGNAL_STRENGTH_KEY_FIELD, signalStrength ->

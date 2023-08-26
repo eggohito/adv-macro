@@ -2,11 +2,10 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
+import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
@@ -35,9 +34,7 @@ public abstract class TravelCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
         context.<Vec3d>ifPresent(START_LOCATION_KEY_FIELD, startLocation ->
-            Vec3d.CODEC.encodeStart(NbtOps.INSTANCE, startLocation)
-                .resultOrPartial(AdvancementMacros.LOGGER::error)
-                .ifPresent(vec3dNbt -> rootNbt.put(startLocationKey, vec3dNbt))
+            NbtUtil.writeVec3dToNbt(rootNbt, startLocationKey, startLocation)
         );
     }
 

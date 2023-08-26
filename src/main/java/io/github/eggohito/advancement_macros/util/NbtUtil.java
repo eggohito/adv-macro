@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public final class NbtUtil {
 
@@ -21,6 +22,12 @@ public final class NbtUtil {
         BlockState.CODEC.encodeStart(NbtOps.INSTANCE, blockState)
             .resultOrPartial(AdvancementMacros.LOGGER::error)
             .ifPresent(stateNbt -> rootNbt.put(name, stateNbt));
+    }
+
+    public static void writeVec3dToNbt(NbtCompound rootNbt, String name, Vec3d vec3d) {
+        Vec3d.CODEC.encodeStart(NbtOps.INSTANCE, vec3d)
+            .resultOrPartial(AdvancementMacros.LOGGER::error)
+            .ifPresent(vec3dNbt -> rootNbt.put(name, vec3dNbt));
     }
 
     public static void writeBlockPosToNbt(NbtCompound rootNbt, String name, BlockPos blockPos) {
