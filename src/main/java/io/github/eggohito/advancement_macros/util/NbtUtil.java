@@ -1,6 +1,7 @@
 package io.github.eggohito.advancement_macros.util;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,12 @@ public final class NbtUtil {
         ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack)
             .resultOrPartial(AdvancementMacros.LOGGER::error)
             .ifPresent(stackNbt -> rootNbt.put(name, stackNbt));
+    }
+
+    public static void writeBlockStateToNbt(NbtCompound rootNbt, String name, BlockState blockState) {
+        BlockState.CODEC.encodeStart(NbtOps.INSTANCE, blockState)
+            .resultOrPartial(AdvancementMacros.LOGGER::error)
+            .ifPresent(stateNbt -> rootNbt.put(name, stateNbt));
     }
 
     public static void writeBlockPosToNbt(NbtCompound rootNbt, String name, BlockPos blockPos) {

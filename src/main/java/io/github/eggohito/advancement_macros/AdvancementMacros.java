@@ -43,6 +43,32 @@ public class AdvancementMacros implements ModInitializer {
 		register(TameAnimalCriterionMacro::getFactory);
 		register(PlayerInteractedWithEntityCriterionMacro::getFactory);
 		register(RecipeCraftedCriterionMacro::getFactory);
+		register(ThrownItemPickedUpByEntityCriterionMacro::getFactory);
+		register(ThrownItemPickedUpByPlayerCriterionMacro::getFactory);
+		register(FishingRodHookedCriterionMacro::getFactory);
+		register(VillagerTradeCriterionMacro::getFactory);
+		register(EntityHurtPlayerCriterionMacro::getFactory);
+		register(PlayerHurtEntityCriterionMacro::getFactory);
+		register(InventoryChangedCriterionMacro::getFactory);
+		register(RecipeUnlockedCriterionMacro::getFactory);
+		register(BrewedPotionCriterionMacro::getFactory);
+		register(ConstructBeaconCriterionMacro::getFactory);
+		register(EnchantedItemCriterionMacro::getFactory);
+		register(SummonedEntityCriterionMacro::getFactory);
+		register(NetherTravelCriterionMacro::getFactory);
+		register(FallFromHeightCriterionMacro::getFactory);
+		register(RideEntityInLavaCriterionMacro::getFactory);
+		register(EnterBlockCriterionMacro::getFactory);
+		register(FilledBucketCriterionMacro::getFactory);
+		register(CuredZombieVillagerCriterionMacro::getFactory);
+		register(LevitationCriterionMacro::getFactory);
+		register(TargetHitCriterionMacro::getFactory);
+		register(ChanneledLightningCriterionMacro::getFactory);
+		register(PlayerGeneratesContainerLootCriterionMacro::getFactory);
+		register(LightningStrikeCriterionMacro::getFactory);
+		register(EffectsChangedCriterionMacro::getFactory);
+		register(KilledByCrossbowCriterionMacro::getFactory);
+		register(SlideDownBlockCriterionMacro::getFactory);
 
 		LOGGER.info("Initialized");
 

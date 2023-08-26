@@ -37,7 +37,7 @@ public abstract class Macro {
      *      @param rootNbt  The {@linkplain NbtCompound NBT} to serialize the map to.
      *      @param context  The {@linkplain TriggerContext trigger context} to serialize.
      */
-    public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {}
+    public abstract void writeToNbt(NbtCompound rootNbt, TriggerContext context);
 
     /**
      *      <p>Represents the codec for the macro, used for taking the custom mappings that a user specifies within
