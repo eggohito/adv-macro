@@ -3,14 +3,15 @@
 	"id": "advancement-macros",
 	"version": "${version}",
 	"name": "Advancement Macros",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A Fabric mod that passes macros to the reward function of an advancement for Minecraft 1.20.2",
 	"authors": [
 		"eggohito"
 	],
 	"contact": {
-		"sources": "https://github.com/eggohito/advancement-macros"
+		"sources": "https://github.com/eggohito/advancement-macros",
+		"issues": "https://github.com/eggohito/advancement-macros"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/advancement-macros/icon.png",
 	"environment": "*",
 	"entrypoints": {
