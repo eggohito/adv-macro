@@ -36,13 +36,17 @@ public abstract class AdvancementCriterionMixin implements MacroStorage {
     @ModifyReturnValue(method = "fromJson", at = @At("RETURN"))
     private static AdvancementCriterion advancement_macros$getMappings(AdvancementCriterion original, JsonObject jsonObject, AdvancementEntityPredicateDeserializer predicateDeserializer, @Local CriterionConditions criterionConditions) {
 
+        //  Get the JSON object from the `advancement-macros:mapping` field of the JSON object
         JsonObject mappingObj = JsonHelper.getObject(jsonObject, AdvancementMacros.of("mapping").toString(), new JsonObject());
         mappingObj.add("trigger", jsonObject.get("trigger"));
 
+        //  Get the codec for the macro registry
         Codec<Macro> macroCodec = AdvancementMacros.REGISTRY
             .getCodec()
             .dispatch("trigger", Macro::getType, Macro.Type::getCodec);
 
+        //  Deserialize the macro from the JSON object from the `advancement-macros:mapping` field and attach it to the
+        //  advancement criterion
         return macroCodec.decode(JsonOps.INSTANCE, mappingObj)
             .result()
             .map(pair -> {

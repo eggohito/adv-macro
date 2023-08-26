@@ -11,6 +11,7 @@
 		"UsedEnderEyeCriterionMixin",
 		"impl.AbstractCriterionMixin",
 		"impl.AdvancementCriterionMixin",
+		"impl.AdvancementBuilderMixin",
 		"impl.AdvancementRewardsMixin",
 		"impl.ConditionsContainerAccessor"
 	],

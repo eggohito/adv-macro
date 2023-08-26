@@ -38,20 +38,21 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
 
-        //  If there is no stored trigger context or if the trigger context is empty, skip
+        //  Skip this mixin if there is no trigger context for the player or if the data of
+        //  the trigger context is empty
         TriggerContext context;
         if (!advancement_macros$context.containsKey(player) || (context = advancement_macros$context.get(player)).isEmpty()) {
             return;
         }
 
-        //  If the criterion trigger ID of the target criterion (e.g: the criterion to be granted) is NOT the same
-        //  as the criterion trigger ID from the stored context, skip
+        //  Skip this mixin if the criterion trigger ID of the target criterion (the criterion to be granted) is NOT
+        //  the same as the criterion trigger ID from the trigger context
         Identifier criterionTriggerId = conditionsContainer.getConditions().getId();
         if (!context.getId().equals(criterionTriggerId)) {
             return;
         }
 
-        //  Get the name of the target criterion (e.g: the criterion to be granted) and its corresponding advancement
+        //  Get the name of the target criterion and the advancement containing the target criterion
         String targetCriterionName = ((ConditionsContainerAccessor) conditionsContainer).getId();
         Advancement advancement = ((ConditionsContainerAccessor) conditionsContainer).getAdvancement();
 
@@ -62,27 +63,29 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
             String criterionName = entry.getKey();
             AdvancementCriterion criterion = entry.getValue();
 
-            //  If the criterion does not have a macro or if its criterion trigger ID is not the same as the criterion
-            //  trigger of the target criterion, continue the loop
+            //  Continue looping if the criterion does not have a macro or if its criterion trigger ID does not match
+            //  the criterion trigger ID of the target criterion
             Macro macro = ((MacroStorage) criterion).advancement_macros$getMacro();
             if (macro == null || !macro.getId().equals(criterionTriggerId)) {
                 continue;
             }
 
-            //  Transform the name of the criterion into a valid function macro
+            //  Transform the name of the criterion into a valid function macro name
             String processedName = AdvancementMacros.CRITERION_NAME_REGEX
                 .matcher(criterionName)
                 .replaceAll("_");
 
-            //  If the name of the criterion matches the name of the target criterion,
-            //  write the data of its macro to NBT
+            //  Write the data from the trigger context to the NBT if the name of the criterion matches the name of
+            //  the target criterion
             NbtCompound nbt = new NbtCompound();
             if (criterionName.equals(targetCriterionName)) {
                 context.process(nbt, macro);
                 advancement_macros$context.remove(player);
             }
 
-            //  Pass the written NBT to the rewards of the advancement
+            //  Cache the NBT to the rewards of the advancement. This is regardless of whether the NBT is empty to
+            //  work around the issue where if the NBT key does not exist in the NBT compound, the function won't be
+            //  called
             ((MacroData) advancement.getRewards()).advancement_macros$getData().put(processedName, nbt);
 
         }
