@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -84,8 +83,8 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
             }
 
             //  Transform the name of the criterion into a valid function macro name
-            String processedName = AdvancementMacros.CRITERION_NAME_REGEX
-                .matcher(criterionName.toLowerCase(Locale.ROOT))
+            String processedName = AdvancementMacros.VALID_CRITERION_NAME_PATTERN
+                .matcher(criterionName)
                 .replaceAll("_");
 
             //  Write the data from the trigger context to the NBT if the name of the criterion matches the name of

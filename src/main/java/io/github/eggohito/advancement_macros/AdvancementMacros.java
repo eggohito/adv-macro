@@ -19,7 +19,7 @@ public class AdvancementMacros implements ModInitializer {
 	public static final String MOD_NAMESPACE = "advancement-macros";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAMESPACE);
 
-	public static final Pattern CRITERION_NAME_REGEX = Pattern.compile("[\\s.:/-]");
+	public static final Pattern VALID_CRITERION_NAME_PATTERN = Pattern.compile("[^a-zA-Z0-9_]");
 
 	public static final RegistryKey<Registry<Macro.Type>> REGISTRY_KEY;
 	public static final Registry<Macro.Type> REGISTRY;
