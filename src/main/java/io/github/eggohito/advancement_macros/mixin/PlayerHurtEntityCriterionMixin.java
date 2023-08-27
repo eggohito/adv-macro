@@ -27,7 +27,7 @@ public abstract class PlayerHurtEntityCriterionMixin {
             .add(PlayerHurtEntityCriterionMacro.HURT_ENTITY_KEY_FIELD, entity)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_SOURCE_KEY_FIELD, damage)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_DEALT_AMOUNT_KEY_FIELD, dealt)
-            .add(PlayerHurtEntityCriterionMacro.DAMAGE_TAKEN_AMOUNT_KEY_FIELD, taken)
+            .add(PlayerHurtEntityCriterionMacro.DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, taken)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_BLOCKED_KEY_FIELD, blocked));
     }
 

@@ -25,7 +25,7 @@ public abstract class EntityHurtPlayerCriterionMixin {
         ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
             .add(EntityHurtPlayerCriterionMacro.DAMAGE_SOURCE_KEY_FIELD, source)
             .add(EntityHurtPlayerCriterionMacro.DAMAGE_DEALT_AMOUNT_KEY_FIELD, dealt)
-            .add(EntityHurtPlayerCriterionMacro.DAMAGE_TAKEN_AMOUNT_KEY_FIELD, taken)
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, taken)
             .add(EntityHurtPlayerCriterionMacro.DAMAGE_BLOCKED_KEY_FIELD, blocked));
     }
 
