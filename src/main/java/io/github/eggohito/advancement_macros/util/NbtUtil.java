@@ -25,9 +25,17 @@ public final class NbtUtil {
     }
 
     public static void writeVec3dToNbt(NbtCompound rootNbt, String name, Vec3d vec3d) {
-        Vec3d.CODEC.encodeStart(NbtOps.INSTANCE, vec3d)
-            .resultOrPartial(AdvancementMacros.LOGGER::error)
-            .ifPresent(vec3dNbt -> rootNbt.put(name, vec3dNbt));
+
+        double x = vec3d.getX();
+        double y = vec3d.getY();
+        double z = vec3d.getZ();
+
+        rootNbt.putString(name, "%s %s %s".formatted(x, y, z));
+
+        rootNbt.putDouble(name + "_x", x);
+        rootNbt.putDouble(name + "_y", y);
+        rootNbt.putDouble(name + "_z", z);
+
     }
 
     public static void writeBlockPosToNbt(NbtCompound rootNbt, String name, BlockPos blockPos) {
