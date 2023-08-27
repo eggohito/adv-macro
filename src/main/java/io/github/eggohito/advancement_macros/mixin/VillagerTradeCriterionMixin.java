@@ -24,7 +24,7 @@ public abstract class VillagerTradeCriterionMixin {
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/VillagerTradeCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, MerchantEntity merchant, ItemStack stack, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
-            .add(VillagerTradeCriterionMacro.TRADED_VILLAGER_KEY_FIELD, merchant)
+            .add(VillagerTradeCriterionMacro.TRADER_KEY_FIELD, merchant)
             .add(VillagerTradeCriterionMacro.SOLD_ITEM_KEY_FIELD, stack));
     }
 

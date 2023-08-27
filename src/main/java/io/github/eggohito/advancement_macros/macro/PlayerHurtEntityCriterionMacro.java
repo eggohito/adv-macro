@@ -14,14 +14,14 @@ import net.minecraft.util.Pair;
 
 public class PlayerHurtEntityCriterionMacro extends Macro {
 
-    public static final String HURT_ENTITY_KEY_FIELD = "hurt_entity_key";
+    public static final String TARGET_KEY_FIELD = "target_key";
     public static final String DAMAGE_SOURCE_KEY_FIELD = "damage_source_key";
     public static final String DAMAGE_DEALT_AMOUNT_KEY_FIELD = "damage_dealt_amount_key";
     public static final String DAMAGE_ABSORBED_AMOUNT_KEY_FIELD = "damage_absorbed_amount_key";
     public static final String DAMAGE_BLOCKED_KEY_FIELD = "damage_blocked_key";
 
     public static final Codec<PlayerHurtEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(HURT_ENTITY_KEY_FIELD, "hurt_entity").forGetter(PlayerHurtEntityCriterionMacro::getHurtEntityKey),
+        Codec.STRING.optionalFieldOf(TARGET_KEY_FIELD, "target").forGetter(PlayerHurtEntityCriterionMacro::getHurtEntityKey),
         Codec.STRING.optionalFieldOf(DAMAGE_SOURCE_KEY_FIELD, "damage_source").forGetter(PlayerHurtEntityCriterionMacro::getDamageSourceKey),
         Codec.STRING.optionalFieldOf(DAMAGE_DEALT_AMOUNT_KEY_FIELD, "damage_dealt_amount").forGetter(PlayerHurtEntityCriterionMacro::getDamageDealtAmountKey),
         Codec.STRING.optionalFieldOf(DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, "damage_absorbed_amount").forGetter(PlayerHurtEntityCriterionMacro::getDamageTakenAmountKey),
@@ -71,8 +71,8 @@ public class PlayerHurtEntityCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Entity>ifPresent(HURT_ENTITY_KEY_FIELD, hurtEntity ->
-            rootNbt.putString(hurtEntityKey, hurtEntity.getUuidAsString())
+        context.<Entity>ifPresent(TARGET_KEY_FIELD, targetEntity ->
+            rootNbt.putString(hurtEntityKey, targetEntity.getUuidAsString())
         );
 
         context.<DamageSource>ifPresent(DAMAGE_SOURCE_KEY_FIELD, damageSource ->

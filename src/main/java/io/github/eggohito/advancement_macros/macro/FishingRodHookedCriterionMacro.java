@@ -7,6 +7,7 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -21,22 +22,26 @@ public class FishingRodHookedCriterionMacro extends Macro {
 
     public static final String FISHING_ROD_KEY_FIELD = "fishing_rod_key";
     public static final String FISHING_BOBBER_KEY_FIELD = "fishing_bobber_key";
+    public static final String HOOKED_ENTITY_KEY_FIELD = "hooked_entity_key";
     public static final String FISHING_LOOTS_KEY_FIELD = "fishing_loots_key";
 
     public static final Codec<FishingRodHookedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(FISHING_ROD_KEY_FIELD, "fishing_rod").forGetter(FishingRodHookedCriterionMacro::getFishingRodKey),
         Codec.STRING.optionalFieldOf(FISHING_BOBBER_KEY_FIELD, "fishing_bobber").forGetter(FishingRodHookedCriterionMacro::getFishingBobberKey),
+        Codec.STRING.optionalFieldOf(HOOKED_ENTITY_KEY_FIELD, "hooked_entity").forGetter(FishingRodHookedCriterionMacro::getHookedEntityKey),
         Codec.STRING.optionalFieldOf(FISHING_LOOTS_KEY_FIELD, "fishing_loots").forGetter(FishingRodHookedCriterionMacro::getFishingLootsKey)
     ).apply(instance, FishingRodHookedCriterionMacro::new));
 
     private final String fishingRodKey;
     private final String fishingBobberKey;
+    private final String hookedEntityKey;
     private final String fishingLootsKey;
 
-    public FishingRodHookedCriterionMacro(String fishingRodKey, String fishingBobberKey, String fishingLootsKey) {
+    public FishingRodHookedCriterionMacro(String fishingRodKey, String fishingBobberKey, String hookedEntityKey, String fishingLootsKey) {
         super(Criteria.FISHING_ROD_HOOKED.getId());
         this.fishingRodKey = fishingRodKey;
         this.fishingBobberKey = fishingBobberKey;
+        this.hookedEntityKey = hookedEntityKey;
         this.fishingLootsKey = fishingLootsKey;
     }
 
@@ -46,6 +51,10 @@ public class FishingRodHookedCriterionMacro extends Macro {
 
     public String getFishingBobberKey() {
         return fishingBobberKey;
+    }
+
+    public String getHookedEntityKey() {
+        return hookedEntityKey;
     }
 
     public String getFishingLootsKey() {
@@ -66,6 +75,10 @@ public class FishingRodHookedCriterionMacro extends Macro {
 
         context.<FishingBobberEntity>ifPresent(FISHING_BOBBER_KEY_FIELD, fishingBobberEntity ->
             rootNbt.putString(fishingBobberKey, fishingBobberEntity.getUuidAsString())
+        );
+
+        context.<Entity>ifPresent(HOOKED_ENTITY_KEY_FIELD, hookedEntity ->
+            rootNbt.putString(hookedEntityKey, hookedEntity.getUuidAsString())
         );
 
         context.<Collection<ItemStack>>ifPresent(FISHING_LOOTS_KEY_FIELD, fishingLoots -> {

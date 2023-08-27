@@ -28,6 +28,7 @@ public abstract class FishingRodHookedCriterionMixin {
         ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
             .add(FishingRodHookedCriterionMacro.FISHING_ROD_KEY_FIELD, rod)
             .add(FishingRodHookedCriterionMacro.FISHING_BOBBER_KEY_FIELD, bobber)
+            .add(FishingRodHookedCriterionMacro.HOOKED_ENTITY_KEY_FIELD, bobber.getHookedEntity())
             .add(FishingRodHookedCriterionMacro.FISHING_LOOTS_KEY_FIELD, fishingLoots));
     }
 

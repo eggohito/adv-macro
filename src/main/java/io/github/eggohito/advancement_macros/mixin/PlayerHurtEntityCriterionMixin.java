@@ -24,7 +24,7 @@ public abstract class PlayerHurtEntityCriterionMixin {
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/PlayerHurtEntityCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity entity, DamageSource damage, float dealt, float taken, boolean blocked, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, ID, triggerContext -> triggerContext
-            .add(PlayerHurtEntityCriterionMacro.HURT_ENTITY_KEY_FIELD, entity)
+            .add(PlayerHurtEntityCriterionMacro.TARGET_KEY_FIELD, entity)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_SOURCE_KEY_FIELD, damage)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_DEALT_AMOUNT_KEY_FIELD, dealt)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, taken)
