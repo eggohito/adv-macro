@@ -5,6 +5,8 @@ import io.github.eggohito.advancement_macros.macro.*;
 import io.github.eggohito.advancement_macros.util.MacroSupplier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
@@ -24,6 +26,8 @@ public class AdvancementMacros implements ModInitializer {
 	public static final RegistryKey<Registry<Macro.Type>> REGISTRY_KEY;
 	public static final Registry<Macro.Type> REGISTRY;
 
+	public static String VERSION_STRING;
+
 	static {
 		REGISTRY_KEY = RegistryKey.ofRegistry(of("macro_types"));
 		REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).buildAndRegister();
@@ -31,6 +35,18 @@ public class AdvancementMacros implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
+		FabricLoader.getInstance().getModContainer(MOD_NAMESPACE).map(ModContainer::getMetadata).ifPresent(metadata -> {
+
+			VERSION_STRING = metadata.getVersion().getFriendlyString();
+
+			if (VERSION_STRING.contains("+")) {
+				VERSION_STRING = VERSION_STRING.split("\\+")[0];
+			} else if (VERSION_STRING.contains("-")) {
+				VERSION_STRING = VERSION_STRING.split("-")[0];
+			}
+
+		});
 
 		register(PlacedBlockCriterionMacro::getFactory);
 		register(PlayerKilledEntityCriterionMacro::getFactory);
@@ -70,7 +86,7 @@ public class AdvancementMacros implements ModInitializer {
 		register(KilledByCrossbowCriterionMacro::getFactory);
 		register(SlideDownBlockCriterionMacro::getFactory);
 
-		LOGGER.info("Initialized");
+		LOGGER.info("Advancement Macros {} has been initialized!", VERSION_STRING);
 
 	}
 
