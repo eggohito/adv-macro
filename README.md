@@ -1,6 +1,7 @@
 #  Advancement Macros
 
-Advancement Macros is a Fabric mod that passes data of criterion triggers into the reward functions of advancements, providing flexibility like being able to get and use the block position of the placed block of an advancement that uses the `minecraft:placed_block` criterion trigger and more. Make sure to [check the wiki](https://github.com/eggohito/advancement-macros/wiki) for more information.
+Advancement Macros is a Fabric mod for Minecraft 1.20.2+ that passes the data of criterion triggers onto the reward function of an advancement using function macros, providing more flexibility for datapack users. [Check the wiki](https://github.com/eggohito/advancement-macros/wiki) for more information.
+<br>
 
 
 ##  Using as a dependency
