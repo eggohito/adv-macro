@@ -2,13 +2,13 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.api.Macro;
 import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.util.JsonHelper;
@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@SuppressWarnings("unused")
 @Mixin(AdvancementCriterion.class)
 public abstract class AdvancementCriterionMixin implements MacroStorage {
 
@@ -33,31 +32,27 @@ public abstract class AdvancementCriterionMixin implements MacroStorage {
         advancement_macros$macro = newMacro;
     }
 
-    @ModifyReturnValue(method = "fromJson", at = @At("RETURN"))
-    private static AdvancementCriterion advancement_macros$getMappings(AdvancementCriterion original, JsonObject jsonObject, AdvancementEntityPredicateDeserializer predicateDeserializer, @Local CriterionConditions criterionConditions) {
+    @ModifyReturnValue(method = "fromJson(Lcom/google/gson/JsonObject;Lnet/minecraft/predicate/entity/AdvancementEntityPredicateDeserializer;Lnet/minecraft/advancement/criterion/Criterion;)Lnet/minecraft/advancement/AdvancementCriterion;", at = @At("RETURN"))
+    private static <T extends CriterionConditions> AdvancementCriterion<T> advancement_macros$attachMappings(AdvancementCriterion<T> original, JsonObject jsonObject, AdvancementEntityPredicateDeserializer predicateDeserializer, Criterion<T> criterionTrigger) {
+
+        String criterionTriggerIdString = JsonHelper.getString(jsonObject, "trigger");
 
         //  Get the JSON object from the `advancement-macros:mapping` field of the JSON object
-        JsonObject mappingObj = JsonHelper.getObject(jsonObject, AdvancementMacros.of("mapping").toString(), new JsonObject());
-        mappingObj.add("trigger", jsonObject.get("trigger"));
+        JsonObject mappingJsonObject = JsonHelper.getObject(jsonObject, AdvancementMacros.MAPPING_KEY, new JsonObject());
+        mappingJsonObject.addProperty(AdvancementMacros.CODEC_TYPE_KEY, criterionTriggerIdString);
 
-        //  Get the codec for the macro registry
+        //  Dispatch the proper codec for the specified criterion trigger from the macro registry
         Codec<Macro> macroCodec = AdvancementMacros.REGISTRY
             .getCodec()
-            .dispatch("trigger", Macro::getType, Macro.Type::getCodec);
+            .dispatch(AdvancementMacros.CODEC_TYPE_KEY, Macro::getType, Macro.Type::getCodec);
 
-        //  Deserialize the macro from the JSON object from the `advancement-macros:mapping` field and attach it to the
-        //  advancement criterion
-        return macroCodec.decode(JsonOps.INSTANCE, mappingObj)
-            .result()
-            .map(pair -> {
+        //  Deserialize the macro from the mapping JSON object and attach it to the criterion
+        var macro = macroCodec
+            .decode(JsonOps.INSTANCE, mappingJsonObject)
+            .resultOrPartial(s -> AdvancementMacros.logErrorOnce("Advancement macro handler for criterion trigger \"" + criterionTriggerIdString + "\" is not implemented yet!"));
 
-                AdvancementCriterion criterion = new AdvancementCriterion(criterionConditions);
-                ((MacroStorage) criterion).advancement_macros$setMacro(pair.getFirst());
-
-                return criterion;
-
-            })
-            .orElse(original);
+        macro.ifPresent(macroAndJsonElement -> ((MacroStorage) (Object) original).advancement_macros$setMacro(macroAndJsonElement.getFirst()));
+        return original;
 
     }
 

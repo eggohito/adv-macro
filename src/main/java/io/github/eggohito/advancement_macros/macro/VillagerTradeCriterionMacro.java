@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class VillagerTradeCriterionMacro extends Macro {
@@ -26,7 +25,7 @@ public class VillagerTradeCriterionMacro extends Macro {
     private final String soldItemKey;
 
     public VillagerTradeCriterionMacro(String tradedMerchantKey, String soldItemKey) {
-        super(Criteria.VILLAGER_TRADE.getId());
+        super(Criteria.VILLAGER_TRADE);
         this.tradedMerchantKey = tradedMerchantKey;
         this.soldItemKey = soldItemKey;
     }
@@ -57,8 +56,8 @@ public class VillagerTradeCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.VILLAGER_TRADE.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.VILLAGER_TRADE, () -> CODEC);
     }
 
 }

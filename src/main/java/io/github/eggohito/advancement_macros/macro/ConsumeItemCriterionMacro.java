@@ -8,19 +8,20 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class ConsumeItemCriterionMacro extends Macro {
 
     public static final String CONSUMED_ITEM_KEY_FIELD = "consumed_item_key";
+
     public static final Codec<ConsumeItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(CONSUMED_ITEM_KEY_FIELD, "consumed_item").forGetter(ConsumeItemCriterionMacro::getConsumedItemKey)
     ).apply(instance, ConsumeItemCriterionMacro::new));
 
     private final String consumedItemKey;
+
     public ConsumeItemCriterionMacro(String consumedItemKey) {
-        super(Criteria.CONSUME_ITEM.getId());
+        super(Criteria.CONSUME_ITEM);
         this.consumedItemKey = consumedItemKey;
     }
 
@@ -40,8 +41,8 @@ public class ConsumeItemCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.CONSUME_ITEM.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.CONSUME_ITEM, () -> CODEC);
     }
 
 }

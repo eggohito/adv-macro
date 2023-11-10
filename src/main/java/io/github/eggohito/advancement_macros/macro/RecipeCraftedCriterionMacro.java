@@ -29,7 +29,7 @@ public class RecipeCraftedCriterionMacro extends Macro {
     private final String ingredientsKey;
 
     public RecipeCraftedCriterionMacro(String recipeIdKey, String ingredientsKey) {
-        super(Criteria.RECIPE_CRAFTED.getId());
+        super(Criteria.RECIPE_CRAFTED);
         this.recipeIdKey = recipeIdKey;
         this.ingredientsKey = ingredientsKey;
     }
@@ -69,8 +69,8 @@ public class RecipeCraftedCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.RECIPE_CRAFTED.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.RECIPE_CRAFTED, () -> CODEC);
     }
 
 }

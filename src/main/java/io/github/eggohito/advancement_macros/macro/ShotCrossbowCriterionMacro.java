@@ -8,19 +8,20 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class ShotCrossbowCriterionMacro extends Macro {
 
     public static final String USED_CROSSBOW_ITEM_KEY_FIELD = "used_crossbow_item_key";
+
     public static final Codec<ShotCrossbowCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(USED_CROSSBOW_ITEM_KEY_FIELD, "used_crossbow_item").forGetter(ShotCrossbowCriterionMacro::getUsedCrossbowItemKey)
     ).apply(instance, ShotCrossbowCriterionMacro::new));
 
     private final String usedCrossbowItemKey;
+
     public ShotCrossbowCriterionMacro(String usedCrossbowItemKey) {
-        super(Criteria.SHOT_CROSSBOW.getId());
+        super(Criteria.SHOT_CROSSBOW);
         this.usedCrossbowItemKey = usedCrossbowItemKey;
     }
 
@@ -40,8 +41,8 @@ public class ShotCrossbowCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.SHOT_CROSSBOW.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.SHOT_CROSSBOW, () -> CODEC);
     }
 
 }

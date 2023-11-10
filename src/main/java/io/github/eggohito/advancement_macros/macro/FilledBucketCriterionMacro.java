@@ -6,19 +6,20 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class FilledBucketCriterionMacro extends Macro {
 
     public static final String FILLED_BUCKET_ITEM_KEY_FIELD = "filled_bucket_item_key";
+
     public static final Codec<FilledBucketCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(FILLED_BUCKET_ITEM_KEY_FIELD, "filled_bucket_item").forGetter(FilledBucketCriterionMacro::getFilledBucketItemKey)
     ).apply(instance, FilledBucketCriterionMacro::new));
 
     private final String filledBucketItemKey;
+
     public FilledBucketCriterionMacro(String filledBucketItemKey) {
-        super(Criteria.FILLED_BUCKET.getId());
+        super(Criteria.FILLED_BUCKET);
         this.filledBucketItemKey = filledBucketItemKey;
     }
 
@@ -36,8 +37,8 @@ public class FilledBucketCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.FILLED_BUCKET.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.FILLED_BUCKET, () -> CODEC);
     }
 
 }

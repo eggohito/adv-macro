@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.Collection;
@@ -17,13 +16,15 @@ import java.util.Collection;
 public class ChanneledLightningCriterionMacro extends Macro {
 
     public static final String VICTIMS_KEY_FIELD = "victims_key";
+
     public static final Codec<ChanneledLightningCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(VICTIMS_KEY_FIELD, "victims").forGetter(ChanneledLightningCriterionMacro::getVictimsKey)
     ).apply(instance, ChanneledLightningCriterionMacro::new));
 
     private final String victimsKey;
+
     public ChanneledLightningCriterionMacro(String victimsKey) {
-        super(Criteria.CHANNELED_LIGHTNING.getId());
+        super(Criteria.CHANNELED_LIGHTNING);
         this.victimsKey = victimsKey;
     }
 
@@ -50,8 +51,8 @@ public class ChanneledLightningCriterionMacro extends Macro {
         });
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.CHANNELED_LIGHTNING.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.CHANNELED_LIGHTNING, () -> CODEC);
     }
 
 }

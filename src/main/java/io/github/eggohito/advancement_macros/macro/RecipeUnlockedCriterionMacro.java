@@ -29,7 +29,7 @@ public class RecipeUnlockedCriterionMacro extends Macro {
     private final String ingredientsKey;
 
     public RecipeUnlockedCriterionMacro(String recipeIdKey, String ingredientsKey) {
-        super(Criteria.RECIPE_UNLOCKED.getId());
+        super(Criteria.RECIPE_UNLOCKED);
         this.recipeIdKey = recipeIdKey;
         this.ingredientsKey = ingredientsKey;
     }
@@ -76,8 +76,8 @@ public class RecipeUnlockedCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.RECIPE_UNLOCKED.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.RECIPE_UNLOCKED, () -> CODEC);
     }
 
 }

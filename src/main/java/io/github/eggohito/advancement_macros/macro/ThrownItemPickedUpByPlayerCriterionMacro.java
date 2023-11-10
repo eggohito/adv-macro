@@ -2,15 +2,14 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class ThrownItemPickedUpByPlayerCriterionMacro extends ThrownItemPickedUpByEntityCriterionMacro {
 
-    public static final Codec<ThrownItemPickedUpByEntityCriterionMacro> CODEC = getCodec(ThrownItemPickedUpByPlayerCriterionMacro::new);
+    public static final Codec<ThrownItemPickedUpByPlayerCriterionMacro> CODEC = getCodec(ThrownItemPickedUpByPlayerCriterionMacro::new);
 
     public ThrownItemPickedUpByPlayerCriterionMacro(String thrownItemKey, String entityKey) {
-        super(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER.getId(), thrownItemKey, entityKey);
+        super(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER, thrownItemKey, entityKey);
     }
 
     @Override
@@ -18,8 +17,8 @@ public class ThrownItemPickedUpByPlayerCriterionMacro extends ThrownItemPickedUp
         return () -> CODEC;
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER, () -> CODEC);
     }
 
 }

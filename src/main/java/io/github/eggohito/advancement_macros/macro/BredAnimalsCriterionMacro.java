@@ -8,7 +8,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class BredAnimalsCriterionMacro extends Macro {
@@ -28,7 +27,7 @@ public class BredAnimalsCriterionMacro extends Macro {
     private final String childKey;
 
     public BredAnimalsCriterionMacro(String parentKey, String partnerKey, String childKey) {
-        super(Criteria.BRED_ANIMALS.getId());
+        super(Criteria.BRED_ANIMALS);
         this.parentKey = parentKey;
         this.partnerKey = partnerKey;
         this.childKey = childKey;
@@ -68,8 +67,8 @@ public class BredAnimalsCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.BRED_ANIMALS.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.BRED_ANIMALS, () -> CODEC);
     }
 
 }

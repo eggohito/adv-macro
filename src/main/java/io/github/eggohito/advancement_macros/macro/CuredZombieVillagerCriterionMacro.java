@@ -8,7 +8,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class CuredZombieVillagerCriterionMacro extends Macro {
@@ -25,7 +24,7 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
     private final String villagerKey;
 
     public CuredZombieVillagerCriterionMacro(String zombieKey, String villagerKey) {
-        super(Criteria.CURED_ZOMBIE_VILLAGER.getId());
+        super(Criteria.CURED_ZOMBIE_VILLAGER);
         this.zombieKey = zombieKey;
         this.villagerKey = villagerKey;
     }
@@ -56,8 +55,8 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.CURED_ZOMBIE_VILLAGER.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.CURED_ZOMBIE_VILLAGER, () -> CODEC);
     }
 
 }

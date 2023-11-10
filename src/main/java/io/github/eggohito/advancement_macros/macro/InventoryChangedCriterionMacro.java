@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class InventoryChangedCriterionMacro extends Macro {
@@ -31,7 +30,7 @@ public class InventoryChangedCriterionMacro extends Macro {
     private final String emptySlotsKey;
 
     public InventoryChangedCriterionMacro(String movedItemKey, String fullItemsKey, String occupiedSlotsKey, String emptySlotsKey) {
-        super(Criteria.INVENTORY_CHANGED.getId());
+        super(Criteria.INVENTORY_CHANGED);
         this.movedItemKey = movedItemKey;
         this.fullItemsKey = fullItemsKey;
         this.occupiedSlotsKey = occupiedSlotsKey;
@@ -80,8 +79,8 @@ public class InventoryChangedCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.INVENTORY_CHANGED.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.INVENTORY_CHANGED, () -> CODEC);
     }
 
 }

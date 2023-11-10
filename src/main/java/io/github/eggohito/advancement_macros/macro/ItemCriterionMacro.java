@@ -5,9 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.BiFunction;
@@ -20,13 +20,13 @@ public abstract class ItemCriterionMacro extends Macro {
     private final String locationKey;
     private final String itemKey;
 
-    public ItemCriterionMacro(Identifier id, String locationKey, String itemKey) {
-        super(id);
+    public ItemCriterionMacro(Criterion<?> baseCriterion, String locationKey, String itemKey) {
+        super(baseCriterion);
         this.locationKey = locationKey;
         this.itemKey = itemKey;
     }
 
-    protected static Codec<ItemCriterionMacro> getCodec(BiFunction<String, String, ItemCriterionMacro> macroFunction) {
+    protected static <T extends ItemCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.optionalFieldOf(LOCATION_KEY_FIELD, "location").forGetter(ItemCriterionMacro::getLocationKey),
             Codec.STRING.optionalFieldOf(ITEM_KEY_FIELD, "item").forGetter(ItemCriterionMacro::getItemKey)

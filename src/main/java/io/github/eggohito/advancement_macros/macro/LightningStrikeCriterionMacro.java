@@ -10,7 +10,6 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class LightningStrikeCriterionMacro extends Macro {
     private final String bystandersKey;
 
     public LightningStrikeCriterionMacro(String lightningKey, String bystandersKey) {
-        super(Criteria.LIGHTNING_STRIKE.getId());
+        super(Criteria.LIGHTNING_STRIKE);
         this.lightningKey = lightningKey;
         this.bystandersKey = bystandersKey;
     }
@@ -67,8 +66,8 @@ public class LightningStrikeCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.LIGHTNING_STRIKE.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.LIGHTNING_STRIKE, () -> CODEC);
     }
 
 }

@@ -7,20 +7,21 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 
 public class UsedEnderEyeCriterionMacro extends Macro {
 
     public static final String STRONGHOLD_LOCATION_KEY_FIELD = "stronghold_location_key";
+
     public static final Codec<UsedEnderEyeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(STRONGHOLD_LOCATION_KEY_FIELD, "stronghold_location").forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
     ).apply(instance, UsedEnderEyeCriterionMacro::new));
 
     private final String strongholdLocationKey;
+
     public UsedEnderEyeCriterionMacro(String strongholdLocationKey) {
-        super(Criteria.USED_ENDER_EYE.getId());
+        super(Criteria.USED_ENDER_EYE);
         this.strongholdLocationKey = strongholdLocationKey;
     }
 
@@ -40,8 +41,8 @@ public class UsedEnderEyeCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.USED_ENDER_EYE.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.USED_ENDER_EYE, () -> CODEC);
     }
 
 }

@@ -1,5 +1,7 @@
 package io.github.eggohito.advancement_macros.data;
 
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -10,14 +12,14 @@ import java.util.function.Consumer;
  *      A class for storing the context (e.g: objects) of criterion triggers when triggered. This is used to store the
  *      objects at a later time to serialize to NBT (serialization to NBT is done separately)
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public class TriggerContext {
 
     private final Map<String, Object> mappedData;
     private final Identifier id;
 
-    public static TriggerContext create(Identifier id) {
-        return new TriggerContext(id);
+    public static TriggerContext create(Criterion<?> criterion) {
+        return new TriggerContext(Criteria.getId(criterion));
     }
 
     private TriggerContext(Identifier id) {

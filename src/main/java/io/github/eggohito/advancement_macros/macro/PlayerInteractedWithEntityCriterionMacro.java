@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class PlayerInteractedWithEntityCriterionMacro extends Macro {
@@ -26,7 +25,7 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
     private final String interactedEntityKey;
 
     public PlayerInteractedWithEntityCriterionMacro(String usedItemKey, String interactedEntityKey) {
-        super(Criteria.PLAYER_INTERACTED_WITH_ENTITY.getId());
+        super(Criteria.PLAYER_INTERACTED_WITH_ENTITY);
         this.usedItemKey = usedItemKey;
         this.interactedEntityKey = interactedEntityKey;
     }
@@ -57,8 +56,8 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.PLAYER_INTERACTED_WITH_ENTITY.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.PLAYER_INTERACTED_WITH_ENTITY, () -> CODEC);
     }
 
 }

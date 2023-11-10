@@ -2,24 +2,31 @@ package io.github.eggohito.advancement_macros;
 
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.macro.*;
-import io.github.eggohito.advancement_macros.util.MacroSupplier;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class AdvancementMacros implements ModInitializer {
 
 	public static final String MOD_NAMESPACE = "advancement-macros";
+	public static final String MAPPING_KEY = of("mapping").toString();
+	public static final String CODEC_TYPE_KEY = of("trigger").toString();
+
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAMESPACE);
+	public static final Set<String> LOGGED_OUTPUT_LOGS = new HashSet<>();
 
 	public static final Pattern VALID_CRITERION_NAME_PATTERN = Pattern.compile("[^a-zA-Z0-9_]");
 
@@ -47,6 +54,8 @@ public class AdvancementMacros implements ModInitializer {
 			}
 
 		});
+
+		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, resourceManager) -> LOGGED_OUTPUT_LOGS.clear());
 
 		register(PlacedBlockCriterionMacro::getFactory);
 		register(PlayerKilledEntityCriterionMacro::getFactory);
@@ -85,6 +94,20 @@ public class AdvancementMacros implements ModInitializer {
 		register(EffectsChangedCriterionMacro::getFactory);
 		register(KilledByCrossbowCriterionMacro::getFactory);
 		register(SlideDownBlockCriterionMacro::getFactory);
+		register(BeeNestDestroyedCriterionMacro::getFactory);
+		register(StartedRidingCriterionMacro::getFactory);
+		register(ItemUsedOnBlockCriterionMacro::getFactory);
+		register(KillMobNearSculkCatalystCriterionMacro::getFactory);
+		register(ItemDurabilityChangedCriterionMacro::getFactory);
+		register(UsedTotemCriterionMacro::getFactory);
+		register(ShotCrossbowCriterionMacro::getFactory);
+		register(TickCriterionMacro::getFactory);
+		register(LocationCriterionMacro::getFactory);
+		register(AvoidVibrationCriterionMacro::getFactory);
+		register(SleptInBedCriterionMacro::getFactory);
+		register(HeroOfTheVillageCriterionMacro::getFactory);
+		register(UsingItemCriterionMacro::getFactory);
+		register(ImpossibleCriterionMacro::getFactory);
 
 		LOGGER.info("Advancement Macros {} has been initialized!", VERSION_STRING);
 
@@ -94,9 +117,27 @@ public class AdvancementMacros implements ModInitializer {
 		return new Identifier(MOD_NAMESPACE, path);
 	}
 
-	public static void register(MacroSupplier supplier) {
-		Pair<Identifier, Macro.Type> factory = supplier.getFactory();
-		Registry.register(REGISTRY, factory.getLeft(), factory.getRight());
+	public static void logErrorOnce(String message) {
+
+		if (LOGGED_OUTPUT_LOGS.contains(message)) {
+			return;
+		}
+
+		LOGGER.error(message);
+		LOGGED_OUTPUT_LOGS.add(message);
+
+	}
+
+	public static void register(Macro.Supplier supplier) {
+
+		Macro.Factory factory = supplier.getFactory();
+
+		Criterion<?> criterion = factory.getData().getLeft();
+		Macro.Type macroType = factory.getData().getRight();
+
+		Identifier macroId = Criteria.getId(criterion);
+		Registry.register(REGISTRY, macroId, macroType);
+
 	}
 
 }

@@ -27,7 +27,7 @@ public class BrewedPotionCriterionMacro extends Macro {
     private final String statusEffectsKey;
 
     public BrewedPotionCriterionMacro(String brewedPotionIdKey, String statusEffectsKey) {
-        super(Criteria.BREWED_POTION.getId());
+        super(Criteria.BREWED_POTION);
         this.brewedPotionIdKey = brewedPotionIdKey;
         this.statusEffectsKey = statusEffectsKey;
     }
@@ -70,8 +70,8 @@ public class BrewedPotionCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.BREWED_POTION.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.BREWED_POTION, () -> CODEC);
     }
 
 }

@@ -9,13 +9,12 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class BeeNestDestroyedCriterionMacro extends Macro {
 
     public static final String BROKEN_BEE_NEST_KEY_FIELD = "broken_bee_best_key";
-    public static final String TOOL_ITEM_KEY_FIELD = "tool_item_key_field";
+    public static final String TOOL_ITEM_KEY_FIELD = "tool_item_key";
     public static final String BEE_COUNT_KEY_FIELD = "bee_count_key";
 
     public static final Codec<BeeNestDestroyedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -29,7 +28,7 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
     private final String beeCountKey;
 
     public BeeNestDestroyedCriterionMacro(String brokenBeeNestKey, String toolItemKey, String beeCountKey) {
-        super(Criteria.BEE_NEST_DESTROYED.getId());
+        super(Criteria.BEE_NEST_DESTROYED);
         this.brokenBeeNestKey = brokenBeeNestKey;
         this.toolItemKey = toolItemKey;
         this.beeCountKey = beeCountKey;
@@ -69,8 +68,8 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.BEE_NEST_DESTROYED.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.BEE_NEST_DESTROYED, () -> CODEC);
     }
 
 }

@@ -6,6 +6,7 @@ import io.github.eggohito.advancement_macros.access.MacroData;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.function.CommandFunction;
 import net.minecraft.server.function.MacroException;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -54,17 +55,30 @@ public abstract class AdvancementRewardsMixin implements MacroData, AdvancementR
         MinecraftServer server = player.server;
         CommandFunction function = this.function.get(server.getCommandFunctionManager()).orElse(null);
 
-        //  Skip this mixin if there is no cached NBT data or if the function is not specified
+        //  Skip this method handler if there is no cached NBT data or if the function is not specified
         if (advancement_macros$data == null || function == null) {
+
+            //  If the function is null, cancel the target method by this point
+            if (function == null) {
+                ci.cancel();
+            }
+
             return;
+
         }
 
         //  Try to execute the function with the passed NBT data. If it fails, inform the user with a log message
         //  containing the ID of the advancement, the ID of the reward function, and the reason it failed
         try {
+
+            ServerCommandSource source = player.getCommandSource()
+                .withSilent()
+                .withLevel(server.getFunctionPermissionLevel());
+
             server
                 .getCommandFunctionManager()
-                .execute(function, player.getCommandSource().withSilent().withLevel(server.getFunctionPermissionLevel()), null, advancement_macros$data);
+                .execute(function, source, null, advancement_macros$data);
+
         } catch (MacroException e) {
             AdvancementMacros.LOGGER.error("Error trying to execute reward function \"{}\" for advancement \"{}\": {}", function.getId(), advancement_macros$advancementId, e.getMessage().getString());
         }

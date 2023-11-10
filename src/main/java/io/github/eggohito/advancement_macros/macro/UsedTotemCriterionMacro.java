@@ -8,19 +8,20 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class UsedTotemCriterionMacro extends Macro {
 
     public static final String USED_TOTEM_KEY_FIELD = "used_totem_key";
+
     public static final Codec<UsedTotemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(USED_TOTEM_KEY_FIELD, "used_totem").forGetter(UsedTotemCriterionMacro::getUsedTotemKey)
     ).apply(instance, UsedTotemCriterionMacro::new));
 
     private final String usedTotemKey;
+
     public UsedTotemCriterionMacro(String usedTotemKey) {
-        super(Criteria.USED_TOTEM.getId());
+        super(Criteria.USED_TOTEM);
         this.usedTotemKey = usedTotemKey;
     }
 
@@ -40,8 +41,8 @@ public class UsedTotemCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.USED_TOTEM.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.USED_TOTEM, () -> CODEC);
     }
 
 }

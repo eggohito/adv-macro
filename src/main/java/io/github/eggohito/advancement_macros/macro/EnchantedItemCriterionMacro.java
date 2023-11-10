@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class EnchantedItemCriterionMacro extends Macro {
@@ -25,7 +24,7 @@ public class EnchantedItemCriterionMacro extends Macro {
     private final String spentLevelsKey;
 
     public EnchantedItemCriterionMacro(String enchantedItemKey, String spentLevelsKey) {
-        super(Criteria.ENCHANTED_ITEM.getId());
+        super(Criteria.ENCHANTED_ITEM);
         this.enchantedItemKey = enchantedItemKey;
         this.spentLevelsKey = spentLevelsKey;
     }
@@ -56,8 +55,8 @@ public class EnchantedItemCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.ENCHANTED_ITEM.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.ENCHANTED_ITEM, () -> CODEC);
     }
 
 }

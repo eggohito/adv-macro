@@ -7,10 +7,10 @@ import io.github.eggohito.advancement_macros.access.MacroData;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -38,9 +38,9 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     }
 
     @Override
-    public void advancement_macros$add(ServerPlayerEntity player, Identifier id, Consumer<TriggerContext> contextConsumer) {
+    public void advancement_macros$add(ServerPlayerEntity player, Criterion<?> criterion, Consumer<TriggerContext> contextConsumer) {
 
-        TriggerContext context = TriggerContext.create(id);
+        TriggerContext context = TriggerContext.create(criterion);
         contextConsumer.accept(context);
 
         advancement_macros$add(player, context);
@@ -50,57 +50,47 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
 
-        //  Skip this mixin if there is no trigger context for the player or if the data of
-        //  the trigger context is empty
+        //  Skip this method handler if there is no trigger context for the player or if the data of the trigger context is empty
         TriggerContext context;
         if (!advancement_macros$context.containsKey(player) || (context = advancement_macros$context.get(player)).isEmpty()) {
             return;
         }
 
-        //  Skip this mixin if the criterion trigger ID of the target criterion (the criterion to be granted) is NOT
-        //  the same as the criterion trigger ID from the trigger context
-        Identifier criterionTriggerId = conditionsContainer.getConditions().getId();
-        if (!context.getId().equals(criterionTriggerId)) {
-            return;
-        }
-
         //  Get the name of the target criterion and the advancement containing the target criterion
-        String targetCriterionName = ((ConditionsContainerAccessor) conditionsContainer).getId();
-        Advancement advancement = ((ConditionsContainerAccessor) conditionsContainer).getAdvancement();
+        String targetCriterionName = conditionsContainer.id();
+        AdvancementEntry advancementEntry = conditionsContainer.advancement();
 
-        //  Iterate through all the advancement's criteria
-        for (Map.Entry<String, AdvancementCriterion> entry : advancement.getCriteria().entrySet()) {
+        //  Iterate each criterion of the advancement. Each criterion is processed to work around
+        //  the issue where if the NBT key does not exist in the NBT compound, the function won't be called
+        advancementEntry.value().criteria().forEach((criterionName, advancementCriterion) -> {
 
-            //  Get the name of the criterion and itself
-            String criterionName = entry.getKey();
-            AdvancementCriterion criterion = entry.getValue();
+            //  Get the trigger ID and macro of the current criterion
+            Identifier criterionTriggerId = Criteria.getId(advancementCriterion.trigger());
+            Macro macro = ((MacroStorage) (Object) advancementCriterion).advancement_macros$getMacro();
 
-            //  Continue looping if the criterion does not have a macro or if its criterion trigger ID does not match
-            //  the criterion trigger ID of the target criterion
-            Macro macro = ((MacroStorage) criterion).advancement_macros$getMacro();
+            //  Skip the current iteration if the criterion trigger ID doesn't match the criterion trigger ID
+            //  from the trigger context
             if (macro == null || !macro.getId().equals(criterionTriggerId)) {
-                continue;
+                return;
             }
 
-            //  Transform the name of the criterion into a valid function macro name
-            String processedName = AdvancementMacros.VALID_CRITERION_NAME_PATTERN
+            //  Transform the name of the criterion into a valid function macro
+            String processedCriterionName = AdvancementMacros.VALID_CRITERION_NAME_PATTERN
                 .matcher(criterionName)
                 .replaceAll("_");
 
-            //  Write the data from the trigger context to the NBT if the name of the criterion matches the name of
-            //  the target criterion
-            NbtCompound nbt = new NbtCompound();
+            //  Write the data of the trigger context to NBT if the name of the criterion matches the name of the
+            //  target criterion
+            NbtCompound criterionNbtData = new NbtCompound();
             if (criterionName.equals(targetCriterionName)) {
-                macro.writeToNbt(nbt, context);
+                macro.writeToNbt(criterionNbtData, context);
                 advancement_macros$context.remove(player);
             }
 
-            //  Cache the NBT to the rewards of the advancement. This is regardless of whether the NBT is empty to
-            //  work around the issue where if the NBT key does not exist in the NBT compound, the function won't be
-            //  called
-            ((MacroData) advancement.getRewards()).advancement_macros$getData().put(processedName, nbt);
+            //  Cache the NBT to the rewards of the advancement
+            ((MacroData) advancementEntry.value().rewards()).advancement_macros$getData().put(processedCriterionName, criterionNbtData);
 
-        }
+        });
 
     }
 

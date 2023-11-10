@@ -8,19 +8,20 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class SlideDownBlockCriterionMacro extends Macro {
 
     public static final String SLIDED_BLOCK_KEY_FIELD = "slided_block_key";
+
     public static final Codec<SlideDownBlockCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(SLIDED_BLOCK_KEY_FIELD, "slided_block").forGetter(SlideDownBlockCriterionMacro::getSlidedBlockKey)
     ).apply(instance, SlideDownBlockCriterionMacro::new));
 
     private final String slidedBlockKey;
+
     public SlideDownBlockCriterionMacro(String slidedBlockKey) {
-        super(Criteria.SLIDE_DOWN_BLOCK.getId());
+        super(Criteria.SLIDE_DOWN_BLOCK);
         this.slidedBlockKey = slidedBlockKey;
     }
 
@@ -40,8 +41,8 @@ public class SlideDownBlockCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.SLIDE_DOWN_BLOCK.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.SLIDE_DOWN_BLOCK, () -> CODEC);
     }
 
 }

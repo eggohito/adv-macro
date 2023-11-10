@@ -5,9 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.function.TriFunction;
 
 public abstract class OnKilledCriterionMacro extends Macro {
@@ -20,14 +20,14 @@ public abstract class OnKilledCriterionMacro extends Macro {
     private final String victimKey;
     private final String killingBlowKey;
 
-    public OnKilledCriterionMacro(Identifier id, String killerKey, String victimKey, String killingBlowKey) {
-        super(id);
+    public OnKilledCriterionMacro(Criterion<?> baseCriterion, String killerKey, String victimKey, String killingBlowKey) {
+        super(baseCriterion);
         this.killerKey = killerKey;
         this.victimKey = victimKey;
         this.killingBlowKey = killingBlowKey;
     }
 
-    protected static Codec<OnKilledCriterionMacro> getCodec(TriFunction<String, String, String, OnKilledCriterionMacro> macroFunction) {
+    protected static <T extends OnKilledCriterionMacro> Codec<T> getCodec(TriFunction<String, String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.optionalFieldOf(KILLER_KEY_FIELD, "killer").forGetter(OnKilledCriterionMacro::getKillerKey),
             Codec.STRING.optionalFieldOf(VICTIM_KEY_FIELD, "victim").forGetter(OnKilledCriterionMacro::getVictimKey),

@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.world.World;
 
@@ -25,7 +24,7 @@ public class ChangedDimensionCriterionMacro extends Macro {
     private final String toDimensionKey;
 
     public ChangedDimensionCriterionMacro(String fromDimensionKey, String toDimensionKey) {
-        super(Criteria.CHANGED_DIMENSION.getId());
+        super(Criteria.CHANGED_DIMENSION);
         this.fromDimensionKey = fromDimensionKey;
         this.toDimensionKey = toDimensionKey;
     }
@@ -56,8 +55,8 @@ public class ChangedDimensionCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.CHANGED_DIMENSION.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.CHANGED_DIMENSION, () -> CODEC);
     }
 
 }

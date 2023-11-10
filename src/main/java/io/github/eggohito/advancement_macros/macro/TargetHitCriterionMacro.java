@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 
@@ -29,7 +28,7 @@ public class TargetHitCriterionMacro extends Macro {
     private final String signalStrengthKey;
 
     public TargetHitCriterionMacro(String projectileKey, String hitLocationKey, String signalStrengthKey) {
-        super(Criteria.TARGET_HIT.getId());
+        super(Criteria.TARGET_HIT);
         this.projectileKey = projectileKey;
         this.hitLocationKey = hitLocationKey;
         this.signalStrengthKey = signalStrengthKey;
@@ -69,8 +68,8 @@ public class TargetHitCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.TARGET_HIT.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.TARGET_HIT, () -> CODEC);
     }
 
 }

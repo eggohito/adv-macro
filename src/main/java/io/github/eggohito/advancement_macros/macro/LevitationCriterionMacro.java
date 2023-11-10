@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 
@@ -25,7 +24,7 @@ public class LevitationCriterionMacro extends Macro {
     private final String durationKey;
 
     public LevitationCriterionMacro(String startLocationKey, String durationKey) {
-        super(Criteria.LEVITATION.getId());
+        super(Criteria.LEVITATION);
         this.startLocationKey = startLocationKey;
         this.durationKey = durationKey;
     }
@@ -56,8 +55,8 @@ public class LevitationCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.LEVITATION.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.LEVITATION, () -> CODEC);
     }
 
 }

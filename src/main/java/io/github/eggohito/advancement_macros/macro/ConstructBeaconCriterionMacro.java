@@ -6,19 +6,20 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class ConstructBeaconCriterionMacro extends Macro {
 
     public static final String BEACON_LEVEL_KEY_FIELD = "beacon_level_key";
+
     public static Codec<ConstructBeaconCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(BEACON_LEVEL_KEY_FIELD, "beacon_level").forGetter(ConstructBeaconCriterionMacro::getBeaconLevelKey)
     ).apply(instance, ConstructBeaconCriterionMacro::new));
 
     private final String beaconLevelKey;
+
     public ConstructBeaconCriterionMacro(String beaconLevelKey) {
-        super(Criteria.CONSTRUCT_BEACON.getId());
+        super(Criteria.CONSTRUCT_BEACON);
         this.beaconLevelKey = beaconLevelKey;
     }
 
@@ -38,8 +39,8 @@ public class ConstructBeaconCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.CONSTRUCT_BEACON.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.CONSTRUCT_BEACON, () -> CODEC);
     }
 
 }

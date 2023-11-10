@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class EntityHurtPlayerCriterionMacro extends Macro {
@@ -35,7 +34,7 @@ public class EntityHurtPlayerCriterionMacro extends Macro {
     private final String damageBlockedKey;
 
     public EntityHurtPlayerCriterionMacro(String attackerKey, String damageSourceKey, String damageDealtAmountKey, String damageTakenAmountKey, String damageBlockedKey) {
-        super(Criteria.ENTITY_HURT_PLAYER.getId());
+        super(Criteria.ENTITY_HURT_PLAYER);
         this.attackerKey = attackerKey;
         this.damageSourceKey = damageSourceKey;
         this.damageDealtAmountKey = damageDealtAmountKey;
@@ -93,8 +92,8 @@ public class EntityHurtPlayerCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.ENTITY_HURT_PLAYER.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.ENTITY_HURT_PLAYER, () -> CODEC);
     }
 
 }

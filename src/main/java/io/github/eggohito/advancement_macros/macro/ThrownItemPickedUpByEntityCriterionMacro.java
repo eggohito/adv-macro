@@ -6,10 +6,10 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import java.util.function.BiFunction;
@@ -24,17 +24,17 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
     private final String thrownItemKey;
     private final String entityKey;
 
-    public ThrownItemPickedUpByEntityCriterionMacro(Identifier id, String thrownItemKey, String entityKey) {
-        super(id);
+    public ThrownItemPickedUpByEntityCriterionMacro(Criterion<?> baseCriterion, String thrownItemKey, String entityKey) {
+        super(baseCriterion);
         this.thrownItemKey = thrownItemKey;
         this.entityKey = entityKey;
     }
 
     public ThrownItemPickedUpByEntityCriterionMacro(String thrownItemKey, String entityKey) {
-        this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY.getId(), thrownItemKey, entityKey);
+        this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, thrownItemKey, entityKey);
     }
 
-    protected static Codec<ThrownItemPickedUpByEntityCriterionMacro> getCodec(BiFunction<String, String, ThrownItemPickedUpByEntityCriterionMacro> macroFunction) {
+    protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.optionalFieldOf(THROWN_ITEM_KEY_FIELD, "thrown_item").forGetter(ThrownItemPickedUpByEntityCriterionMacro::getThrownItemKey),
             Codec.STRING.optionalFieldOf(ENTITY_KEY_FIELD, "entity").forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)
@@ -67,8 +67,8 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
 
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, () -> CODEC);
     }
 
 }

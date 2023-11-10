@@ -7,19 +7,20 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class TameAnimalCriterionMacro extends Macro {
 
     public static final String TAMED_ANIMAL_KEY_FIELD = "tamed_animal_key";
+
     public static final Codec<TameAnimalCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(TAMED_ANIMAL_KEY_FIELD, "tamed_animal").forGetter(TameAnimalCriterionMacro::getTamedAnimalKey)
     ).apply(instance, TameAnimalCriterionMacro::new));
 
     private final String tamedAnimalKey;
+
     public TameAnimalCriterionMacro(String tamedAnimalKey) {
-        super(Criteria.TAME_ANIMAL.getId());
+        super(Criteria.TAME_ANIMAL);
         this.tamedAnimalKey = tamedAnimalKey;
     }
 
@@ -39,8 +40,8 @@ public class TameAnimalCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.TAME_ANIMAL.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.TAME_ANIMAL, () -> CODEC);
     }
 
 }

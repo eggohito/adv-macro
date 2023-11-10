@@ -8,19 +8,20 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class EnterBlockCriterionMacro extends Macro {
 
     public static final String ENTERED_BLOCK_KEY_FIELD = "entered_block_key";
+
     public static final Codec<EnterBlockCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.optionalFieldOf(ENTERED_BLOCK_KEY_FIELD, "entered_block").forGetter(EnterBlockCriterionMacro::getEnteredBlockKey)
     ).apply(instance, EnterBlockCriterionMacro::new));
 
     private final String enteredBlockKey;
+
     public EnterBlockCriterionMacro(String enteredBlockKey) {
-        super(Criteria.ENTER_BLOCK.getId());
+        super(Criteria.ENTER_BLOCK);
         this.enteredBlockKey = enteredBlockKey;
     }
 
@@ -40,8 +41,8 @@ public class EnterBlockCriterionMacro extends Macro {
         );
     }
 
-    public static Pair<Identifier, Type> getFactory() {
-        return new Pair<>(Criteria.ENTER_BLOCK.getId(), () -> CODEC);
+    public static Factory getFactory() {
+        return () -> new Pair<>(Criteria.ENTER_BLOCK, () -> CODEC);
     }
 
 }
