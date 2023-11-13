@@ -29,11 +29,6 @@ public abstract class PlayerAdvancementTrackerMixin {
         //  around an issue with the reward function failing entirely if the placeholder key doesn't exist
         for (String otherCriterionName : advancement.criteria().keySet()) {
 
-            //  Skip if the other criterion's name is the same as the granted criterion's name
-            if (criterionName.equals(otherCriterionName)) {
-                continue;
-            }
-
             //  Replace all the invalid criterion name characters from the criterion name with "_"
             String processedCriterionName = AdvancementMacros.INVALID_CRITERION_CHARACTERS
                 .matcher(otherCriterionName)

@@ -71,15 +71,23 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
 
         //  Skip the method handler by this point if the macro handler from the criterion is somehow null
         if (macro == null) {
+
             AdvancementMacros.LOGGER.warn("Couldn't serialize trigger context of criterion \"{}\" from advancement \"{}\" to NBT due to missing macro handler! (criterion trigger ID: \"{}\")", criterionName, advancementEntry.id(), criterionTriggerId);
+            advancement_macros$triggerContext = null;
+
             return;
+
         }
 
         //  Skip the method handler by this point if the ID of the macro handler from the criterion doesn't
         //  match the ID of the criterion trigger
         if (!macro.getId().equals(criterionTriggerId)) {
+
             AdvancementMacros.LOGGER.warn("Couldn't serialize trigger context of criterion \"{}\" from advancement \"{}\" to NBT due to ID mismatch! (criterion trigger ID: \"{}\", macro handler ID: \"{}\")", criterionName, advancementEntry.id(), criterionTriggerId, macro.getId());
+            advancement_macros$triggerContext = null;
+
             return;
+
         }
 
         //  Replace all the invalid criterion name characters from the criterion name with "_"
@@ -96,6 +104,9 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         ((MacroData) advancement.rewards())
             .advancement_macros$getData()
             .put(processedCriterionName, criterionNbtData);
+
+        //  Reset the trigger context to null
+        advancement_macros$triggerContext = null;
 
     }
 
