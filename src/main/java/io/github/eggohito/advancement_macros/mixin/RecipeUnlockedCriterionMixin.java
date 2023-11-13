@@ -16,7 +16,7 @@ public abstract class RecipeUnlockedCriterionMixin extends AbstractCriterion<Rec
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/RecipeUnlockedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, RecipeEntry<?> recipeEntry, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(RecipeUnlockedCriterionMacro.RECIPE_KEY, recipeEntry.id())
             .add(RecipeUnlockedCriterionMacro.INGREDIENTS_KEY, recipeEntry.value().getIngredients()));
     }

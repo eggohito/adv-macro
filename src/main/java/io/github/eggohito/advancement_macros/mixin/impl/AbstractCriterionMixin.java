@@ -7,6 +7,8 @@ import io.github.eggohito.advancement_macros.access.MacroData;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
@@ -21,76 +23,79 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Mixin(AbstractCriterion.class)
-public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditions> implements MacroContext {
+public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditions> implements Criterion<T>, MacroContext {
 
     @Unique
-    private final Map<ServerPlayerEntity, TriggerContext> advancement_macros$context = new HashMap<>();
-
-    @Unique
-    private void advancement_macros$add(ServerPlayerEntity player, TriggerContext context) {
-        advancement_macros$context.put(player, context);
-    }
+    private TriggerContext advancement_macros$triggerContext;
 
     @Override
-    public void advancement_macros$add(ServerPlayerEntity player, Criterion<?> criterion, Consumer<TriggerContext> contextConsumer) {
+    public void advancement_macros$setContext(Criterion<?> criterion, Consumer<TriggerContext> contextConsumer) {
 
         TriggerContext context = TriggerContext.create(criterion);
         contextConsumer.accept(context);
 
-        advancement_macros$add(player, context);
+        advancement_macros$triggerContext = context;
 
     }
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
 
-        //  Skip this method handler if there is no trigger context for the player or if the data of the trigger context is empty
-        TriggerContext context;
-        if (!advancement_macros$context.containsKey(player) || (context = advancement_macros$context.get(player)).isEmpty()) {
+        //  Skip this method handler if the trigger context of this criterion trigger is either null or empty
+        if (advancement_macros$triggerContext == null || advancement_macros$triggerContext.isEmpty()) {
             return;
         }
 
-        //  Get the name of the target criterion and the advancement containing the target criterion
-        String targetCriterionName = conditionsContainer.id();
+        //  Get the name of the triggered criterion
+        String criterionName = conditionsContainer.id();
+
+        //  Get the advancement and advancement entry of the criterion
         AdvancementEntry advancementEntry = conditionsContainer.advancement();
+        Advancement advancement = advancementEntry.value();
 
-        //  Iterate each criterion of the advancement. Each criterion is processed to work around
-        //  the issue where if the NBT key does not exist in the NBT compound, the function won't be called
-        advancementEntry.value().criteria().forEach((criterionName, advancementCriterion) -> {
+        //  Get the actual criterion from the criterion
+        AdvancementCriterion<?> advancementCriterion = advancement.criteria().get(criterionName);
 
-            //  Get the trigger ID and macro of the current criterion
-            Identifier criterionTriggerId = Criteria.getId(advancementCriterion.trigger());
-            Macro macro = ((MacroStorage) (Object) advancementCriterion).advancement_macros$getMacro();
+        //  Skip this method handler if the actual criterion of the criterion is null (it shouldn't be)
+        if (advancementCriterion == null) {
+            return;
+        }
 
-            //  Skip the current iteration if the criterion trigger ID doesn't match the criterion trigger ID
-            //  from the trigger context
-            if (macro == null || !macro.getId().equals(criterionTriggerId)) {
-                return;
-            }
+        //  Get the macro from the actual criterion and the ID of its trigger
+        Macro macro = ((MacroStorage) (Object) advancementCriterion).advancement_macros$getMacro();
+        Identifier criterionTriggerId = Criteria.getId(advancementCriterion.trigger());
 
-            //  Transform the name of the criterion into a valid function macro
-            String processedCriterionName = AdvancementMacros.VALID_CRITERION_NAME_PATTERN
-                .matcher(criterionName)
-                .replaceAll("_");
+        //  Skip the method handler by this point if the macro handler from the criterion is somehow null
+        if (macro == null) {
+            AdvancementMacros.LOGGER.warn("Couldn't serialize trigger context of criterion \"{}\" from advancement \"{}\" to NBT due to missing macro handler! (criterion trigger ID: \"{}\")", criterionName, advancementEntry.id(), criterionTriggerId);
+            return;
+        }
 
-            //  Write the data of the trigger context to NBT if the name of the criterion matches the name of the
-            //  target criterion
-            NbtCompound criterionNbtData = new NbtCompound();
-            if (criterionName.equals(targetCriterionName)) {
-                macro.writeToNbt(criterionNbtData, context);
-                advancement_macros$context.remove(player);
-            }
+        //  Skip the method handler by this point if the ID of the macro handler from the criterion doesn't
+        //  match the ID of the criterion trigger
+        if (!macro.getId().equals(criterionTriggerId)) {
+            AdvancementMacros.LOGGER.warn("Couldn't serialize trigger context of criterion \"{}\" from advancement \"{}\" to NBT due to ID mismatch! (criterion trigger ID: \"{}\", macro handler ID: \"{}\")", criterionName, advancementEntry.id(), criterionTriggerId, macro.getId());
+            return;
+        }
 
-            //  Cache the NBT to the rewards of the advancement
-            ((MacroData) advancementEntry.value().rewards()).advancement_macros$getData().put(processedCriterionName, criterionNbtData);
+        //  Replace all the invalid criterion name characters from the criterion name with "_"
+        String processedCriterionName = AdvancementMacros.INVALID_CRITERION_CHARACTERS
+            .matcher(criterionName)
+            .replaceAll("_");
 
-        });
+        //  Serialize the data of the criterion trigger to NBT
+        NbtCompound criterionNbtData = new NbtCompound();
+        macro.writeToNbt(criterionNbtData, advancement_macros$triggerContext);
+
+        //  Pass the serialized NBT data to the rewards of the advancement
+        //  that contains the criterion
+        ((MacroData) advancement.rewards())
+            .advancement_macros$getData()
+            .put(processedCriterionName, criterionNbtData);
 
     }
 

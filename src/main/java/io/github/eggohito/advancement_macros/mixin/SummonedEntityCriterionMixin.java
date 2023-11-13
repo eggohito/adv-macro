@@ -16,7 +16,7 @@ public abstract class SummonedEntityCriterionMixin extends AbstractCriterion<Sum
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/SummonedEntityCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity entity, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(SummonedEntityCriterionMacro.ENTITY_KEY, entity));
     }
 

@@ -17,7 +17,7 @@ public abstract class VillagerTradeCriterionMixin extends AbstractCriterion<Vill
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/VillagerTradeCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, MerchantEntity merchant, ItemStack stack, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(VillagerTradeCriterionMacro.VILLAGER_KEY, merchant)
             .add(VillagerTradeCriterionMacro.ITEM_KEY, stack));
     }

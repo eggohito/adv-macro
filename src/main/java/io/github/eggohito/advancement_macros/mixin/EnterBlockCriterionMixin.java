@@ -17,7 +17,7 @@ public abstract class EnterBlockCriterionMixin extends AbstractCriterion<EnterBl
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/EnterBlockCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockState state, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(EnterBlockCriterionMacro.BLOCK_KEY, Registries.BLOCK.getId(state.getBlock()))
             .add(EnterBlockCriterionMacro.STATE_KEY, state));
     }

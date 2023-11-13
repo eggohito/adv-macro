@@ -43,7 +43,9 @@
         "impl.AbstractCriterionMixin",
         "impl.AdvancementBuilderMixin",
         "impl.AdvancementCriterionMixin",
-        "impl.AdvancementRewardsMixin"
+        "impl.AdvancementMixin",
+        "impl.AdvancementRewardsMixin",
+        "impl.PlayerAdvancementTrackerMixin"
     ],
     "injectors": {
         "defaultRequire": 1

@@ -21,7 +21,7 @@ public abstract class KilledByCrossbowCriterionMixin extends AbstractCriterion<K
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/KilledByCrossbowCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Collection<Entity> piercingKilledEntities, CallbackInfo ci, @Local Set<EntityType<?>> entityTypeSet) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(KilledByCrossbowCriterionMacro.UNIQUE_ENTITY_TYPES_KEY, entityTypeSet.size())
             .add(KilledByCrossbowCriterionMacro.VICTIMS_KEY, piercingKilledEntities));
     }

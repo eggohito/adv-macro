@@ -3,7 +3,6 @@ package io.github.eggohito.advancement_macros;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.macro.*;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -15,8 +14,6 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class AdvancementMacros implements ModInitializer {
@@ -26,9 +23,7 @@ public class AdvancementMacros implements ModInitializer {
 	public static final String CODEC_TYPE_KEY = of("trigger").toString();
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAMESPACE);
-	public static final Set<String> LOGGED_OUTPUT_LOGS = new HashSet<>();
-
-	public static final Pattern VALID_CRITERION_NAME_PATTERN = Pattern.compile("[^a-zA-Z0-9_]");
+	public static final Pattern INVALID_CRITERION_CHARACTERS = Pattern.compile("[^a-zA-Z0-9_]");
 
 	public static final RegistryKey<Registry<Macro.Type>> REGISTRY_KEY;
 	public static final Registry<Macro.Type> REGISTRY;
@@ -54,8 +49,6 @@ public class AdvancementMacros implements ModInitializer {
 			}
 
 		});
-
-		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, resourceManager) -> LOGGED_OUTPUT_LOGS.clear());
 
 		register(PlacedBlockCriterionMacro::getFactory);
 		register(PlayerKilledEntityCriterionMacro::getFactory);
@@ -115,17 +108,6 @@ public class AdvancementMacros implements ModInitializer {
 
 	public static Identifier of(String path) {
 		return new Identifier(MOD_NAMESPACE, path);
-	}
-
-	public static void logErrorOnce(String message) {
-
-		if (LOGGED_OUTPUT_LOGS.contains(message)) {
-			return;
-		}
-
-		LOGGER.error(message);
-		LOGGED_OUTPUT_LOGS.add(message);
-
 	}
 
 	public static void register(Macro.Supplier supplier) {

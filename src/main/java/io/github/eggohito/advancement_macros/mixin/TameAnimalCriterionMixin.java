@@ -16,7 +16,7 @@ public abstract class TameAnimalCriterionMixin extends AbstractCriterion<TameAni
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/TameAnimalCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, AnimalEntity entity, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(TameAnimalCriterionMacro.ENTITY_KEY, entity));
     }
 

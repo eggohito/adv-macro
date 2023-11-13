@@ -17,7 +17,7 @@ public abstract class PlayerHurtEntityCriterionMixin extends AbstractCriterion<P
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/PlayerHurtEntityCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity entity, DamageSource damage, float dealt, float taken, boolean blocked, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(PlayerHurtEntityCriterionMacro.ENTITY_KEY, entity)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_TYPE_KEY, damage)
             .add(PlayerHurtEntityCriterionMacro.DAMAGE_DEALT_KEY, dealt)

@@ -17,7 +17,7 @@ public abstract class ItemCriterionMixin extends AbstractCriterion<ItemCriterion
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ItemCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockPos pos, ItemStack stack, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(ItemCriterionMacro.LOCATION_KEY, pos)
             .add(ItemCriterionMacro.ITEM_KEY, stack));
     }

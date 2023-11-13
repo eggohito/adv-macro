@@ -40,8 +40,13 @@ public abstract class AdvancementRewardsMixin implements MacroData, AdvancementR
 
     @Override
     public NbtCompound advancement_macros$getData() {
+        return advancement_macros$getData(false);
+    }
 
-        if (advancement_macros$data == null) {
+    @Override
+    public NbtCompound advancement_macros$getData(boolean strict) {
+
+        if (advancement_macros$data == null && !strict) {
             advancement_macros$data = new NbtCompound();
         }
 

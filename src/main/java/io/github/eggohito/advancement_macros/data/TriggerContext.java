@@ -6,11 +6,12 @@ import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  *      A class for storing the context (e.g: objects) of criterion triggers when triggered. This is used to store the
- *      objects at a later time to serialize to NBT (serialization to NBT is done separately)
+ *      objects at a later time to serialize to NBT via a {@link io.github.eggohito.advancement_macros.api.Macro}
  */
 @SuppressWarnings({"unchecked", "unused"})
 public class TriggerContext {
@@ -28,18 +29,18 @@ public class TriggerContext {
     }
 
     /**
-     *      @return The {@linkplain Identifier ID} of the criterion trigger this trigger context associates with.
+     *      @return The {@linkplain Identifier ID} of the criterion trigger this trigger context is associated with.
      */
     public Identifier getId() {
         return id;
     }
 
     /**
-     *      <p>Add an {@linkplain Object object} mapped to a {@linkplain String string} to the trigger context. This
+     *      <p>Add an {@linkplain Object object} mapped to a {@linkplain String string} to this trigger context. This
      *      is useful for distinguishing between objects of the same type.</p>
      *
-     *      @param name     The name for the {@linkplain Object object} to add to the trigger context.
-     *      @param data     The {@linkplain Object object} to add to the trigger context.
+     *      @param name     The name for the {@linkplain Object object} to add to this trigger context.
+     *      @param data     The {@linkplain Object object} to add to this trigger context.
      */
     public TriggerContext add(String name, Object data) {
 
@@ -52,7 +53,7 @@ public class TriggerContext {
     }
 
     /**
-     *      @return     The {@linkplain HashMap map} of {@linkplain String string} and {@linkplain Object objects}
+     *      @return     The {@linkplain Map map} of {@linkplain String string} and {@linkplain Object objects}
      *                  that are added to this trigger context.
      */
     public Map<String, Object> getAll() {
@@ -60,7 +61,7 @@ public class TriggerContext {
     }
 
     /**
-     *      @return     {@code true} if the trigger context does not contain any objects (or mapped objects)
+     *      @return     {@code true} if this trigger context does not contain any mappings.
      */
     public boolean isEmpty() {
         return mappedData.isEmpty();
@@ -70,10 +71,10 @@ public class TriggerContext {
      *      <p>Get the {@link Object object} from the specified {@linkplain String string} from this trigger
      *      context.</p>
      *
-     *      @param name                 The name to get the object of.
+     *      @param name                 The key to get the object from.
      *      @param <T>                  The type of the object.
      *      @return                     The object from the specified name.
-     *      @throws RuntimeException    if this trigger context does not contain the specified name.
+     *      @throws RuntimeException    if this trigger context does not contain the specified key.
      */
     public <T> T get(String name) throws RuntimeException {
 
@@ -83,6 +84,18 @@ public class TriggerContext {
 
         return (T) mappedData.get(name);
 
+    }
+
+    /**
+     *      <p>Get the {@link Object object} from the specified {@linkplain String string} from this trigger context and wrap it
+     *      in an {@link Optional}.</p>
+     *
+     *      @param name     The key to get the object from.
+     *      @param <T>      The type of the object.
+     *      @return         The object from the specified name or {@link Optional#empty()} if there is no mapping for the specified key.
+     */
+    public <T> Optional<T> getOptional(String name) {
+        return Optional.ofNullable((T) mappedData.get(name));
     }
 
     /**

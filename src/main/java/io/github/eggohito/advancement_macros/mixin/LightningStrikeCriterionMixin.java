@@ -19,7 +19,7 @@ public abstract class LightningStrikeCriterionMixin extends AbstractCriterion<Li
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/LightningStrikeCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, LightningEntity lightning, List<Entity> bystanders, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(LightningStrikeCriterionMacro.LIGHTNING_KEY, lightning)
             .add(LightningStrikeCriterionMacro.BYSTANDERS_KEY, bystanders));
     }

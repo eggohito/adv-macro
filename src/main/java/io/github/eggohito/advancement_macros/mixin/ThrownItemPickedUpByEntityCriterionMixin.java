@@ -17,7 +17,7 @@ public abstract class ThrownItemPickedUpByEntityCriterionMixin extends AbstractC
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ThrownItemPickedUpByEntityCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack stack, Entity entity, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(ThrownItemPickedUpByEntityCriterionMacro.ITEM_KEY, stack)
             .add(ThrownItemPickedUpByEntityCriterionMacro.ENTITY_KEY, entity));
     }

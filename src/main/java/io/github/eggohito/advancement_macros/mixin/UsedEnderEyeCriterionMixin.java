@@ -16,7 +16,7 @@ public abstract class UsedEnderEyeCriterionMixin extends AbstractCriterion<UsedE
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/UsedEnderEyeCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockPos strongholdPos, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> {
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> {
 
             double x = player.getX() - strongholdPos.getX();
             double z = player.getZ() - strongholdPos.getZ();

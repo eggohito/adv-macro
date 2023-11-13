@@ -19,7 +19,7 @@ public abstract class FishingRodHookedCriterionMixin extends AbstractCriterion<F
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/FishingRodHookedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack rod, FishingBobberEntity bobber, Collection<ItemStack> fishingLoots, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(FishingRodHookedCriterionMacro.FISHING_BOBBER_KEY, bobber)
             .add(FishingRodHookedCriterionMacro.FISHING_ROD_KEY, rod)
             .add(FishingRodHookedCriterionMacro.ENTITY_KEY, bobber.getHookedEntity())

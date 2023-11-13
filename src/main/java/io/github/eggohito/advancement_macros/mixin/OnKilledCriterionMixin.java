@@ -17,7 +17,7 @@ public abstract class OnKilledCriterionMixin extends AbstractCriterion<OnKilledC
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/OnKilledCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity entity, DamageSource killingDamage, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(OnKilledCriterionMacro.KILLER_KEY, player)
             .add(OnKilledCriterionMacro.VICTIM_KEY, entity)
             .add(OnKilledCriterionMacro.KILLING_BLOW_KEY, killingDamage));

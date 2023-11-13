@@ -17,7 +17,7 @@ public abstract class InventoryChangedCriterionMixin extends AbstractCriterion<I
 
     @Inject(method = "trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/item/ItemStack;III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/InventoryChangedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, PlayerInventory inventory, ItemStack stack, int full, int empty, int occupied, CallbackInfo ci) {
-        ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
+        ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
             .add(InventoryChangedCriterionMacro.ITEM_KEY, stack)
             .add(InventoryChangedCriterionMacro.FULL_SLOTS_KEY, full)
             .add(InventoryChangedCriterionMacro.EMPTY_SLOTS_KEY, empty)
