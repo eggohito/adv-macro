@@ -49,7 +49,7 @@ public abstract class AdvancementCriterionMixin implements MacroStorage {
         //  Deserialize the macro from the mapping JSON object and attach it to the criterion
         var macro = macroCodec
             .decode(JsonOps.INSTANCE, mappingJsonObject)
-            .resultOrPartial(s -> AdvancementMacros.logErrorOnce("Advancement macro handler for criterion trigger \"" + criterionTriggerIdString + "\" is not implemented yet!"));
+            .resultOrPartial(AdvancementMacros::logErrorOnce);
 
         macro.ifPresent(macroAndJsonElement -> ((MacroStorage) (Object) original).advancement_macros$setMacro(macroAndJsonElement.getFirst()));
         return original;
