@@ -16,33 +16,33 @@ import java.util.function.BiFunction;
 
 public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
 
-    public static final String THROWN_ITEM_KEY_FIELD = "thrown_item_key";
-    public static final String ENTITY_KEY_FIELD = "entity_key";
+    public static final String ITEM_KEY = "item";
+    public static final String ENTITY_KEY = "entity";
 
     public static final Codec<ThrownItemPickedUpByEntityCriterionMacro> CODEC = getCodec(ThrownItemPickedUpByEntityCriterionMacro::new);
 
-    private final String thrownItemKey;
+    private final String itemKey;
     private final String entityKey;
 
-    public ThrownItemPickedUpByEntityCriterionMacro(Criterion<?> baseCriterion, String thrownItemKey, String entityKey) {
+    public ThrownItemPickedUpByEntityCriterionMacro(Criterion<?> baseCriterion, String itemKey, String entityKey) {
         super(baseCriterion);
-        this.thrownItemKey = thrownItemKey;
+        this.itemKey = itemKey;
         this.entityKey = entityKey;
     }
 
-    public ThrownItemPickedUpByEntityCriterionMacro(String thrownItemKey, String entityKey) {
-        this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, thrownItemKey, entityKey);
+    public ThrownItemPickedUpByEntityCriterionMacro(String itemKey, String entityKey) {
+        this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, itemKey, entityKey);
     }
 
     protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(THROWN_ITEM_KEY_FIELD, "thrown_item").forGetter(ThrownItemPickedUpByEntityCriterionMacro::getThrownItemKey),
-            Codec.STRING.optionalFieldOf(ENTITY_KEY_FIELD, "entity").forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)
+            Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getItemKey),
+            Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)
         ).apply(instance, macroFunction));
     }
 
-    public String getThrownItemKey() {
-        return thrownItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
     public String getEntityKey() {
@@ -57,11 +57,11 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ItemStack>ifPresent(THROWN_ITEM_KEY_FIELD, thrownItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, thrownItemKey, thrownItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, thrownItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, thrownItemStack)
         );
 
-        context.<Entity>ifPresent(ENTITY_KEY_FIELD, entity ->
+        context.<Entity>ifPresent(ENTITY_KEY, entity ->
             rootNbt.putString(entityKey, entity.getUuidAsString())
         );
 

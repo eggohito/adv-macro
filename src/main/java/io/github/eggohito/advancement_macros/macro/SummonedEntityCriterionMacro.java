@@ -11,21 +11,21 @@ import net.minecraft.util.Pair;
 
 public class SummonedEntityCriterionMacro extends Macro {
 
-    public static final String SUMMONED_ENTITY_KEY_FIELD = "summoned_entity_key";
+    public static final String ENTITY_KEY = "entity";
 
     public static final Codec<SummonedEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(SUMMONED_ENTITY_KEY_FIELD, "summoned_entity").forGetter(SummonedEntityCriterionMacro::getSummonedEntityKey)
+        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(SummonedEntityCriterionMacro::getEntityKey)
     ).apply(instance, SummonedEntityCriterionMacro::new));
 
-    private final String summonedEntityKey;
+    private final String entityKey;
 
-    public SummonedEntityCriterionMacro(String summonedEntityKey) {
+    public SummonedEntityCriterionMacro(String entityKey) {
         super(Criteria.SUMMONED_ENTITY);
-        this.summonedEntityKey = summonedEntityKey;
+        this.entityKey = entityKey;
     }
 
-    public String getSummonedEntityKey() {
-        return summonedEntityKey;
+    public String getEntityKey() {
+        return entityKey;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class SummonedEntityCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<Entity>ifPresent(SUMMONED_ENTITY_KEY_FIELD, summonedEntity ->
-            rootNbt.putString(summonedEntityKey, summonedEntity.getUuidAsString())
+        context.<Entity>ifPresent(ENTITY_KEY, summonedEntity ->
+            rootNbt.putString(entityKey, summonedEntity.getUuidAsString())
         );
     }
 

@@ -11,21 +11,29 @@ import net.minecraft.util.Pair;
 
 public class EffectsChangedCriterionMacro extends Macro {
 
-    public static final String STATUS_EFFECTS_SOURCE_KEY_FIELD = "status_effects_source_key";
+    public static final String EFFECTS_KEY = "effects";
+    public static final String SOURCE_KEY = "source";
 
     public static final Codec<EffectsChangedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(STATUS_EFFECTS_SOURCE_KEY_FIELD, "status_effects_source").forGetter(EffectsChangedCriterionMacro::getStatusEffectsSourceKey)
+        Codec.STRING.optionalFieldOf(EFFECTS_KEY, EFFECTS_KEY).forGetter(EffectsChangedCriterionMacro::getEffectsKey),
+        Codec.STRING.optionalFieldOf(SOURCE_KEY, SOURCE_KEY).forGetter(EffectsChangedCriterionMacro::getSourceKey)
     ).apply(instance, EffectsChangedCriterionMacro::new));
 
-    private final String statusEffectsSourceKey;
+    private final String effectsKey;
+    private final String sourceKey;
 
-    public EffectsChangedCriterionMacro(String statusEffectsSourceKey) {
+    public EffectsChangedCriterionMacro(String effectsKey, String sourceKey) {
         super(Criteria.EFFECTS_CHANGED);
-        this.statusEffectsSourceKey = statusEffectsSourceKey;
+        this.effectsKey = effectsKey;
+        this.sourceKey = sourceKey;
     }
 
-    public String getStatusEffectsSourceKey() {
-        return statusEffectsSourceKey;
+    public String getEffectsKey() {
+        return effectsKey;
+    }
+
+    public String getSourceKey() {
+        return sourceKey;
     }
 
     @Override
@@ -35,8 +43,8 @@ public class EffectsChangedCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<Entity>ifPresent(STATUS_EFFECTS_SOURCE_KEY_FIELD, statusEffectSourceEntity ->
-            rootNbt.putString(statusEffectsSourceKey, statusEffectSourceEntity.getUuidAsString())
+        context.<Entity>ifPresent(SOURCE_KEY, statusEffectSourceEntity ->
+            rootNbt.putString(sourceKey, statusEffectSourceEntity.getUuidAsString())
         );
     }
 

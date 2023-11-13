@@ -15,21 +15,29 @@ import java.util.Collection;
 
 public class KilledByCrossbowCriterionMacro extends Macro {
 
-    public static final String PIERCED_KILLED_ENTITIES_KEY_FIELD = "pierced_killed_entities_key";
+    public static final String UNIQUE_ENTITY_TYPES_KEY = "unique_entity_types";
+    public static final String VICTIMS_KEY = "victims";
 
     public static final Codec<KilledByCrossbowCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(PIERCED_KILLED_ENTITIES_KEY_FIELD, "pierced_killed_entities").forGetter(KilledByCrossbowCriterionMacro::getPiercedKilledEntitiesKey)
+        Codec.STRING.optionalFieldOf(UNIQUE_ENTITY_TYPES_KEY, UNIQUE_ENTITY_TYPES_KEY).forGetter(KilledByCrossbowCriterionMacro::getUniqueEntityTypesKey),
+        Codec.STRING.optionalFieldOf(VICTIMS_KEY, VICTIMS_KEY).forGetter(KilledByCrossbowCriterionMacro::getVictimsKey)
     ).apply(instance, KilledByCrossbowCriterionMacro::new));
 
-    private final String piercedKilledEntitiesKey;
+    private final String uniqueEntityTypesKey;
+    private final String victimsKey;
 
-    public KilledByCrossbowCriterionMacro(String piercedKilledEntitiesKey) {
+    public KilledByCrossbowCriterionMacro(String uniqueEntityTypesKey, String victimsKey) {
         super(Criteria.KILLED_BY_CROSSBOW);
-        this.piercedKilledEntitiesKey = piercedKilledEntitiesKey;
+        this.uniqueEntityTypesKey = uniqueEntityTypesKey;
+        this.victimsKey = victimsKey;
     }
 
-    public String getPiercedKilledEntitiesKey() {
-        return piercedKilledEntitiesKey;
+    public String getUniqueEntityTypesKey() {
+        return uniqueEntityTypesKey;
+    }
+
+    public String getVictimsKey() {
+        return victimsKey;
     }
 
     @Override
@@ -39,16 +47,22 @@ public class KilledByCrossbowCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<Collection<Entity>>ifPresent(PIERCED_KILLED_ENTITIES_KEY_FIELD, piercedKilledEntities -> {
 
-            NbtList piercedKilledEntitiesNbt = new NbtList();
-            for (Entity piercedKilledEntity : piercedKilledEntities) {
-                piercedKilledEntitiesNbt.add(NbtString.of(piercedKilledEntity.getUuidAsString()));
+        context.<Integer>ifPresent(UNIQUE_ENTITY_TYPES_KEY, uniqueEntityTypes ->
+            rootNbt.putInt(uniqueEntityTypesKey, uniqueEntityTypes)
+        );
+
+        context.<Collection<Entity>>ifPresent(VICTIMS_KEY, victims -> {
+
+            NbtList victimsNbt = new NbtList();
+            for (Entity piercedKilledEntity : victims) {
+                victimsNbt.add(NbtString.of(piercedKilledEntity.getUuidAsString()));
             }
 
-            rootNbt.put(piercedKilledEntitiesKey, piercedKilledEntitiesNbt);
+            rootNbt.put(victimsKey, victimsNbt);
 
         });
+
     }
 
     public static Factory getFactory() {

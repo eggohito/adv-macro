@@ -13,49 +13,49 @@ import net.minecraft.util.Pair;
 
 public class EntityHurtPlayerCriterionMacro extends Macro {
 
-    public static final String ATTACKER_KEY_FIELD = "attacker_key";
-    public static final String DAMAGE_SOURCE_KEY_FIELD = "damage_source_key";
-    public static final String DAMAGE_DEALT_AMOUNT_KEY_FIELD = "damage_dealt_amount_key";
-    public static final String DAMAGE_ABSORBED_AMOUNT_KEY_FIELD = "damage_absorbed_amount_key";
-    public static final String DAMAGE_BLOCKED_KEY_FIELD = "damage_blocked_key";
+    public static final String DAMAGE_SOURCE_ENTITY_KEY = "damage_source_entity";
+    public static final String DAMAGE_TYPE_KEY = "damage_type";
+    public static final String DAMAGE_DEALT_KEY = "damage_dealt";
+    public static final String DAMAGE_TAKEN_KEY = "damage_taken";
+    public static final String DAMAGE_BLOCKED_KEY = "damage_blocked";
 
     public static final Codec<EntityHurtPlayerCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ATTACKER_KEY_FIELD, "attacker").forGetter(EntityHurtPlayerCriterionMacro::getAttackerKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_SOURCE_KEY_FIELD, "damage_source").forGetter(EntityHurtPlayerCriterionMacro::getDamageSourceKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_DEALT_AMOUNT_KEY_FIELD, "damage_dealt_amount").forGetter(EntityHurtPlayerCriterionMacro::getDamageDealtAmountKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, "damage_absorbed_amount").forGetter(EntityHurtPlayerCriterionMacro::getDamageTakenAmountKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_BLOCKED_KEY_FIELD, "damage_blocked").forGetter(EntityHurtPlayerCriterionMacro::getDamageBlockedKey)
+        Codec.STRING.optionalFieldOf(DAMAGE_SOURCE_ENTITY_KEY, DAMAGE_SOURCE_ENTITY_KEY).forGetter(EntityHurtPlayerCriterionMacro::getDamageSourceEntityKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_TYPE_KEY, DAMAGE_TYPE_KEY).forGetter(EntityHurtPlayerCriterionMacro::getDamageTypeKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_DEALT_KEY, DAMAGE_DEALT_KEY).forGetter(EntityHurtPlayerCriterionMacro::getDamageDealtKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_TAKEN_KEY, DAMAGE_TAKEN_KEY).forGetter(EntityHurtPlayerCriterionMacro::getDamageTakenKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_BLOCKED_KEY, DAMAGE_BLOCKED_KEY).forGetter(EntityHurtPlayerCriterionMacro::getDamageBlockedKey)
     ).apply(instance, EntityHurtPlayerCriterionMacro::new));
 
-    private final String attackerKey;
-    private final String damageSourceKey;
-    private final String damageDealtAmountKey;
-    private final String damageTakenAmountKey;
+    private final String damageSourceEntityKey;
+    private final String damageTypeKey;
+    private final String damageDealtKey;
+    private final String damageTakenKey;
     private final String damageBlockedKey;
 
-    public EntityHurtPlayerCriterionMacro(String attackerKey, String damageSourceKey, String damageDealtAmountKey, String damageTakenAmountKey, String damageBlockedKey) {
+    public EntityHurtPlayerCriterionMacro(String damageSourceEntityKey, String damageTypeKey, String damageDealtKey, String damageTakenKey, String damageBlockedKey) {
         super(Criteria.ENTITY_HURT_PLAYER);
-        this.attackerKey = attackerKey;
-        this.damageSourceKey = damageSourceKey;
-        this.damageDealtAmountKey = damageDealtAmountKey;
-        this.damageTakenAmountKey = damageTakenAmountKey;
+        this.damageSourceEntityKey = damageSourceEntityKey;
+        this.damageTypeKey = damageTypeKey;
+        this.damageDealtKey = damageDealtKey;
+        this.damageTakenKey = damageTakenKey;
         this.damageBlockedKey = damageBlockedKey;
     }
 
-    public String getAttackerKey() {
-        return attackerKey;
+    public String getDamageSourceEntityKey() {
+        return damageSourceEntityKey;
     }
 
-    public String getDamageSourceKey() {
-        return damageSourceKey;
+    public String getDamageTypeKey() {
+        return damageTypeKey;
     }
 
-    public String getDamageDealtAmountKey() {
-        return damageDealtAmountKey;
+    public String getDamageDealtKey() {
+        return damageDealtKey;
     }
 
-    public String getDamageTakenAmountKey() {
-        return damageTakenAmountKey;
+    public String getDamageTakenKey() {
+        return damageTakenKey;
     }
 
     public String getDamageBlockedKey() {
@@ -70,23 +70,23 @@ public class EntityHurtPlayerCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Entity>ifPresent(ATTACKER_KEY_FIELD, attackerEntity ->
-            rootNbt.putString(attackerKey, attackerEntity.getUuidAsString())
+        context.<Entity>ifPresent(DAMAGE_SOURCE_ENTITY_KEY, attackerEntity ->
+            rootNbt.putString(damageSourceEntityKey, attackerEntity.getUuidAsString())
         );
 
-        context.<DamageSource>ifPresent(DAMAGE_SOURCE_KEY_FIELD, damageSource ->
-            NbtUtil.writeDamageSourceToNbt(rootNbt, damageSourceKey, damageSource)
+        context.<DamageSource>ifPresent(DAMAGE_TYPE_KEY, damageSource ->
+            NbtUtil.writeDamageTypeToNbt(rootNbt, damageTypeKey, damageSource.getType())
         );
 
-        context.<Float>ifPresent(DAMAGE_DEALT_AMOUNT_KEY_FIELD, damageDealtAmount ->
-            rootNbt.putFloat(damageDealtAmountKey, damageDealtAmount)
+        context.<Float>ifPresent(DAMAGE_DEALT_KEY, damageDealt ->
+            rootNbt.putFloat(damageDealtKey, damageDealt)
         );
 
-        context.<Float>ifPresent(DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, damageTakenAmount ->
-            rootNbt.putFloat(damageTakenAmountKey, damageTakenAmount)
+        context.<Float>ifPresent(DAMAGE_TAKEN_KEY, damageTaken ->
+            rootNbt.putFloat(damageTakenKey, damageTaken)
         );
 
-        context.<Boolean>ifPresent(DAMAGE_BLOCKED_KEY_FIELD, damageBlocked ->
+        context.<Boolean>ifPresent(DAMAGE_BLOCKED_KEY, damageBlocked ->
             rootNbt.putBoolean(damageBlockedKey, damageBlocked)
         );
 

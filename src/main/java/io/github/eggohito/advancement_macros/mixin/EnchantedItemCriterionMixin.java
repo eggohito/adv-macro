@@ -17,8 +17,8 @@ public abstract class EnchantedItemCriterionMixin extends AbstractCriterion<Ench
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/EnchantedItemCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack stack, int levels, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(EnchantedItemCriterionMacro.ENCHANTED_ITEM_KEY_FIELD, stack)
-            .add(EnchantedItemCriterionMacro.SPENT_LEVELS_KEY, levels));
+            .add(EnchantedItemCriterionMacro.ITEM_KEY, stack)
+            .add(EnchantedItemCriterionMacro.LEVELS_KEY, levels));
     }
 
 }

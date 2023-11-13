@@ -8,25 +8,34 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 public class EnterBlockCriterionMacro extends Macro {
 
-    public static final String ENTERED_BLOCK_KEY_FIELD = "entered_block_key";
+    public static final String BLOCK_KEY = "block";
+    public static final String STATE_KEY = "state";
 
     public static final Codec<EnterBlockCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ENTERED_BLOCK_KEY_FIELD, "entered_block").forGetter(EnterBlockCriterionMacro::getEnteredBlockKey)
+        Codec.STRING.optionalFieldOf(BLOCK_KEY, BLOCK_KEY).forGetter(EnterBlockCriterionMacro::getBlockKey),
+        Codec.STRING.optionalFieldOf(STATE_KEY, STATE_KEY).forGetter(EnterBlockCriterionMacro::getStateKey)
     ).apply(instance, EnterBlockCriterionMacro::new));
 
-    private final String enteredBlockKey;
+    private final String blockKey;
+    private final String stateKey;
 
-    public EnterBlockCriterionMacro(String enteredBlockKey) {
+    public EnterBlockCriterionMacro(String blockKey, String stateKey) {
         super(Criteria.ENTER_BLOCK);
-        this.enteredBlockKey = enteredBlockKey;
+        this.blockKey = blockKey;
+        this.stateKey = stateKey;
     }
 
-    public String getEnteredBlockKey() {
-        return enteredBlockKey;
+    public String getBlockKey() {
+        return blockKey;
+    }
+
+    public String getStateKey() {
+        return stateKey;
     }
 
     @Override
@@ -36,9 +45,15 @@ public class EnterBlockCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<BlockState>ifPresent(ENTERED_BLOCK_KEY_FIELD, enteredBlockState ->
-            NbtUtil.writeBlockStateToNbt(rootNbt, enteredBlockKey, enteredBlockState)
+
+        context.<Identifier>ifPresent(BLOCK_KEY, blockId ->
+            rootNbt.putString(blockKey, blockId.toString())
         );
+
+        context.<BlockState>ifPresent(STATE_KEY, blockState ->
+            NbtUtil.writeBlockStateToNbt(rootNbt, stateKey, blockState)
+        );
+
     }
 
     public static Factory getFactory() {

@@ -12,21 +12,21 @@ import net.minecraft.util.Pair;
 
 public class ShotCrossbowCriterionMacro extends Macro {
 
-    public static final String USED_CROSSBOW_ITEM_KEY_FIELD = "used_crossbow_item_key";
+    public static final String ITEM_KEY = "item";
 
     public static final Codec<ShotCrossbowCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(USED_CROSSBOW_ITEM_KEY_FIELD, "used_crossbow_item").forGetter(ShotCrossbowCriterionMacro::getUsedCrossbowItemKey)
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ShotCrossbowCriterionMacro::getItemKey)
     ).apply(instance, ShotCrossbowCriterionMacro::new));
 
-    private final String usedCrossbowItemKey;
+    private final String itemKey;
 
-    public ShotCrossbowCriterionMacro(String usedCrossbowItemKey) {
+    public ShotCrossbowCriterionMacro(String itemKey) {
         super(Criteria.SHOT_CROSSBOW);
-        this.usedCrossbowItemKey = usedCrossbowItemKey;
+        this.itemKey = itemKey;
     }
 
-    public String getUsedCrossbowItemKey() {
-        return usedCrossbowItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
     @Override
@@ -36,8 +36,8 @@ public class ShotCrossbowCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<ItemStack>ifPresent(USED_CROSSBOW_ITEM_KEY_FIELD, usedCrossbowItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, usedCrossbowItemKey, usedCrossbowItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, usedCrossbowItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, usedCrossbowItemStack)
         );
     }
 

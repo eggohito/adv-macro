@@ -26,11 +26,11 @@ public class EntityKilledPlayerCriterionMacro extends OnKilledCriterionMacro {
         super.writeToNbt(rootNbt, context);
 
         //  Context of killer and victim is swapped here
-        context.<Entity>ifPresent(KILLER_KEY_FIELD, victimEntity ->
+        context.<Entity>ifPresent(KILLER_KEY, victimEntity ->
             rootNbt.putString(getVictimKey(), victimEntity.getUuidAsString())
         );
 
-        context.<Entity>ifPresent(VICTIM_KEY_FIELD, killerEntity ->
+        context.<Entity>ifPresent(VICTIM_KEY, killerEntity ->
             rootNbt.putString(getKillerKey(), killerEntity.getUuidAsString())
         );
 

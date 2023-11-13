@@ -18,9 +18,9 @@ public abstract class TargetHitCriterionMixin extends AbstractCriterion<TargetHi
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/TargetHitCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity projectile, Vec3d hitPos, int signalStrength, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(TargetHitCriterionMacro.PROJECTILE_KEY_FIELD, projectile)
-            .add(TargetHitCriterionMacro.HIT_LOCATION_KEY_FIELD, hitPos)
-            .add(TargetHitCriterionMacro.SIGNAL_STRENGTH_KEY_FIELD, signalStrength));
+            .add(TargetHitCriterionMacro.PROJECTILE_KEY, projectile)
+            .add(TargetHitCriterionMacro.HIT_LOCATION_KEY, hitPos)
+            .add(TargetHitCriterionMacro.SIGNAL_STRENGTH_KEY, signalStrength));
     }
 
 }

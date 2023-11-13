@@ -12,12 +12,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class LevitationCriterionMacro extends Macro {
 
-    public static final String START_LOCATION_KEY_FIELD = "start_location_key";
-    public static final String DURATION_KEY_FIELD = "duration_key";
+    public static final String START_LOCATION_KEY = "start_location";
+    public static final String DURATION_KEY = "duration";
 
     public static final Codec<LevitationCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(START_LOCATION_KEY_FIELD, "start_location").forGetter(LevitationCriterionMacro::getStartLocationKey),
-        Codec.STRING.optionalFieldOf(DURATION_KEY_FIELD, "duration").forGetter(LevitationCriterionMacro::getDurationKey)
+        Codec.STRING.optionalFieldOf(START_LOCATION_KEY, START_LOCATION_KEY).forGetter(LevitationCriterionMacro::getStartLocationKey),
+        Codec.STRING.optionalFieldOf(DURATION_KEY, DURATION_KEY).forGetter(LevitationCriterionMacro::getDurationKey)
     ).apply(instance, LevitationCriterionMacro::new));
 
     private final String startLocationKey;
@@ -45,11 +45,11 @@ public class LevitationCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Vec3d>ifPresent(START_LOCATION_KEY_FIELD, startLocation ->
+        context.<Vec3d>ifPresent(START_LOCATION_KEY, startLocation ->
             NbtUtil.writeVec3dToNbt(rootNbt, startLocationKey, startLocation)
         );
 
-        context.<Integer>ifPresent(DURATION_KEY_FIELD, duration ->
+        context.<Integer>ifPresent(DURATION_KEY, duration ->
             rootNbt.putInt(durationKey, duration)
         );
 

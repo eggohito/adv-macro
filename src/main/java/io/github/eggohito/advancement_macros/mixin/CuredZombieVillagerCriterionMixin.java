@@ -18,8 +18,8 @@ public abstract class CuredZombieVillagerCriterionMixin extends AbstractCriterio
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/CuredZombieVillagerCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ZombieEntity zombie, VillagerEntity villager, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(CuredZombieVillagerCriterionMacro.ZOMBIE_KEY_FIELD, zombie)
-            .add(CuredZombieVillagerCriterionMacro.VILLAGER_KEY_FIELD, villager));
+            .add(CuredZombieVillagerCriterionMacro.ZOMBIE_KEY, zombie)
+            .add(CuredZombieVillagerCriterionMacro.VILLAGER_KEY, villager));
     }
 
 }

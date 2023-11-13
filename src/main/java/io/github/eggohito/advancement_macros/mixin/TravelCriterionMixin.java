@@ -17,7 +17,7 @@ public abstract class TravelCriterionMixin extends AbstractCriterion<TravelCrite
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/TravelCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Vec3d startPos, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(TravelCriterionMacro.START_LOCATION_KEY_FIELD, startPos));
+            .add(TravelCriterionMacro.START_LOCATION_KEY, startPos));
     }
 
 }

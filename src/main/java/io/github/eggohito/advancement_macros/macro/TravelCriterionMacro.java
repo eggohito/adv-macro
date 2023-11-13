@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public abstract class TravelCriterionMacro extends Macro {
 
-    public static final String START_LOCATION_KEY_FIELD = "start_location_key";
+    public static final String START_LOCATION_KEY = "start_location";
     private final String startLocationKey;
 
     public TravelCriterionMacro(Criterion<?> baseCriterion, String startLocationKey) {
@@ -23,7 +23,7 @@ public abstract class TravelCriterionMacro extends Macro {
 
     protected static <T extends TravelCriterionMacro> Codec<T> getCodec(Function<String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(START_LOCATION_KEY_FIELD, "start_location").forGetter(TravelCriterionMacro::getStartLocationKey)
+            Codec.STRING.optionalFieldOf(START_LOCATION_KEY, START_LOCATION_KEY).forGetter(TravelCriterionMacro::getStartLocationKey)
         ).apply(instance, macroFunction));
     }
 
@@ -33,7 +33,7 @@ public abstract class TravelCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<Vec3d>ifPresent(START_LOCATION_KEY_FIELD, startLocation ->
+        context.<Vec3d>ifPresent(START_LOCATION_KEY, startLocation ->
             NbtUtil.writeVec3dToNbt(rootNbt, startLocationKey, startLocation)
         );
     }

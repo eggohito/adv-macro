@@ -18,8 +18,8 @@ public abstract class ChangedDimensionCriterionMixin extends AbstractCriterion<C
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ChangedDimensionCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, RegistryKey<World> from, RegistryKey<World> to, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(ChangedDimensionCriterionMacro.TO_DIMENSION_KEY_FIELD, to)
-            .add(ChangedDimensionCriterionMacro.FROM_DIMENSION_KEY_FIELD, from));
+            .add(ChangedDimensionCriterionMacro.TO_KEY, to)
+            .add(ChangedDimensionCriterionMacro.FROM_KEY, from));
     }
 
 }

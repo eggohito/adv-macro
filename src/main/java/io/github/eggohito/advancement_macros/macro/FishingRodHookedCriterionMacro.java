@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -19,45 +18,45 @@ import java.util.Collection;
 
 public class FishingRodHookedCriterionMacro extends Macro {
 
-    public static final String FISHING_ROD_KEY_FIELD = "fishing_rod_key";
-    public static final String FISHING_BOBBER_KEY_FIELD = "fishing_bobber_key";
-    public static final String HOOKED_ENTITY_KEY_FIELD = "hooked_entity_key";
-    public static final String FISHING_LOOTS_KEY_FIELD = "fishing_loots_key";
+    public static final String FISHING_BOBBER_KEY = "fishing_bobber";
+    public static final String FISHING_ROD_KEY = "rod";
+    public static final String ENTITY_KEY = "entity";
+    public static final String ITEM_KEY = "item";
 
     public static final Codec<FishingRodHookedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(FISHING_ROD_KEY_FIELD, "fishing_rod").forGetter(FishingRodHookedCriterionMacro::getFishingRodKey),
-        Codec.STRING.optionalFieldOf(FISHING_BOBBER_KEY_FIELD, "fishing_bobber").forGetter(FishingRodHookedCriterionMacro::getFishingBobberKey),
-        Codec.STRING.optionalFieldOf(HOOKED_ENTITY_KEY_FIELD, "hooked_entity").forGetter(FishingRodHookedCriterionMacro::getHookedEntityKey),
-        Codec.STRING.optionalFieldOf(FISHING_LOOTS_KEY_FIELD, "fishing_loots").forGetter(FishingRodHookedCriterionMacro::getFishingLootsKey)
+        Codec.STRING.optionalFieldOf(FISHING_BOBBER_KEY, FISHING_BOBBER_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingBobberKey),
+        Codec.STRING.optionalFieldOf(FISHING_ROD_KEY, FISHING_ROD_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingRodKey),
+        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(FishingRodHookedCriterionMacro::getEntityKey),
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(FishingRodHookedCriterionMacro::getItemKey)
     ).apply(instance, FishingRodHookedCriterionMacro::new));
 
-    private final String fishingRodKey;
     private final String fishingBobberKey;
-    private final String hookedEntityKey;
-    private final String fishingLootsKey;
+    private final String fishingRodKey;
+    private final String entityKey;
+    private final String itemKey;
 
-    public FishingRodHookedCriterionMacro(String fishingRodKey, String fishingBobberKey, String hookedEntityKey, String fishingLootsKey) {
+    public FishingRodHookedCriterionMacro(String fishingBobberKey, String fishingRodKey, String entityKey, String itemKey) {
         super(Criteria.FISHING_ROD_HOOKED);
-        this.fishingRodKey = fishingRodKey;
         this.fishingBobberKey = fishingBobberKey;
-        this.hookedEntityKey = hookedEntityKey;
-        this.fishingLootsKey = fishingLootsKey;
-    }
-
-    public String getFishingRodKey() {
-        return fishingRodKey;
+        this.fishingRodKey = fishingRodKey;
+        this.entityKey = entityKey;
+        this.itemKey = itemKey;
     }
 
     public String getFishingBobberKey() {
         return fishingBobberKey;
     }
 
-    public String getHookedEntityKey() {
-        return hookedEntityKey;
+    public String getFishingRodKey() {
+        return fishingRodKey;
     }
 
-    public String getFishingLootsKey() {
-        return fishingLootsKey;
+    public String getEntityKey() {
+        return entityKey;
+    }
+
+    public String getItemKey() {
+        return itemKey;
     }
 
     @Override
@@ -68,28 +67,28 @@ public class FishingRodHookedCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ItemStack>ifPresent(FISHING_ROD_KEY_FIELD, fishingRodItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, fishingRodKey, fishingRodItemStack)
-        );
-
-        context.<FishingBobberEntity>ifPresent(FISHING_BOBBER_KEY_FIELD, fishingBobberEntity ->
+        context.<Entity>ifPresent(FISHING_BOBBER_KEY, fishingBobberEntity ->
             rootNbt.putString(fishingBobberKey, fishingBobberEntity.getUuidAsString())
         );
 
-        context.<Entity>ifPresent(HOOKED_ENTITY_KEY_FIELD, hookedEntity ->
-            rootNbt.putString(hookedEntityKey, hookedEntity.getUuidAsString())
+        context.<ItemStack>ifPresent(FISHING_ROD_KEY, fishingRodItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, fishingRodKey, fishingRodItemStack)
         );
 
-        context.<Collection<ItemStack>>ifPresent(FISHING_LOOTS_KEY_FIELD, fishingLoots -> {
+        context.<Entity>ifPresent(ENTITY_KEY, hookedEntity ->
+            rootNbt.putString(entityKey, hookedEntity.getUuidAsString())
+        );
 
-            NbtList fishingLootsNbt = new NbtList();
-            for (ItemStack fishingLoot : fishingLoots) {
-                ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, fishingLoot)
+        context.<Collection<ItemStack>>ifPresent(ITEM_KEY, stacks -> {
+
+            NbtList stacksNbt = new NbtList();
+            for (ItemStack stack : stacks) {
+                ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack)
                     .resultOrPartial(AdvancementMacros.LOGGER::error)
-                    .ifPresent(fishingLootsNbt::add);
+                    .ifPresent(stacksNbt::add);
             }
 
-            rootNbt.put(fishingLootsKey, fishingLootsNbt);
+            rootNbt.put(itemKey, stacksNbt);
 
         });
 

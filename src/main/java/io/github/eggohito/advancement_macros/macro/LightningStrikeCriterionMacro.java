@@ -16,12 +16,12 @@ import java.util.List;
 
 public class LightningStrikeCriterionMacro extends Macro {
 
-    public static final String LIGHTNING_KEY_FIELD = "lightning_key";
-    public static final String BYSTANDERS_KEY_FIELD = "bystanders_key";
+    public static final String LIGHTNING_KEY = "lightning";
+    public static final String BYSTANDERS_KEY = "bystanders";
 
     public static final Codec<LightningStrikeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(LIGHTNING_KEY_FIELD, "lightning").forGetter(LightningStrikeCriterionMacro::getLightningKey),
-        Codec.STRING.optionalFieldOf(BYSTANDERS_KEY_FIELD, "bystanders").forGetter(LightningStrikeCriterionMacro::getBystandersKey)
+        Codec.STRING.optionalFieldOf(LIGHTNING_KEY, LIGHTNING_KEY).forGetter(LightningStrikeCriterionMacro::getLightningKey),
+        Codec.STRING.optionalFieldOf(BYSTANDERS_KEY, BYSTANDERS_KEY).forGetter(LightningStrikeCriterionMacro::getBystandersKey)
     ).apply(instance, LightningStrikeCriterionMacro::new));
 
     private final String lightningKey;
@@ -49,11 +49,11 @@ public class LightningStrikeCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<LightningEntity>ifPresent(LIGHTNING_KEY_FIELD, lightningEntity ->
+        context.<LightningEntity>ifPresent(LIGHTNING_KEY, lightningEntity ->
             rootNbt.putString(lightningKey, lightningEntity.getUuidAsString())
         );
 
-        context.<List<Entity>>ifPresent(BYSTANDERS_KEY_FIELD, bystanders -> {
+        context.<List<Entity>>ifPresent(BYSTANDERS_KEY, bystanders -> {
 
             NbtList bystandersNbt = new NbtList();
             for (Entity bystander : bystanders) {

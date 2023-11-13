@@ -12,17 +12,25 @@ import net.minecraft.util.math.BlockPos;
 
 public class UsedEnderEyeCriterionMacro extends Macro {
 
-    public static final String STRONGHOLD_LOCATION_KEY_FIELD = "stronghold_location_key";
+    public static final String DISTANCE_KEY = "distance";
+    public static final String LOCATION_KEY = "location";
 
     public static final Codec<UsedEnderEyeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(STRONGHOLD_LOCATION_KEY_FIELD, "stronghold_location").forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
+        Codec.STRING.optionalFieldOf(DISTANCE_KEY, DISTANCE_KEY).forGetter(UsedEnderEyeCriterionMacro::getDistanceKey),
+        Codec.STRING.optionalFieldOf(LOCATION_KEY, LOCATION_KEY).forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
     ).apply(instance, UsedEnderEyeCriterionMacro::new));
 
+    private final String distanceKey;
     private final String strongholdLocationKey;
 
-    public UsedEnderEyeCriterionMacro(String strongholdLocationKey) {
+    public UsedEnderEyeCriterionMacro(String distanceKey, String strongholdLocationKey) {
         super(Criteria.USED_ENDER_EYE);
+        this.distanceKey = distanceKey;
         this.strongholdLocationKey = strongholdLocationKey;
+    }
+
+    public String getDistanceKey() {
+        return distanceKey;
     }
 
     public String getStrongholdLocationKey() {
@@ -36,9 +44,15 @@ public class UsedEnderEyeCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<BlockPos>ifPresent(STRONGHOLD_LOCATION_KEY_FIELD, strongholdLocation ->
+
+        context.<Double>ifPresent(DISTANCE_KEY, distance ->
+            rootNbt.putDouble(distanceKey, distance)
+        );
+
+        context.<BlockPos>ifPresent(LOCATION_KEY, strongholdLocation ->
             NbtUtil.writeBlockPosToNbt(rootNbt, strongholdLocationKey, strongholdLocation)
         );
+
     }
 
     public static Factory getFactory() {

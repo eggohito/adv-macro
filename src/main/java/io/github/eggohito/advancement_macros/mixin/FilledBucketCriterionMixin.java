@@ -17,7 +17,7 @@ public abstract class FilledBucketCriterionMixin extends AbstractCriterion<Fille
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/FilledBucketCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack stack, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(FilledBucketCriterionMacro.FILLED_BUCKET_ITEM_KEY_FIELD, stack));
+            .add(FilledBucketCriterionMacro.ITEM_KEY, stack));
     }
 
 }

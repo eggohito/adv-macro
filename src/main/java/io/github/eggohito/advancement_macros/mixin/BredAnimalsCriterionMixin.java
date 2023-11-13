@@ -18,9 +18,9 @@ public abstract class BredAnimalsCriterionMixin extends AbstractCriterion<BredAn
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/BredAnimalsCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, AnimalEntity parent, AnimalEntity partner, PassiveEntity child, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(BredAnimalsCriterionMacro.PARENT_KEY_FIELD, parent)
-            .add(BredAnimalsCriterionMacro.PARTNER_KEY_FIELD, partner)
-            .add(BredAnimalsCriterionMacro.CHILD_KEY_FIELD, child));
+            .add(BredAnimalsCriterionMacro.PARENT_KEY, parent)
+            .add(BredAnimalsCriterionMacro.PARTNER_KEY, partner)
+            .add(BredAnimalsCriterionMacro.CHILD_KEY, child));
     }
 
 }

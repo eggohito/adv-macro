@@ -15,25 +15,25 @@ import java.util.List;
 
 public class BrewedPotionCriterionMacro extends Macro {
 
-    public static final String BREWED_POTION_ID_KEY_FIELD = "brewed_potion_id_key";
-    public static final String STATUS_EFFECTS_KEY_FIELD = "status_effects_key";
+    public static final String POTION_KEY = "potion";
+    public static final String STATUS_EFFECTS_KEY = "status_effects";
 
     public static final Codec<BrewedPotionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(BREWED_POTION_ID_KEY_FIELD, "brewed_potion_id").forGetter(BrewedPotionCriterionMacro::getBrewedPotionIdKey),
-        Codec.STRING.optionalFieldOf(STATUS_EFFECTS_KEY_FIELD, "status_effects").forGetter(BrewedPotionCriterionMacro::getStatusEffectsKey)
+        Codec.STRING.optionalFieldOf(POTION_KEY, POTION_KEY).forGetter(BrewedPotionCriterionMacro::getPotionKey),
+        Codec.STRING.optionalFieldOf(STATUS_EFFECTS_KEY, STATUS_EFFECTS_KEY).forGetter(BrewedPotionCriterionMacro::getStatusEffectsKey)
     ).apply(instance, BrewedPotionCriterionMacro::new));
 
-    private final String brewedPotionIdKey;
+    private final String potionKey;
     private final String statusEffectsKey;
 
-    public BrewedPotionCriterionMacro(String brewedPotionIdKey, String statusEffectsKey) {
+    public BrewedPotionCriterionMacro(String potionKey, String statusEffectsKey) {
         super(Criteria.BREWED_POTION);
-        this.brewedPotionIdKey = brewedPotionIdKey;
+        this.potionKey = potionKey;
         this.statusEffectsKey = statusEffectsKey;
     }
 
-    public String getBrewedPotionIdKey() {
-        return brewedPotionIdKey;
+    public String getPotionKey() {
+        return potionKey;
     }
 
     public String getStatusEffectsKey() {
@@ -48,11 +48,11 @@ public class BrewedPotionCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Identifier>ifPresent(BREWED_POTION_ID_KEY_FIELD, brewedPotionId ->
-            rootNbt.putString(brewedPotionIdKey, brewedPotionId.toString())
+        context.<Identifier>ifPresent(POTION_KEY, potionId ->
+            rootNbt.putString(potionKey, potionId.toString())
         );
 
-        context.<List<StatusEffectInstance>>ifPresent(STATUS_EFFECTS_KEY_FIELD, statusEffects -> {
+        context.<List<StatusEffectInstance>>ifPresent(STATUS_EFFECTS_KEY, statusEffects -> {
 
             NbtList statusEffectsNbt = new NbtList();
             for (StatusEffectInstance statusEffect : statusEffects) {

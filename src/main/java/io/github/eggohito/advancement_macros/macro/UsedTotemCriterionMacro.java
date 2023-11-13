@@ -12,21 +12,21 @@ import net.minecraft.util.Pair;
 
 public class UsedTotemCriterionMacro extends Macro {
 
-    public static final String USED_TOTEM_KEY_FIELD = "used_totem_key";
+    public static final String ITEM_KEY = "item";
 
     public static final Codec<UsedTotemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(USED_TOTEM_KEY_FIELD, "used_totem").forGetter(UsedTotemCriterionMacro::getUsedTotemKey)
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(UsedTotemCriterionMacro::getItemKey)
     ).apply(instance, UsedTotemCriterionMacro::new));
 
-    private final String usedTotemKey;
+    private final String itemKey;
 
-    public UsedTotemCriterionMacro(String usedTotemKey) {
+    public UsedTotemCriterionMacro(String itemKey) {
         super(Criteria.USED_TOTEM);
-        this.usedTotemKey = usedTotemKey;
+        this.itemKey = itemKey;
     }
 
-    public String getUsedTotemKey() {
-        return usedTotemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
     @Override
@@ -36,8 +36,8 @@ public class UsedTotemCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<ItemStack>ifPresent(USED_TOTEM_KEY_FIELD, usedTotemItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, usedTotemKey, usedTotemItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, usedTotemItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, usedTotemItemStack)
         );
     }
 

@@ -12,29 +12,29 @@ import net.minecraft.util.Pair;
 
 public class EnchantedItemCriterionMacro extends Macro {
 
-    public static final String ENCHANTED_ITEM_KEY_FIELD = "enchanted_item_key";
-    public static final String SPENT_LEVELS_KEY = "spent_levels_key";
+    public static final String ITEM_KEY = "item";
+    public static final String LEVELS_KEY = "levels";
 
     public static final Codec<EnchantedItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ENCHANTED_ITEM_KEY_FIELD, "enchanted_item").forGetter(EnchantedItemCriterionMacro::getEnchantedItemKey),
-        Codec.STRING.optionalFieldOf(SPENT_LEVELS_KEY, "spent_levels").forGetter(EnchantedItemCriterionMacro::getSpentLevelsKey)
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(EnchantedItemCriterionMacro::getItemKey),
+        Codec.STRING.optionalFieldOf(LEVELS_KEY, LEVELS_KEY).forGetter(EnchantedItemCriterionMacro::getLevelsKey)
     ).apply(instance, EnchantedItemCriterionMacro::new));
 
-    private final String enchantedItemKey;
-    private final String spentLevelsKey;
+    private final String itemKey;
+    private final String levelsKey;
 
-    public EnchantedItemCriterionMacro(String enchantedItemKey, String spentLevelsKey) {
+    public EnchantedItemCriterionMacro(String itemKey, String levelsKey) {
         super(Criteria.ENCHANTED_ITEM);
-        this.enchantedItemKey = enchantedItemKey;
-        this.spentLevelsKey = spentLevelsKey;
+        this.itemKey = itemKey;
+        this.levelsKey = levelsKey;
     }
 
-    public String getEnchantedItemKey() {
-        return enchantedItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
-    public String getSpentLevelsKey() {
-        return spentLevelsKey;
+    public String getLevelsKey() {
+        return levelsKey;
     }
 
     @Override
@@ -45,12 +45,12 @@ public class EnchantedItemCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ItemStack>ifPresent(ENCHANTED_ITEM_KEY_FIELD, enchantedItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, enchantedItemKey, enchantedItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, enchantedItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, enchantedItemStack)
         );
 
-        context.<Integer>ifPresent(SPENT_LEVELS_KEY, spentLevels ->
-            rootNbt.putInt(spentLevelsKey, spentLevels)
+        context.<Integer>ifPresent(LEVELS_KEY, spentLevels ->
+            rootNbt.putInt(levelsKey, spentLevels)
         );
 
     }

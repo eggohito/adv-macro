@@ -17,25 +17,25 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class RecipeUnlockedCriterionMacro extends Macro {
 
-    public static final String RECIPE_ID_KEY_FIELD = "recipe_id_key";
-    public static final String INGREDIENTS_KEY_FIELD = "ingredients_key";
+    public static final String RECIPE_KEY = "recipe";
+    public static final String INGREDIENTS_KEY = "ingredients";
 
     public static final Codec<RecipeUnlockedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(RECIPE_ID_KEY_FIELD, "recipe_id").forGetter(RecipeUnlockedCriterionMacro::getRecipeIdKey),
-        Codec.STRING.optionalFieldOf(INGREDIENTS_KEY_FIELD, "ingredients").forGetter(RecipeUnlockedCriterionMacro::getIngredientsKey)
+        Codec.STRING.optionalFieldOf(RECIPE_KEY, RECIPE_KEY).forGetter(RecipeUnlockedCriterionMacro::getRecipeKey),
+        Codec.STRING.optionalFieldOf(INGREDIENTS_KEY, INGREDIENTS_KEY).forGetter(RecipeUnlockedCriterionMacro::getIngredientsKey)
     ).apply(instance, RecipeUnlockedCriterionMacro::new));
 
-    private final String recipeIdKey;
+    private final String recipeKey;
     private final String ingredientsKey;
 
-    public RecipeUnlockedCriterionMacro(String recipeIdKey, String ingredientsKey) {
+    public RecipeUnlockedCriterionMacro(String recipeKey, String ingredientsKey) {
         super(Criteria.RECIPE_UNLOCKED);
-        this.recipeIdKey = recipeIdKey;
+        this.recipeKey = recipeKey;
         this.ingredientsKey = ingredientsKey;
     }
 
-    public String getRecipeIdKey() {
-        return recipeIdKey;
+    public String getRecipeKey() {
+        return recipeKey;
     }
 
     public String getIngredientsKey() {
@@ -50,11 +50,11 @@ public class RecipeUnlockedCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Identifier>ifPresent(RECIPE_ID_KEY_FIELD, recipeId ->
-            rootNbt.putString(recipeIdKey, recipeId.toString())
+        context.<Identifier>ifPresent(RECIPE_KEY, recipeId ->
+            rootNbt.putString(recipeKey, recipeId.toString())
         );
 
-        context.<DefaultedList<Ingredient>>ifPresent(INGREDIENTS_KEY_FIELD, ingredients -> {
+        context.<DefaultedList<Ingredient>>ifPresent(INGREDIENTS_KEY, ingredients -> {
 
             NbtList ingredientsNbt = new NbtList();
             for (Ingredient ingredient : ingredients) {

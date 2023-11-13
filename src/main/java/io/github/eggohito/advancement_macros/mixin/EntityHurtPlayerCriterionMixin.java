@@ -17,11 +17,11 @@ public abstract class EntityHurtPlayerCriterionMixin extends AbstractCriterion<E
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/EntityHurtPlayerCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, DamageSource source, float dealt, float taken, boolean blocked, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(EntityHurtPlayerCriterionMacro.ATTACKER_KEY_FIELD, source.getAttacker())
-            .add(EntityHurtPlayerCriterionMacro.DAMAGE_SOURCE_KEY_FIELD, source)
-            .add(EntityHurtPlayerCriterionMacro.DAMAGE_DEALT_AMOUNT_KEY_FIELD, dealt)
-            .add(EntityHurtPlayerCriterionMacro.DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, taken)
-            .add(EntityHurtPlayerCriterionMacro.DAMAGE_BLOCKED_KEY_FIELD, blocked));
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_SOURCE_ENTITY_KEY, source.getAttacker())
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_TYPE_KEY, source)
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_DEALT_KEY, dealt)
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_TAKEN_KEY, taken)
+            .add(EntityHurtPlayerCriterionMacro.DAMAGE_BLOCKED_KEY, blocked));
     }
 
 }

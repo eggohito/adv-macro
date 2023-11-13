@@ -12,14 +12,14 @@ import net.minecraft.util.Pair;
 
 public class BredAnimalsCriterionMacro extends Macro {
 
-    public static final String PARENT_KEY_FIELD = "parent_key";
-    public static final String PARTNER_KEY_FIELD = "partner_key";
-    public static final String CHILD_KEY_FIELD = "child_key";
+    public static final String PARENT_KEY = "parent";
+    public static final String PARTNER_KEY = "partner";
+    public static final String CHILD_KEY = "child";
 
     public static final Codec<BredAnimalsCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(PARENT_KEY_FIELD, "parent").forGetter(BredAnimalsCriterionMacro::getParentKey),
-        Codec.STRING.optionalFieldOf(PARTNER_KEY_FIELD, "partner").forGetter(BredAnimalsCriterionMacro::getPartnerKey),
-        Codec.STRING.optionalFieldOf(CHILD_KEY_FIELD, "child").forGetter(BredAnimalsCriterionMacro::getChildKey)
+        Codec.STRING.optionalFieldOf(PARENT_KEY, PARENT_KEY).forGetter(BredAnimalsCriterionMacro::getParentKey),
+        Codec.STRING.optionalFieldOf(PARTNER_KEY, PARTNER_KEY).forGetter(BredAnimalsCriterionMacro::getPartnerKey),
+        Codec.STRING.optionalFieldOf(CHILD_KEY, CHILD_KEY).forGetter(BredAnimalsCriterionMacro::getChildKey)
     ).apply(instance, BredAnimalsCriterionMacro::new));
 
     private final String parentKey;
@@ -53,15 +53,15 @@ public class BredAnimalsCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<AnimalEntity>ifPresent(PARENT_KEY_FIELD, parentAnimal ->
+        context.<AnimalEntity>ifPresent(PARENT_KEY, parentAnimal ->
             rootNbt.putString(parentKey, parentAnimal.getUuidAsString())
         );
 
-        context.<AnimalEntity>ifPresent(PARTNER_KEY_FIELD, partnerAnimal ->
+        context.<AnimalEntity>ifPresent(PARTNER_KEY, partnerAnimal ->
             rootNbt.putString(partnerKey, partnerAnimal.getUuidAsString())
         );
 
-        context.<PassiveEntity>ifPresent(CHILD_KEY_FIELD, childEntity ->
+        context.<PassiveEntity>ifPresent(CHILD_KEY, childEntity ->
             rootNbt.putString(childKey, childEntity.getUuidAsString())
         );
 

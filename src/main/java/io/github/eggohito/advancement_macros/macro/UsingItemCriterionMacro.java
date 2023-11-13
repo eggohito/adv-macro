@@ -12,10 +12,10 @@ import net.minecraft.util.Pair;
 
 public class UsingItemCriterionMacro extends Macro {
 
-    public static final String ITEM_KEY_FIELD = "item_key";
+    public static final String ITEM_KEY = "item";
 
     public static final Codec<UsingItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY_FIELD, "item").forGetter(UsingItemCriterionMacro::getItemKey)
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(UsingItemCriterionMacro::getItemKey)
     ).apply(instance, UsingItemCriterionMacro::new));
 
     private final String itemKey;
@@ -33,7 +33,7 @@ public class UsingItemCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ItemStack>ifPresent(ITEM_KEY_FIELD, itemStack ->
+        context.<ItemStack>ifPresent(ITEM_KEY, itemStack ->
             NbtUtil.writeItemStackToNbt(rootNbt, itemKey, itemStack)
         );
 

@@ -14,8 +14,8 @@ import java.util.function.BiFunction;
 
 public abstract class ItemCriterionMacro extends Macro {
 
-    public static final String LOCATION_KEY_FIELD = "location_key";
-    public static final String ITEM_KEY_FIELD = "item_key";
+    public static final String LOCATION_KEY = "location";
+    public static final String ITEM_KEY = "item";
 
     private final String locationKey;
     private final String itemKey;
@@ -28,19 +28,19 @@ public abstract class ItemCriterionMacro extends Macro {
 
     protected static <T extends ItemCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(LOCATION_KEY_FIELD, "location").forGetter(ItemCriterionMacro::getLocationKey),
-            Codec.STRING.optionalFieldOf(ITEM_KEY_FIELD, "item").forGetter(ItemCriterionMacro::getItemKey)
+            Codec.STRING.optionalFieldOf(LOCATION_KEY, LOCATION_KEY).forGetter(ItemCriterionMacro::getLocationKey),
+            Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ItemCriterionMacro::getItemKey)
         ).apply(instance, macroFunction));
     }
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<BlockPos>ifPresent(LOCATION_KEY_FIELD, locationPos ->
+        context.<BlockPos>ifPresent(LOCATION_KEY, locationPos ->
             NbtUtil.writeBlockPosToNbt(rootNbt, locationKey, locationPos)
         );
 
-        context.<ItemStack>ifPresent(ITEM_KEY_FIELD, itemStack ->
+        context.<ItemStack>ifPresent(ITEM_KEY, itemStack ->
             NbtUtil.writeItemStackToNbt(rootNbt, itemKey, itemStack)
         );
 

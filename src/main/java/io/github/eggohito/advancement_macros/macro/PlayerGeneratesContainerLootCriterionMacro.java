@@ -11,21 +11,21 @@ import net.minecraft.util.Pair;
 
 public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
 
-    public static final String LOOT_TABLE_ID_KEY_FIELD = "loot_table_id_key";
+    public static final String LOOT_TABLE_KEY = "loot_table";
 
     public static final Codec<PlayerGeneratesContainerLootCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(LOOT_TABLE_ID_KEY_FIELD, "loot_table_id").forGetter(PlayerGeneratesContainerLootCriterionMacro::getLootTableIdKey)
+        Codec.STRING.optionalFieldOf(LOOT_TABLE_KEY, LOOT_TABLE_KEY).forGetter(PlayerGeneratesContainerLootCriterionMacro::getLootTableKey)
     ).apply(instance, PlayerGeneratesContainerLootCriterionMacro::new));
 
-    private final String lootTableIdKey;
+    private final String lootTableKey;
 
     public PlayerGeneratesContainerLootCriterionMacro(String lootTableIdKey) {
         super(Criteria.PLAYER_GENERATES_CONTAINER_LOOT);
-        this.lootTableIdKey = lootTableIdKey;
+        this.lootTableKey = lootTableIdKey;
     }
 
-    public String getLootTableIdKey() {
-        return lootTableIdKey;
+    public String getLootTableKey() {
+        return lootTableKey;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<Identifier>ifPresent(LOOT_TABLE_ID_KEY_FIELD, lootTableId ->
-            rootNbt.putString(lootTableIdKey, lootTableId.toString())
+        context.<Identifier>ifPresent(LOOT_TABLE_KEY, lootTableId ->
+            rootNbt.putString(lootTableKey, lootTableId.toString())
         );
     }
 

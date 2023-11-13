@@ -13,14 +13,14 @@ import net.minecraft.util.math.Vec3d;
 
 public class TargetHitCriterionMacro extends Macro {
 
-    public static final String PROJECTILE_KEY_FIELD = "projectile_key";
-    public static final String HIT_LOCATION_KEY_FIELD = "hit_location_key";
-    public static final String SIGNAL_STRENGTH_KEY_FIELD = "signal_strength_key";
+    public static final String PROJECTILE_KEY = "projectile";
+    public static final String HIT_LOCATION_KEY = "hit_location";
+    public static final String SIGNAL_STRENGTH_KEY = "signal_strength";
 
     public static final Codec<TargetHitCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(PROJECTILE_KEY_FIELD, "projectile").forGetter(TargetHitCriterionMacro::getProjectileKey),
-        Codec.STRING.optionalFieldOf(HIT_LOCATION_KEY_FIELD, "hit_location").forGetter(TargetHitCriterionMacro::getHitLocationKey),
-        Codec.STRING.optionalFieldOf(SIGNAL_STRENGTH_KEY_FIELD, "signal_strength").forGetter(TargetHitCriterionMacro::getSignalStrengthKey)
+        Codec.STRING.optionalFieldOf(PROJECTILE_KEY, PROJECTILE_KEY).forGetter(TargetHitCriterionMacro::getProjectileKey),
+        Codec.STRING.optionalFieldOf(HIT_LOCATION_KEY, HIT_LOCATION_KEY).forGetter(TargetHitCriterionMacro::getHitLocationKey),
+        Codec.STRING.optionalFieldOf(SIGNAL_STRENGTH_KEY, SIGNAL_STRENGTH_KEY).forGetter(TargetHitCriterionMacro::getSignalStrengthKey)
     ).apply(instance, TargetHitCriterionMacro::new));
 
     private final String projectileKey;
@@ -54,15 +54,15 @@ public class TargetHitCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Entity>ifPresent(PROJECTILE_KEY_FIELD, projectileEntity ->
+        context.<Entity>ifPresent(PROJECTILE_KEY, projectileEntity ->
             rootNbt.putString(projectileKey, projectileEntity.getUuidAsString())
         );
 
-        context.<Vec3d>ifPresent(HIT_LOCATION_KEY_FIELD, hitLocation ->
+        context.<Vec3d>ifPresent(HIT_LOCATION_KEY, hitLocation ->
             NbtUtil.writeVec3dToNbt(rootNbt, hitLocationKey, hitLocation)
         );
 
-        context.<Integer>ifPresent(SIGNAL_STRENGTH_KEY_FIELD, signalStrength ->
+        context.<Integer>ifPresent(SIGNAL_STRENGTH_KEY, signalStrength ->
             rootNbt.putInt(signalStrengthKey, signalStrength)
         );
 

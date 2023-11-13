@@ -18,9 +18,9 @@ public abstract class BeeNestDestroyedCriterionMixin extends AbstractCriterion<B
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/BeeNestDestroyedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockState state, ItemStack stack, int beeCount, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(BeeNestDestroyedCriterionMacro.BROKEN_BEE_NEST_KEY_FIELD, state)
-            .add(BeeNestDestroyedCriterionMacro.TOOL_ITEM_KEY_FIELD, stack)
-            .add(BeeNestDestroyedCriterionMacro.BEE_COUNT_KEY_FIELD, beeCount));
+            .add(BeeNestDestroyedCriterionMacro.BLOCK_KEY, state)
+            .add(BeeNestDestroyedCriterionMacro.ITEM_KEY, stack)
+            .add(BeeNestDestroyedCriterionMacro.NUM_BEES_INSIDE_KEY, beeCount));
     }
 
 }

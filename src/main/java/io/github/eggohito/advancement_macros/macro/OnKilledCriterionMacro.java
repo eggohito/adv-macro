@@ -12,9 +12,9 @@ import org.apache.commons.lang3.function.TriFunction;
 
 public abstract class OnKilledCriterionMacro extends Macro {
 
-    public static final String KILLER_KEY_FIELD = "killer_key";
-    public static final String VICTIM_KEY_FIELD = "victim_key";
-    public static final String KILLING_BLOW_KEY_FIELD = "killing_blow_key";
+    public static final String KILLER_KEY = "killer";
+    public static final String VICTIM_KEY = "victim";
+    public static final String KILLING_BLOW_KEY = "killing_blow";
 
     private final String killerKey;
     private final String victimKey;
@@ -29,16 +29,16 @@ public abstract class OnKilledCriterionMacro extends Macro {
 
     protected static <T extends OnKilledCriterionMacro> Codec<T> getCodec(TriFunction<String, String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(KILLER_KEY_FIELD, "killer").forGetter(OnKilledCriterionMacro::getKillerKey),
-            Codec.STRING.optionalFieldOf(VICTIM_KEY_FIELD, "victim").forGetter(OnKilledCriterionMacro::getVictimKey),
-            Codec.STRING.optionalFieldOf(KILLING_BLOW_KEY_FIELD, "killing_blow").forGetter(OnKilledCriterionMacro::getKillingBlowKey)
+            Codec.STRING.optionalFieldOf(KILLER_KEY, KILLER_KEY).forGetter(OnKilledCriterionMacro::getKillerKey),
+            Codec.STRING.optionalFieldOf(VICTIM_KEY, VICTIM_KEY).forGetter(OnKilledCriterionMacro::getVictimKey),
+            Codec.STRING.optionalFieldOf(KILLING_BLOW_KEY, KILLING_BLOW_KEY).forGetter(OnKilledCriterionMacro::getKillingBlowKey)
         ).apply(instance, macroFunction::apply));
     }
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<DamageSource>ifPresent(KILLING_BLOW_KEY_FIELD, killingBlowDmgSource ->
-            NbtUtil.writeDamageSourceToNbt(rootNbt, killingBlowKey, killingBlowDmgSource)
+        context.<DamageSource>ifPresent(KILLING_BLOW_KEY, killingBlowDmgSource ->
+            NbtUtil.writeDamageTypeToNbt(rootNbt, killingBlowKey, killingBlowDmgSource.getType())
         );
     }
 

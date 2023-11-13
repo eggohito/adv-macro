@@ -17,7 +17,7 @@ public abstract class EffectsChangedCriterionMixin extends AbstractCriterion<Eff
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/EffectsChangedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Entity source, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(EffectsChangedCriterionMacro.STATUS_EFFECTS_SOURCE_KEY_FIELD, source));
+            .add(EffectsChangedCriterionMacro.SOURCE_KEY, source));
     }
 
 }

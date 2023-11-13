@@ -11,21 +11,21 @@ import net.minecraft.util.Pair;
 
 public class TameAnimalCriterionMacro extends Macro {
 
-    public static final String TAMED_ANIMAL_KEY_FIELD = "tamed_animal_key";
+    public static final String ENTITY_KEY = "entity_key";
 
     public static final Codec<TameAnimalCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(TAMED_ANIMAL_KEY_FIELD, "tamed_animal").forGetter(TameAnimalCriterionMacro::getTamedAnimalKey)
+        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(TameAnimalCriterionMacro::getEntityKey)
     ).apply(instance, TameAnimalCriterionMacro::new));
 
-    private final String tamedAnimalKey;
+    private final String entityKey;
 
-    public TameAnimalCriterionMacro(String tamedAnimalKey) {
+    public TameAnimalCriterionMacro(String entityKey) {
         super(Criteria.TAME_ANIMAL);
-        this.tamedAnimalKey = tamedAnimalKey;
+        this.entityKey = entityKey;
     }
 
-    public String getTamedAnimalKey() {
-        return tamedAnimalKey;
+    public String getEntityKey() {
+        return entityKey;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class TameAnimalCriterionMacro extends Macro {
 
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
-        context.<AnimalEntity>ifPresent(TAMED_ANIMAL_KEY_FIELD, tamedAnimalEntity ->
-            rootNbt.putString(tamedAnimalKey, tamedAnimalEntity.getUuidAsString())
+        context.<AnimalEntity>ifPresent(ENTITY_KEY, tamedAnimalEntity ->
+            rootNbt.putString(entityKey, tamedAnimalEntity.getUuidAsString())
         );
     }
 

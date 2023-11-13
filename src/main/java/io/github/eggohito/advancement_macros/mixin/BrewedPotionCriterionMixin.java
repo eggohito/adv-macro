@@ -18,8 +18,8 @@ public abstract class BrewedPotionCriterionMixin extends AbstractCriterion<Brewe
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/BrewedPotionCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Potion potion, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(BrewedPotionCriterionMacro.BREWED_POTION_ID_KEY_FIELD, Registries.POTION.getId(potion))
-            .add(BrewedPotionCriterionMacro.STATUS_EFFECTS_KEY_FIELD, potion.getEffects()));
+            .add(BrewedPotionCriterionMacro.POTION_KEY, Registries.POTION.getId(potion))
+            .add(BrewedPotionCriterionMacro.STATUS_EFFECTS_KEY, potion.getEffects()));
     }
 
 }

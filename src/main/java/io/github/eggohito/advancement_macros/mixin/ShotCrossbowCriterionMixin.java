@@ -17,7 +17,7 @@ public abstract class ShotCrossbowCriterionMixin extends AbstractCriterion<ShotC
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/ShotCrossbowCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, ItemStack stack, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(ShotCrossbowCriterionMacro.USED_CROSSBOW_ITEM_KEY_FIELD, stack));
+            .add(ShotCrossbowCriterionMacro.ITEM_KEY, stack));
     }
 
 }

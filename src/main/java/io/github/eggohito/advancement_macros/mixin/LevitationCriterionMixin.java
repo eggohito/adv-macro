@@ -17,8 +17,8 @@ public abstract class LevitationCriterionMixin extends AbstractCriterion<Levitat
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/LevitationCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, Vec3d startPos, int duration, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$add(player, this, triggerContext -> triggerContext
-            .add(LevitationCriterionMacro.START_LOCATION_KEY_FIELD, startPos)
-            .add(LevitationCriterionMacro.DURATION_KEY_FIELD, duration));
+            .add(LevitationCriterionMacro.START_LOCATION_KEY, startPos)
+            .add(LevitationCriterionMacro.DURATION_KEY, duration));
     }
 
 }

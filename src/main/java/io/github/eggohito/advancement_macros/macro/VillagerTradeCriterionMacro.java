@@ -13,29 +13,29 @@ import net.minecraft.util.Pair;
 
 public class VillagerTradeCriterionMacro extends Macro {
 
-    public static final String TRADER_KEY_FIELD = "trader_key";
-    public static final String SOLD_ITEM_KEY_FIELD = "sold_item_key";
+    public static final String VILLAGER_KEY = "villager";
+    public static final String ITEM_KEY = "item";
 
     public static final Codec<VillagerTradeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(TRADER_KEY_FIELD, "trader").forGetter(VillagerTradeCriterionMacro::getTradedMerchantKey),
-        Codec.STRING.optionalFieldOf(SOLD_ITEM_KEY_FIELD, "sold_item").forGetter(VillagerTradeCriterionMacro::getSoldItemKey)
+        Codec.STRING.optionalFieldOf(VILLAGER_KEY, VILLAGER_KEY).forGetter(VillagerTradeCriterionMacro::getVillagerKey),
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(VillagerTradeCriterionMacro::getItemKey)
     ).apply(instance, VillagerTradeCriterionMacro::new));
 
-    private final String tradedMerchantKey;
-    private final String soldItemKey;
+    private final String villagerKey;
+    private final String itemKey;
 
-    public VillagerTradeCriterionMacro(String tradedMerchantKey, String soldItemKey) {
+    public VillagerTradeCriterionMacro(String villagerKey, String itemKey) {
         super(Criteria.VILLAGER_TRADE);
-        this.tradedMerchantKey = tradedMerchantKey;
-        this.soldItemKey = soldItemKey;
+        this.villagerKey = villagerKey;
+        this.itemKey = itemKey;
     }
 
-    public String getTradedMerchantKey() {
-        return tradedMerchantKey;
+    public String getVillagerKey() {
+        return villagerKey;
     }
 
-    public String getSoldItemKey() {
-        return soldItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class VillagerTradeCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<MerchantEntity>ifPresent(TRADER_KEY_FIELD, traderEntity ->
-            rootNbt.putString(tradedMerchantKey, traderEntity.getUuidAsString())
+        context.<MerchantEntity>ifPresent(VILLAGER_KEY, traderEntity ->
+            rootNbt.putString(villagerKey, traderEntity.getUuidAsString())
         );
 
-        context.<ItemStack>ifPresent(SOLD_ITEM_KEY_FIELD, soldItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, soldItemKey, soldItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, soldItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, soldItemStack)
         );
 
     }

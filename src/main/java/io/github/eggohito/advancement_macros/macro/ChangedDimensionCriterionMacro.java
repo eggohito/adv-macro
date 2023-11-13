@@ -12,29 +12,29 @@ import net.minecraft.world.World;
 
 public class ChangedDimensionCriterionMacro extends Macro {
 
-    public static final String FROM_DIMENSION_KEY_FIELD = "from_dimension_key";
-    public static final String TO_DIMENSION_KEY_FIELD = "to_dimension_key";
+    public static final String FROM_KEY = "from";
+    public static final String TO_KEY = "to";
 
     public static final Codec<ChangedDimensionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(FROM_DIMENSION_KEY_FIELD, "from_dimension").forGetter(ChangedDimensionCriterionMacro::getFromDimensionKey),
-        Codec.STRING.optionalFieldOf(TO_DIMENSION_KEY_FIELD, "to_dimension").forGetter(ChangedDimensionCriterionMacro::getToDimensionKey)
+        Codec.STRING.optionalFieldOf(FROM_KEY, FROM_KEY).forGetter(ChangedDimensionCriterionMacro::getFromKey),
+        Codec.STRING.optionalFieldOf(TO_KEY, TO_KEY).forGetter(ChangedDimensionCriterionMacro::getToKey)
     ).apply(instance, ChangedDimensionCriterionMacro::new));
 
-    private final String fromDimensionKey;
-    private final String toDimensionKey;
+    private final String fromKey;
+    private final String toKey;
 
-    public ChangedDimensionCriterionMacro(String fromDimensionKey, String toDimensionKey) {
+    public ChangedDimensionCriterionMacro(String fromKey, String toKey) {
         super(Criteria.CHANGED_DIMENSION);
-        this.fromDimensionKey = fromDimensionKey;
-        this.toDimensionKey = toDimensionKey;
+        this.fromKey = fromKey;
+        this.toKey = toKey;
     }
 
-    public String getFromDimensionKey() {
-        return fromDimensionKey;
+    public String getFromKey() {
+        return fromKey;
     }
 
-    public String getToDimensionKey() {
-        return toDimensionKey;
+    public String getToKey() {
+        return toKey;
     }
 
     @Override
@@ -45,12 +45,12 @@ public class ChangedDimensionCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<RegistryKey<World>>ifPresent(FROM_DIMENSION_KEY_FIELD, fromDimensionRegKey ->
-            rootNbt.putString(fromDimensionKey, fromDimensionRegKey.getValue().toString())
+        context.<RegistryKey<World>>ifPresent(FROM_KEY, fromWorldRegistryKey ->
+            rootNbt.putString(fromKey, fromWorldRegistryKey.getValue().toString())
         );
 
-        context.<RegistryKey<World>>ifPresent(TO_DIMENSION_KEY_FIELD, toDimensionRegKey ->
-            rootNbt.putString(toDimensionKey, toDimensionRegKey.getValue().toString())
+        context.<RegistryKey<World>>ifPresent(TO_KEY, toWorldRegistryKey ->
+            rootNbt.putString(toKey, toWorldRegistryKey.getValue().toString())
         );
 
     }

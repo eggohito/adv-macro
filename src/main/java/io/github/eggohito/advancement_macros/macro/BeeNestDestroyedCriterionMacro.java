@@ -13,37 +13,37 @@ import net.minecraft.util.Pair;
 
 public class BeeNestDestroyedCriterionMacro extends Macro {
 
-    public static final String BROKEN_BEE_NEST_KEY_FIELD = "broken_bee_best_key";
-    public static final String TOOL_ITEM_KEY_FIELD = "tool_item_key";
-    public static final String BEE_COUNT_KEY_FIELD = "bee_count_key";
+    public static final String BLOCK_KEY = "block";
+    public static final String ITEM_KEY = "item";
+    public static final String NUM_BEES_INSIDE_KEY = "num_bees_inside";
 
     public static final Codec<BeeNestDestroyedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(BROKEN_BEE_NEST_KEY_FIELD, "broken_bee_nest").forGetter(BeeNestDestroyedCriterionMacro::getBrokenBeeNestKey),
-        Codec.STRING.optionalFieldOf(TOOL_ITEM_KEY_FIELD, "tool_item").forGetter(BeeNestDestroyedCriterionMacro::getToolItemKey),
-        Codec.STRING.optionalFieldOf(BEE_COUNT_KEY_FIELD, "bee_count").forGetter(BeeNestDestroyedCriterionMacro::getBeeCountKey)
+        Codec.STRING.optionalFieldOf(BLOCK_KEY, BLOCK_KEY).forGetter(BeeNestDestroyedCriterionMacro::getBlockKey),
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(BeeNestDestroyedCriterionMacro::getItemKey),
+        Codec.STRING.optionalFieldOf(NUM_BEES_INSIDE_KEY, NUM_BEES_INSIDE_KEY).forGetter(BeeNestDestroyedCriterionMacro::getNumBeesInsideKey)
     ).apply(instance, BeeNestDestroyedCriterionMacro::new));
 
-    private final String brokenBeeNestKey;
-    private final String toolItemKey;
-    private final String beeCountKey;
+    private final String blockKey;
+    private final String itemKey;
+    private final String numBeesInsideKey;
 
-    public BeeNestDestroyedCriterionMacro(String brokenBeeNestKey, String toolItemKey, String beeCountKey) {
+    public BeeNestDestroyedCriterionMacro(String blockKey, String itemKey, String numBeesInsideKey) {
         super(Criteria.BEE_NEST_DESTROYED);
-        this.brokenBeeNestKey = brokenBeeNestKey;
-        this.toolItemKey = toolItemKey;
-        this.beeCountKey = beeCountKey;
+        this.blockKey = blockKey;
+        this.itemKey = itemKey;
+        this.numBeesInsideKey = numBeesInsideKey;
     }
 
-    public String getBrokenBeeNestKey() {
-        return brokenBeeNestKey;
+    public String getBlockKey() {
+        return blockKey;
     }
 
-    public String getToolItemKey() {
-        return toolItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
-    public String getBeeCountKey() {
-        return beeCountKey;
+    public String getNumBeesInsideKey() {
+        return numBeesInsideKey;
     }
 
     @Override
@@ -54,16 +54,16 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<BlockState>ifPresent(BROKEN_BEE_NEST_KEY_FIELD, brokenBeeNestBlockState ->
-            NbtUtil.writeBlockStateToNbt(rootNbt, brokenBeeNestKey, brokenBeeNestBlockState)
+        context.<BlockState>ifPresent(BLOCK_KEY, brokenBeeNestBlockState ->
+            NbtUtil.writeBlockStateToNbt(rootNbt, blockKey, brokenBeeNestBlockState)
         );
 
-        context.<ItemStack>ifPresent(TOOL_ITEM_KEY_FIELD, toolItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, toolItemKey, toolItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, toolItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, toolItemStack)
         );
 
-        context.<Integer>ifPresent(BEE_COUNT_KEY_FIELD, beeCount ->
-            rootNbt.putInt(beeCountKey, beeCount)
+        context.<Integer>ifPresent(NUM_BEES_INSIDE_KEY, beeCount ->
+            rootNbt.putInt(numBeesInsideKey, beeCount)
         );
 
     }

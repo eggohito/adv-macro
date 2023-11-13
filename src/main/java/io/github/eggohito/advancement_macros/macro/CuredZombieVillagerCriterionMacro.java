@@ -12,12 +12,12 @@ import net.minecraft.util.Pair;
 
 public class CuredZombieVillagerCriterionMacro extends Macro {
 
-    public static final String ZOMBIE_KEY_FIELD = "zombie_key";
-    public static final String VILLAGER_KEY_FIELD = "villager_key";
+    public static final String ZOMBIE_KEY = "zombie";
+    public static final String VILLAGER_KEY = "villager";
 
     public static final Codec<CuredZombieVillagerCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ZOMBIE_KEY_FIELD, "zombie").forGetter(CuredZombieVillagerCriterionMacro::getZombieKey),
-        Codec.STRING.optionalFieldOf(VILLAGER_KEY_FIELD, "villager").forGetter(CuredZombieVillagerCriterionMacro::getVillagerKey)
+        Codec.STRING.optionalFieldOf(ZOMBIE_KEY, ZOMBIE_KEY).forGetter(CuredZombieVillagerCriterionMacro::getZombieKey),
+        Codec.STRING.optionalFieldOf(VILLAGER_KEY, VILLAGER_KEY).forGetter(CuredZombieVillagerCriterionMacro::getVillagerKey)
     ).apply(instance, CuredZombieVillagerCriterionMacro::new));
 
     private final String zombieKey;
@@ -45,11 +45,11 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ZombieEntity>ifPresent(ZOMBIE_KEY_FIELD, zombieEntity ->
+        context.<ZombieEntity>ifPresent(ZOMBIE_KEY, zombieEntity ->
             rootNbt.putString(zombieKey, zombieEntity.getUuidAsString())
         );
 
-        context.<VillagerEntity>ifPresent(VILLAGER_KEY_FIELD, villagerEntity ->
+        context.<VillagerEntity>ifPresent(VILLAGER_KEY, villagerEntity ->
             rootNbt.putString(villagerKey, villagerEntity.getUuidAsString())
         );
 

@@ -13,49 +13,49 @@ import net.minecraft.util.Pair;
 
 public class PlayerHurtEntityCriterionMacro extends Macro {
 
-    public static final String TARGET_KEY_FIELD = "target_key";
-    public static final String DAMAGE_SOURCE_KEY_FIELD = "damage_source_key";
-    public static final String DAMAGE_DEALT_AMOUNT_KEY_FIELD = "damage_dealt_amount_key";
-    public static final String DAMAGE_ABSORBED_AMOUNT_KEY_FIELD = "damage_absorbed_amount_key";
-    public static final String DAMAGE_BLOCKED_KEY_FIELD = "damage_blocked_key";
+    public static final String ENTITY_KEY = "entity";
+    public static final String DAMAGE_TYPE_KEY = "damage_type";
+    public static final String DAMAGE_DEALT_KEY = "damage_dealt";
+    public static final String DAMAGE_TAKEN_KEY = "damage_taken";
+    public static final String DAMAGE_BLOCKED_KEY = "damage_blocked";
 
     public static final Codec<PlayerHurtEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(TARGET_KEY_FIELD, "target").forGetter(PlayerHurtEntityCriterionMacro::getHurtEntityKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_SOURCE_KEY_FIELD, "damage_source").forGetter(PlayerHurtEntityCriterionMacro::getDamageSourceKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_DEALT_AMOUNT_KEY_FIELD, "damage_dealt_amount").forGetter(PlayerHurtEntityCriterionMacro::getDamageDealtAmountKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, "damage_absorbed_amount").forGetter(PlayerHurtEntityCriterionMacro::getDamageTakenAmountKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_BLOCKED_KEY_FIELD, "damage_blocked").forGetter(PlayerHurtEntityCriterionMacro::getDamageBlockedKey)
+        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(PlayerHurtEntityCriterionMacro::getEntityKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_TYPE_KEY, DAMAGE_TYPE_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTypeKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_DEALT_KEY, DAMAGE_DEALT_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageDealtKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_TAKEN_KEY, DAMAGE_TAKEN_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTakenKey),
+        Codec.STRING.optionalFieldOf(DAMAGE_BLOCKED_KEY, DAMAGE_BLOCKED_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageBlockedKey)
     ).apply(instance, PlayerHurtEntityCriterionMacro::new));
 
-    private final String hurtEntityKey;
-    private final String damageSourceKey;
-    private final String damageDealtAmountKey;
-    private final String damageTakenAmountKey;
+    private final String entityKey;
+    private final String damageTypeKey;
+    private final String damageDealtKey;
+    private final String damageTakenKey;
     private final String damageBlockedKey;
 
-    public PlayerHurtEntityCriterionMacro(String hurtEntityKey, String damageSourceKey, String damageDealtAmountKey, String damageTakenAmountKey, String damageBlockedKey) {
+    public PlayerHurtEntityCriterionMacro(String entityKey, String damageTypeKey, String damageDealtKey, String damageTakenKey, String damageBlockedKey) {
         super(Criteria.PLAYER_HURT_ENTITY);
-        this.hurtEntityKey = hurtEntityKey;
-        this.damageSourceKey = damageSourceKey;
-        this.damageDealtAmountKey = damageDealtAmountKey;
-        this.damageTakenAmountKey = damageTakenAmountKey;
+        this.entityKey = entityKey;
+        this.damageTypeKey = damageTypeKey;
+        this.damageDealtKey = damageDealtKey;
+        this.damageTakenKey = damageTakenKey;
         this.damageBlockedKey = damageBlockedKey;
     }
 
-    public String getHurtEntityKey() {
-        return hurtEntityKey;
+    public String getEntityKey() {
+        return entityKey;
     }
 
-    public String getDamageSourceKey() {
-        return damageSourceKey;
+    public String getDamageTypeKey() {
+        return damageTypeKey;
     }
 
-    public String getDamageDealtAmountKey() {
-        return damageDealtAmountKey;
+    public String getDamageDealtKey() {
+        return damageDealtKey;
     }
 
-    public String getDamageTakenAmountKey() {
-        return damageTakenAmountKey;
+    public String getDamageTakenKey() {
+        return damageTakenKey;
     }
 
     public String getDamageBlockedKey() {
@@ -70,23 +70,23 @@ public class PlayerHurtEntityCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<Entity>ifPresent(TARGET_KEY_FIELD, targetEntity ->
-            rootNbt.putString(hurtEntityKey, targetEntity.getUuidAsString())
+        context.<Entity>ifPresent(ENTITY_KEY, targetEntity ->
+            rootNbt.putString(entityKey, targetEntity.getUuidAsString())
         );
 
-        context.<DamageSource>ifPresent(DAMAGE_SOURCE_KEY_FIELD, damageSource ->
-            NbtUtil.writeDamageSourceToNbt(rootNbt, damageSourceKey, damageSource)
+        context.<DamageSource>ifPresent(DAMAGE_TYPE_KEY, damageSource ->
+            NbtUtil.writeDamageTypeToNbt(rootNbt, damageTypeKey, damageSource.getType())
         );
 
-        context.<Float>ifPresent(DAMAGE_DEALT_AMOUNT_KEY_FIELD, damageDealtAmount ->
-            rootNbt.putFloat(damageDealtAmountKey, damageDealtAmount)
+        context.<Float>ifPresent(DAMAGE_DEALT_KEY, damageDealt ->
+            rootNbt.putFloat(damageDealtKey, damageDealt)
         );
 
-        context.<Float>ifPresent(DAMAGE_ABSORBED_AMOUNT_KEY_FIELD, damageTakenAmount ->
-            rootNbt.putFloat(damageTakenAmountKey, damageTakenAmount)
+        context.<Float>ifPresent(DAMAGE_TAKEN_KEY, damageTaken ->
+            rootNbt.putFloat(damageTakenKey, damageTaken)
         );
 
-        context.<Boolean>ifPresent(DAMAGE_BLOCKED_KEY_FIELD, damageBlocked ->
+        context.<Boolean>ifPresent(DAMAGE_BLOCKED_KEY, damageBlocked ->
             rootNbt.putBoolean(damageBlockedKey, damageBlocked)
         );
 

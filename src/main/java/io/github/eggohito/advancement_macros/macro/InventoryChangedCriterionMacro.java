@@ -12,37 +12,37 @@ import net.minecraft.util.Pair;
 
 public class InventoryChangedCriterionMacro extends Macro {
 
-    public static final String MOVED_ITEM_KEY_FIELD = "moved_item_key";
-    public static final String FULL_ITEMS_KEY_FIELD = "full_items_key";
-    public static final String OCCUPIED_SLOTS_KEY_FIELD = "occupied_slots_key";
-    public static final String EMPTY_SLOTS_KEY_FIELD = "empty_slots_key";
+    public static final String ITEM_KEY = "item";
+    public static final String FULL_SLOTS_KEY = "full_slots";
+    public static final String OCCUPIED_SLOTS_KEY = "occupied_slots";
+    public static final String EMPTY_SLOTS_KEY = "empty_slots";
 
     public static final Codec<InventoryChangedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(MOVED_ITEM_KEY_FIELD, "moved_item").forGetter(InventoryChangedCriterionMacro::getMovedItemKey),
-        Codec.STRING.optionalFieldOf(FULL_ITEMS_KEY_FIELD, "full_items").forGetter(InventoryChangedCriterionMacro::getFullItemsKey),
-        Codec.STRING.optionalFieldOf(OCCUPIED_SLOTS_KEY_FIELD, "occupied_slots").forGetter(InventoryChangedCriterionMacro::getOccupiedSlotsKey),
-        Codec.STRING.optionalFieldOf(EMPTY_SLOTS_KEY_FIELD, "empty_slots").forGetter(InventoryChangedCriterionMacro::getEmptySlotsKey)
+        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(InventoryChangedCriterionMacro::getItemKey),
+        Codec.STRING.optionalFieldOf(FULL_SLOTS_KEY, FULL_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getFullSlotsKey),
+        Codec.STRING.optionalFieldOf(OCCUPIED_SLOTS_KEY, OCCUPIED_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getOccupiedSlotsKey),
+        Codec.STRING.optionalFieldOf(EMPTY_SLOTS_KEY, EMPTY_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getEmptySlotsKey)
     ).apply(instance, InventoryChangedCriterionMacro::new));
 
-    private final String movedItemKey;
-    private final String fullItemsKey;
+    private final String itemKey;
+    private final String fullSlotsKey;
     private final String occupiedSlotsKey;
     private final String emptySlotsKey;
 
-    public InventoryChangedCriterionMacro(String movedItemKey, String fullItemsKey, String occupiedSlotsKey, String emptySlotsKey) {
+    public InventoryChangedCriterionMacro(String itemKey, String fullSlotsKey, String occupiedSlotsKey, String emptySlotsKey) {
         super(Criteria.INVENTORY_CHANGED);
-        this.movedItemKey = movedItemKey;
-        this.fullItemsKey = fullItemsKey;
+        this.itemKey = itemKey;
+        this.fullSlotsKey = fullSlotsKey;
         this.occupiedSlotsKey = occupiedSlotsKey;
         this.emptySlotsKey = emptySlotsKey;
     }
 
-    public String getMovedItemKey() {
-        return movedItemKey;
+    public String getItemKey() {
+        return itemKey;
     }
 
-    public String getFullItemsKey() {
-        return fullItemsKey;
+    public String getFullSlotsKey() {
+        return fullSlotsKey;
     }
 
     public String getOccupiedSlotsKey() {
@@ -61,19 +61,19 @@ public class InventoryChangedCriterionMacro extends Macro {
     @Override
     public void writeToNbt(NbtCompound rootNbt, TriggerContext context) {
 
-        context.<ItemStack>ifPresent(MOVED_ITEM_KEY_FIELD, movedItemStack ->
-            NbtUtil.writeItemStackToNbt(rootNbt, movedItemKey, movedItemStack)
+        context.<ItemStack>ifPresent(ITEM_KEY, movedItemStack ->
+            NbtUtil.writeItemStackToNbt(rootNbt, itemKey, movedItemStack)
         );
 
-        context.<Integer>ifPresent(FULL_ITEMS_KEY_FIELD, fullItems ->
-            rootNbt.putInt(fullItemsKey, fullItems)
+        context.<Integer>ifPresent(FULL_SLOTS_KEY, fullItems ->
+            rootNbt.putInt(fullSlotsKey, fullItems)
         );
 
-        context.<Integer>ifPresent(EMPTY_SLOTS_KEY_FIELD, emptySlots ->
+        context.<Integer>ifPresent(EMPTY_SLOTS_KEY, emptySlots ->
             rootNbt.putInt(emptySlotsKey, emptySlots)
         );
 
-        context.<Integer>ifPresent(OCCUPIED_SLOTS_KEY_FIELD, occupiedSlots ->
+        context.<Integer>ifPresent(OCCUPIED_SLOTS_KEY, occupiedSlots ->
             rootNbt.putInt(occupiedSlotsKey, occupiedSlots)
         );
 
