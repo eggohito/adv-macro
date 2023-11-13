@@ -78,7 +78,7 @@ public abstract class AdvancementRewardsMixin implements MacroData, AdvancementR
 
             ServerCommandSource source = player.getCommandSource()
                 .withSilent()
-                .withLevel(server.getFunctionPermissionLevel());
+                .withLevel(2);
 
             server
                 .getCommandFunctionManager()
