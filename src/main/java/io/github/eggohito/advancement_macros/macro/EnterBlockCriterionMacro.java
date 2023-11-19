@@ -17,8 +17,8 @@ public class EnterBlockCriterionMacro extends Macro {
     public static final String STATE_KEY = "state";
 
     public static final Codec<EnterBlockCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(BLOCK_KEY, BLOCK_KEY).forGetter(EnterBlockCriterionMacro::getBlockKey),
-        Codec.STRING.optionalFieldOf(STATE_KEY, STATE_KEY).forGetter(EnterBlockCriterionMacro::getStateKey)
+        strictOptionalField(BLOCK_KEY, BLOCK_KEY).forGetter(EnterBlockCriterionMacro::getBlockKey),
+        strictOptionalField(STATE_KEY, STATE_KEY).forGetter(EnterBlockCriterionMacro::getStateKey)
     ).apply(instance, EnterBlockCriterionMacro::new));
 
     private final String blockKey;

@@ -36,8 +36,8 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
 
     protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getItemKey),
-            Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)
+            strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getItemKey),
+            strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)
         ).apply(instance, macroFunction));
     }
 

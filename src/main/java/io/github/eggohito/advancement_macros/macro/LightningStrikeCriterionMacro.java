@@ -20,8 +20,8 @@ public class LightningStrikeCriterionMacro extends Macro {
     public static final String BYSTANDERS_KEY = "bystanders";
 
     public static final Codec<LightningStrikeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(LIGHTNING_KEY, LIGHTNING_KEY).forGetter(LightningStrikeCriterionMacro::getLightningKey),
-        Codec.STRING.optionalFieldOf(BYSTANDERS_KEY, BYSTANDERS_KEY).forGetter(LightningStrikeCriterionMacro::getBystandersKey)
+        strictOptionalField(LIGHTNING_KEY, LIGHTNING_KEY).forGetter(LightningStrikeCriterionMacro::getLightningKey),
+        strictOptionalField(BYSTANDERS_KEY, BYSTANDERS_KEY).forGetter(LightningStrikeCriterionMacro::getBystandersKey)
     ).apply(instance, LightningStrikeCriterionMacro::new));
 
     private final String lightningKey;

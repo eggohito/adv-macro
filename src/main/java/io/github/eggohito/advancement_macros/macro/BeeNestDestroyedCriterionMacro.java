@@ -18,9 +18,9 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
     public static final String NUM_BEES_INSIDE_KEY = "num_bees_inside";
 
     public static final Codec<BeeNestDestroyedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(BLOCK_KEY, BLOCK_KEY).forGetter(BeeNestDestroyedCriterionMacro::getBlockKey),
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(BeeNestDestroyedCriterionMacro::getItemKey),
-        Codec.STRING.optionalFieldOf(NUM_BEES_INSIDE_KEY, NUM_BEES_INSIDE_KEY).forGetter(BeeNestDestroyedCriterionMacro::getNumBeesInsideKey)
+        strictOptionalField(BLOCK_KEY, BLOCK_KEY).forGetter(BeeNestDestroyedCriterionMacro::getBlockKey),
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(BeeNestDestroyedCriterionMacro::getItemKey),
+        strictOptionalField(NUM_BEES_INSIDE_KEY, NUM_BEES_INSIDE_KEY).forGetter(BeeNestDestroyedCriterionMacro::getNumBeesInsideKey)
     ).apply(instance, BeeNestDestroyedCriterionMacro::new));
 
     private final String blockKey;

@@ -1,7 +1,5 @@
 package io.github.eggohito.advancement_macros.data;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -19,11 +17,7 @@ public class TriggerContext {
     private final Map<String, Object> mappedData;
     private final Identifier id;
 
-    public static TriggerContext create(Criterion<?> criterion) {
-        return new TriggerContext(Criteria.getId(criterion));
-    }
-
-    private TriggerContext(Identifier id) {
+    public TriggerContext(Identifier id) {
         this.id = id;
         this.mappedData = new HashMap<>();
     }

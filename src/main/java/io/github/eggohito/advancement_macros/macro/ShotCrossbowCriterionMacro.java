@@ -15,7 +15,7 @@ public class ShotCrossbowCriterionMacro extends Macro {
     public static final String ITEM_KEY = "item";
 
     public static final Codec<ShotCrossbowCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ShotCrossbowCriterionMacro::getItemKey)
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ShotCrossbowCriterionMacro::getItemKey)
     ).apply(instance, ShotCrossbowCriterionMacro::new));
 
     private final String itemKey;

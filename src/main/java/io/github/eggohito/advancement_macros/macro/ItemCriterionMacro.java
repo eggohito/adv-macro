@@ -28,8 +28,8 @@ public abstract class ItemCriterionMacro extends Macro {
 
     protected static <T extends ItemCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(LOCATION_KEY, LOCATION_KEY).forGetter(ItemCriterionMacro::getLocationKey),
-            Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ItemCriterionMacro::getItemKey)
+            strictOptionalField(LOCATION_KEY, LOCATION_KEY).forGetter(ItemCriterionMacro::getLocationKey),
+            strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ItemCriterionMacro::getItemKey)
         ).apply(instance, macroFunction));
     }
 

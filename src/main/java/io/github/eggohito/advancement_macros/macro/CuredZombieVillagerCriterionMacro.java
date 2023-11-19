@@ -16,8 +16,8 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
     public static final String VILLAGER_KEY = "villager";
 
     public static final Codec<CuredZombieVillagerCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ZOMBIE_KEY, ZOMBIE_KEY).forGetter(CuredZombieVillagerCriterionMacro::getZombieKey),
-        Codec.STRING.optionalFieldOf(VILLAGER_KEY, VILLAGER_KEY).forGetter(CuredZombieVillagerCriterionMacro::getVillagerKey)
+        strictOptionalField(ZOMBIE_KEY, ZOMBIE_KEY).forGetter(CuredZombieVillagerCriterionMacro::getZombieKey),
+        strictOptionalField(VILLAGER_KEY, VILLAGER_KEY).forGetter(CuredZombieVillagerCriterionMacro::getVillagerKey)
     ).apply(instance, CuredZombieVillagerCriterionMacro::new));
 
     private final String zombieKey;

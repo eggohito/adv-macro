@@ -16,8 +16,8 @@ public class ChangedDimensionCriterionMacro extends Macro {
     public static final String TO_KEY = "to";
 
     public static final Codec<ChangedDimensionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(FROM_KEY, FROM_KEY).forGetter(ChangedDimensionCriterionMacro::getFromKey),
-        Codec.STRING.optionalFieldOf(TO_KEY, TO_KEY).forGetter(ChangedDimensionCriterionMacro::getToKey)
+        strictOptionalField(FROM_KEY, FROM_KEY).forGetter(ChangedDimensionCriterionMacro::getFromKey),
+        strictOptionalField(TO_KEY, TO_KEY).forGetter(ChangedDimensionCriterionMacro::getToKey)
     ).apply(instance, ChangedDimensionCriterionMacro::new));
 
     private final String fromKey;

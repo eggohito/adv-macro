@@ -19,8 +19,8 @@ public class BrewedPotionCriterionMacro extends Macro {
     public static final String STATUS_EFFECTS_KEY = "status_effects";
 
     public static final Codec<BrewedPotionCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(POTION_KEY, POTION_KEY).forGetter(BrewedPotionCriterionMacro::getPotionKey),
-        Codec.STRING.optionalFieldOf(STATUS_EFFECTS_KEY, STATUS_EFFECTS_KEY).forGetter(BrewedPotionCriterionMacro::getStatusEffectsKey)
+        strictOptionalField(POTION_KEY, POTION_KEY).forGetter(BrewedPotionCriterionMacro::getPotionKey),
+        strictOptionalField(STATUS_EFFECTS_KEY, STATUS_EFFECTS_KEY).forGetter(BrewedPotionCriterionMacro::getStatusEffectsKey)
     ).apply(instance, BrewedPotionCriterionMacro::new));
 
     private final String potionKey;

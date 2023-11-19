@@ -1,5 +1,6 @@
 package io.github.eggohito.advancement_macros;
 
+import com.mojang.serialization.DataResult;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.macro.*;
 import net.fabricmc.api.ModInitializer;
@@ -14,6 +15,7 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AdvancementMacros implements ModInitializer {
@@ -23,7 +25,9 @@ public class AdvancementMacros implements ModInitializer {
 	public static final String CODEC_TYPE_KEY = of("trigger").toString();
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAMESPACE);
-	public static final Pattern INVALID_CRITERION_CHARACTERS = Pattern.compile("[^a-zA-Z0-9_]");
+
+	public static final Pattern REPLACEABLE_CHARACTERS = Pattern.compile("[ .:\\-/]");
+	public static final Pattern INVALID_MACRO_CHARACTERS = Pattern.compile("[^a-zA-Z0-9_]");
 
 	public static final RegistryKey<Registry<Macro.Type>> REGISTRY_KEY;
 	public static final Registry<Macro.Type> REGISTRY;
@@ -103,6 +107,40 @@ public class AdvancementMacros implements ModInitializer {
 		register(ImpossibleCriterionMacro::getFactory);
 
 		LOGGER.info("Advancement Macros {} has been initialized!", VERSION_STRING);
+
+	}
+
+	public static DataResult<String> validateMappingName(String name) {
+
+		if (name.isEmpty()) {
+			return DataResult.error(() -> "Macro mapping name cannot be empty!");
+		}
+
+		Matcher matcher = INVALID_MACRO_CHARACTERS.matcher(name);
+
+		StringBuilder invalidCharsBuilder = new StringBuilder();
+		String separator = "";
+
+		while (matcher.find()) {
+
+			String group = matcher.group();
+			if (invalidCharsBuilder.indexOf(group) != -1) {
+				continue;
+			}
+
+			invalidCharsBuilder
+				.append(separator)
+				.append("\"").append(group).append("\"");
+
+			separator = ", ";
+
+		}
+
+		if (!invalidCharsBuilder.isEmpty()) {
+			return DataResult.error(() -> "Macro mapping name \"%s\" contains invalid character(s): [%s]".formatted(name, invalidCharsBuilder));
+		}
+
+		return DataResult.success(name);
 
 	}
 

@@ -17,8 +17,8 @@ public class SlideDownBlockCriterionMacro extends Macro {
     public static final String STATE_KEY = "state";
 
     public static final Codec<SlideDownBlockCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(BLOCK_KEY, BLOCK_KEY).forGetter(SlideDownBlockCriterionMacro::getBlockKey),
-        Codec.STRING.optionalFieldOf(STATE_KEY, STATE_KEY).forGetter(SlideDownBlockCriterionMacro::getStateKey)
+        strictOptionalField(BLOCK_KEY, BLOCK_KEY).forGetter(SlideDownBlockCriterionMacro::getBlockKey),
+        strictOptionalField(STATE_KEY, STATE_KEY).forGetter(SlideDownBlockCriterionMacro::getStateKey)
     ).apply(instance, SlideDownBlockCriterionMacro::new));
 
     private final String blockKey;

@@ -14,7 +14,7 @@ public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
     public static final String LOOT_TABLE_KEY = "loot_table";
 
     public static final Codec<PlayerGeneratesContainerLootCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(LOOT_TABLE_KEY, LOOT_TABLE_KEY).forGetter(PlayerGeneratesContainerLootCriterionMacro::getLootTableKey)
+        strictOptionalField(LOOT_TABLE_KEY, LOOT_TABLE_KEY).forGetter(PlayerGeneratesContainerLootCriterionMacro::getLootTableKey)
     ).apply(instance, PlayerGeneratesContainerLootCriterionMacro::new));
 
     private final String lootTableKey;

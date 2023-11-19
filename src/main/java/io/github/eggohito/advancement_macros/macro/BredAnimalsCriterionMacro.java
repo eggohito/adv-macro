@@ -17,9 +17,9 @@ public class BredAnimalsCriterionMacro extends Macro {
     public static final String CHILD_KEY = "child";
 
     public static final Codec<BredAnimalsCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(PARENT_KEY, PARENT_KEY).forGetter(BredAnimalsCriterionMacro::getParentKey),
-        Codec.STRING.optionalFieldOf(PARTNER_KEY, PARTNER_KEY).forGetter(BredAnimalsCriterionMacro::getPartnerKey),
-        Codec.STRING.optionalFieldOf(CHILD_KEY, CHILD_KEY).forGetter(BredAnimalsCriterionMacro::getChildKey)
+        strictOptionalField(PARENT_KEY, PARENT_KEY).forGetter(BredAnimalsCriterionMacro::getParentKey),
+        strictOptionalField(PARTNER_KEY, PARTNER_KEY).forGetter(BredAnimalsCriterionMacro::getPartnerKey),
+        strictOptionalField(CHILD_KEY, CHILD_KEY).forGetter(BredAnimalsCriterionMacro::getChildKey)
     ).apply(instance, BredAnimalsCriterionMacro::new));
 
     private final String parentKey;

@@ -24,10 +24,10 @@ public class FishingRodHookedCriterionMacro extends Macro {
     public static final String ITEM_KEY = "item";
 
     public static final Codec<FishingRodHookedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(FISHING_BOBBER_KEY, FISHING_BOBBER_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingBobberKey),
-        Codec.STRING.optionalFieldOf(FISHING_ROD_KEY, FISHING_ROD_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingRodKey),
-        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(FishingRodHookedCriterionMacro::getEntityKey),
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(FishingRodHookedCriterionMacro::getItemKey)
+        strictOptionalField(FISHING_BOBBER_KEY, FISHING_BOBBER_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingBobberKey),
+        strictOptionalField(FISHING_ROD_KEY, FISHING_ROD_KEY).forGetter(FishingRodHookedCriterionMacro::getFishingRodKey),
+        strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(FishingRodHookedCriterionMacro::getEntityKey),
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(FishingRodHookedCriterionMacro::getItemKey)
     ).apply(instance, FishingRodHookedCriterionMacro::new));
 
     private final String fishingBobberKey;

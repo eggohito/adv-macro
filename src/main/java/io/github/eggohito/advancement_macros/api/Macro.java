@@ -1,15 +1,14 @@
 package io.github.eggohito.advancement_macros.api;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.Decoder;
-import com.mojang.serialization.Encoder;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.*;
+import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.dynamic.Codecs;
 
 /**
  *      <p>A class used for serializing the data passed to an {@link net.minecraft.advancement.criterion.AbstractCriterion}
@@ -17,6 +16,23 @@ import net.minecraft.util.Pair;
  *      the criterion trigger.</p>
  */
 public abstract class Macro {
+
+    /**
+     *      <p>A codec for macro name mappings (w/ validation)</p>
+     */
+    public static final Codec<String> MAPPING_NAME_CODEC = Codec.STRING.comapFlatMap(AdvancementMacros::validateMappingName, str -> str).stable();
+
+    /**
+     *      <p>Create an optional field, used for creating codecs for macro handlers. The difference between this and
+     *      {@link Codec#optionalFieldOf(String, Object)} is that this doesn't fail silently if the provided value couldn't be parsed.</p>
+     *
+     *      @param field        The name of the field.
+     *      @param fallback     The default value of the field if its value is not specified.
+     *      @return             The {@link MapCodec} for the specified field.
+     */
+    public static MapCodec<String> strictOptionalField(String field, String fallback) {
+        return Codecs.createStrictOptionalFieldCodec(MAPPING_NAME_CODEC, field, fallback);
+    }
 
     private final Identifier id;
 

@@ -16,8 +16,8 @@ public class LevitationCriterionMacro extends Macro {
     public static final String DURATION_KEY = "duration";
 
     public static final Codec<LevitationCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(START_LOCATION_KEY, START_LOCATION_KEY).forGetter(LevitationCriterionMacro::getStartLocationKey),
-        Codec.STRING.optionalFieldOf(DURATION_KEY, DURATION_KEY).forGetter(LevitationCriterionMacro::getDurationKey)
+        strictOptionalField(START_LOCATION_KEY, START_LOCATION_KEY).forGetter(LevitationCriterionMacro::getStartLocationKey),
+        strictOptionalField(DURATION_KEY, DURATION_KEY).forGetter(LevitationCriterionMacro::getDurationKey)
     ).apply(instance, LevitationCriterionMacro::new));
 
     private final String startLocationKey;

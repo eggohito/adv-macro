@@ -17,8 +17,8 @@ public class VillagerTradeCriterionMacro extends Macro {
     public static final String ITEM_KEY = "item";
 
     public static final Codec<VillagerTradeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(VILLAGER_KEY, VILLAGER_KEY).forGetter(VillagerTradeCriterionMacro::getVillagerKey),
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(VillagerTradeCriterionMacro::getItemKey)
+        strictOptionalField(VILLAGER_KEY, VILLAGER_KEY).forGetter(VillagerTradeCriterionMacro::getVillagerKey),
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(VillagerTradeCriterionMacro::getItemKey)
     ).apply(instance, VillagerTradeCriterionMacro::new));
 
     private final String villagerKey;

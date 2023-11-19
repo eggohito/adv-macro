@@ -20,11 +20,11 @@ public class PlayerHurtEntityCriterionMacro extends Macro {
     public static final String DAMAGE_BLOCKED_KEY = "damage_blocked";
 
     public static final Codec<PlayerHurtEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(PlayerHurtEntityCriterionMacro::getEntityKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_TYPE_KEY, DAMAGE_TYPE_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTypeKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_DEALT_KEY, DAMAGE_DEALT_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageDealtKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_TAKEN_KEY, DAMAGE_TAKEN_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTakenKey),
-        Codec.STRING.optionalFieldOf(DAMAGE_BLOCKED_KEY, DAMAGE_BLOCKED_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageBlockedKey)
+        strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(PlayerHurtEntityCriterionMacro::getEntityKey),
+        strictOptionalField(DAMAGE_TYPE_KEY, DAMAGE_TYPE_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTypeKey),
+        strictOptionalField(DAMAGE_DEALT_KEY, DAMAGE_DEALT_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageDealtKey),
+        strictOptionalField(DAMAGE_TAKEN_KEY, DAMAGE_TAKEN_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageTakenKey),
+        strictOptionalField(DAMAGE_BLOCKED_KEY, DAMAGE_BLOCKED_KEY).forGetter(PlayerHurtEntityCriterionMacro::getDamageBlockedKey)
     ).apply(instance, PlayerHurtEntityCriterionMacro::new));
 
     private final String entityKey;

@@ -16,8 +16,8 @@ public class EnchantedItemCriterionMacro extends Macro {
     public static final String LEVELS_KEY = "levels";
 
     public static final Codec<EnchantedItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(EnchantedItemCriterionMacro::getItemKey),
-        Codec.STRING.optionalFieldOf(LEVELS_KEY, LEVELS_KEY).forGetter(EnchantedItemCriterionMacro::getLevelsKey)
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(EnchantedItemCriterionMacro::getItemKey),
+        strictOptionalField(LEVELS_KEY, LEVELS_KEY).forGetter(EnchantedItemCriterionMacro::getLevelsKey)
     ).apply(instance, EnchantedItemCriterionMacro::new));
 
     private final String itemKey;

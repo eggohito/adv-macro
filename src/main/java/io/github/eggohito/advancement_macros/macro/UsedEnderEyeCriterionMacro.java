@@ -16,8 +16,8 @@ public class UsedEnderEyeCriterionMacro extends Macro {
     public static final String LOCATION_KEY = "location";
 
     public static final Codec<UsedEnderEyeCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(DISTANCE_KEY, DISTANCE_KEY).forGetter(UsedEnderEyeCriterionMacro::getDistanceKey),
-        Codec.STRING.optionalFieldOf(LOCATION_KEY, LOCATION_KEY).forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
+        strictOptionalField(DISTANCE_KEY, DISTANCE_KEY).forGetter(UsedEnderEyeCriterionMacro::getDistanceKey),
+        strictOptionalField(LOCATION_KEY, LOCATION_KEY).forGetter(UsedEnderEyeCriterionMacro::getStrongholdLocationKey)
     ).apply(instance, UsedEnderEyeCriterionMacro::new));
 
     private final String distanceKey;

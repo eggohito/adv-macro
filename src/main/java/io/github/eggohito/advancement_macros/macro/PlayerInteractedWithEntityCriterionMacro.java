@@ -17,8 +17,8 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
     public static final String INTERACTED_ENTITY_KEY_FIELD = "interacted_entity_key";
 
     public static Codec<PlayerInteractedWithEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(USED_ITEM_KEY_FIELD, "used_item").forGetter(PlayerInteractedWithEntityCriterionMacro::getUsedItemKey),
-        Codec.STRING.optionalFieldOf(INTERACTED_ENTITY_KEY_FIELD, "interacted_entity").forGetter(PlayerInteractedWithEntityCriterionMacro::getInteractedEntityKey)
+        strictOptionalField(USED_ITEM_KEY_FIELD, "used_item").forGetter(PlayerInteractedWithEntityCriterionMacro::getUsedItemKey),
+        strictOptionalField(INTERACTED_ENTITY_KEY_FIELD, "interacted_entity").forGetter(PlayerInteractedWithEntityCriterionMacro::getInteractedEntityKey)
     ).apply(instance, PlayerInteractedWithEntityCriterionMacro::new));
 
     private final String usedItemKey;

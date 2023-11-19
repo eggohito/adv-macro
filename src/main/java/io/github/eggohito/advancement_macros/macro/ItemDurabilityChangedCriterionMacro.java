@@ -17,9 +17,9 @@ public class ItemDurabilityChangedCriterionMacro extends Macro {
     public static final String DURABILITY_KEY = "durability";
 
     public static final Codec<ItemDurabilityChangedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getItemKey),
-        Codec.STRING.optionalFieldOf(DELTA_KEY, DELTA_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getDeltaKey),
-        Codec.STRING.optionalFieldOf(DURABILITY_KEY, DURABILITY_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getDurabilityKey)
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getItemKey),
+        strictOptionalField(DELTA_KEY, DELTA_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getDeltaKey),
+        strictOptionalField(DURABILITY_KEY, DURABILITY_KEY).forGetter(ItemDurabilityChangedCriterionMacro::getDurabilityKey)
     ).apply(instance, ItemDurabilityChangedCriterionMacro::new));
 
     private final String itemKey;

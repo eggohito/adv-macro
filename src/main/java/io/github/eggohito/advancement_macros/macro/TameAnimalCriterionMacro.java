@@ -14,7 +14,7 @@ public class TameAnimalCriterionMacro extends Macro {
     public static final String ENTITY_KEY = "entity_key";
 
     public static final Codec<TameAnimalCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(TameAnimalCriterionMacro::getEntityKey)
+        strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(TameAnimalCriterionMacro::getEntityKey)
     ).apply(instance, TameAnimalCriterionMacro::new));
 
     private final String entityKey;

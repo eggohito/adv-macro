@@ -15,7 +15,7 @@ public class ConsumeItemCriterionMacro extends Macro {
     public static final String ITEM_KEY = "item";
 
     public static final Codec<ConsumeItemCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(ConsumeItemCriterionMacro::getItemKey)
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ConsumeItemCriterionMacro::getItemKey)
     ).apply(instance, ConsumeItemCriterionMacro::new));
 
     private final String itemKey;

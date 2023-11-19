@@ -29,9 +29,9 @@ public abstract class OnKilledCriterionMacro extends Macro {
 
     protected static <T extends OnKilledCriterionMacro> Codec<T> getCodec(TriFunction<String, String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf(KILLER_KEY, KILLER_KEY).forGetter(OnKilledCriterionMacro::getKillerKey),
-            Codec.STRING.optionalFieldOf(VICTIM_KEY, VICTIM_KEY).forGetter(OnKilledCriterionMacro::getVictimKey),
-            Codec.STRING.optionalFieldOf(KILLING_BLOW_KEY, KILLING_BLOW_KEY).forGetter(OnKilledCriterionMacro::getKillingBlowKey)
+            strictOptionalField(KILLER_KEY, KILLER_KEY).forGetter(OnKilledCriterionMacro::getKillerKey),
+            strictOptionalField(VICTIM_KEY, VICTIM_KEY).forGetter(OnKilledCriterionMacro::getVictimKey),
+            strictOptionalField(KILLING_BLOW_KEY, KILLING_BLOW_KEY).forGetter(OnKilledCriterionMacro::getKillingBlowKey)
         ).apply(instance, macroFunction::apply));
     }
 

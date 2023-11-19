@@ -18,7 +18,7 @@ public class ChanneledLightningCriterionMacro extends Macro {
     public static final String VICTIMS_KEY = "victims";
 
     public static final Codec<ChanneledLightningCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(VICTIMS_KEY, VICTIMS_KEY).forGetter(ChanneledLightningCriterionMacro::getVictimsKey)
+        strictOptionalField(VICTIMS_KEY, VICTIMS_KEY).forGetter(ChanneledLightningCriterionMacro::getVictimsKey)
     ).apply(instance, ChanneledLightningCriterionMacro::new));
 
     private final String victimsKey;

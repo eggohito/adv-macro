@@ -15,8 +15,8 @@ public class EffectsChangedCriterionMacro extends Macro {
     public static final String SOURCE_KEY = "source";
 
     public static final Codec<EffectsChangedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(EFFECTS_KEY, EFFECTS_KEY).forGetter(EffectsChangedCriterionMacro::getEffectsKey),
-        Codec.STRING.optionalFieldOf(SOURCE_KEY, SOURCE_KEY).forGetter(EffectsChangedCriterionMacro::getSourceKey)
+        strictOptionalField(EFFECTS_KEY, EFFECTS_KEY).forGetter(EffectsChangedCriterionMacro::getEffectsKey),
+        strictOptionalField(SOURCE_KEY, SOURCE_KEY).forGetter(EffectsChangedCriterionMacro::getSourceKey)
     ).apply(instance, EffectsChangedCriterionMacro::new));
 
     private final String effectsKey;

@@ -13,7 +13,7 @@ public class ConstructBeaconCriterionMacro extends Macro {
     public static final String LEVEL_KEY = "level";
 
     public static Codec<ConstructBeaconCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(LEVEL_KEY, LEVEL_KEY).forGetter(ConstructBeaconCriterionMacro::getLevelKey)
+        strictOptionalField(LEVEL_KEY, LEVEL_KEY).forGetter(ConstructBeaconCriterionMacro::getLevelKey)
     ).apply(instance, ConstructBeaconCriterionMacro::new));
 
     private final String levelKey;

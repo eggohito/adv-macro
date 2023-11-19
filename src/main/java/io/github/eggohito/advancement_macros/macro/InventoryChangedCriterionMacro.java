@@ -18,10 +18,10 @@ public class InventoryChangedCriterionMacro extends Macro {
     public static final String EMPTY_SLOTS_KEY = "empty_slots";
 
     public static final Codec<InventoryChangedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ITEM_KEY, ITEM_KEY).forGetter(InventoryChangedCriterionMacro::getItemKey),
-        Codec.STRING.optionalFieldOf(FULL_SLOTS_KEY, FULL_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getFullSlotsKey),
-        Codec.STRING.optionalFieldOf(OCCUPIED_SLOTS_KEY, OCCUPIED_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getOccupiedSlotsKey),
-        Codec.STRING.optionalFieldOf(EMPTY_SLOTS_KEY, EMPTY_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getEmptySlotsKey)
+        strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(InventoryChangedCriterionMacro::getItemKey),
+        strictOptionalField(FULL_SLOTS_KEY, FULL_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getFullSlotsKey),
+        strictOptionalField(OCCUPIED_SLOTS_KEY, OCCUPIED_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getOccupiedSlotsKey),
+        strictOptionalField(EMPTY_SLOTS_KEY, EMPTY_SLOTS_KEY).forGetter(InventoryChangedCriterionMacro::getEmptySlotsKey)
     ).apply(instance, InventoryChangedCriterionMacro::new));
 
     private final String itemKey;

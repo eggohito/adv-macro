@@ -18,9 +18,9 @@ public class TargetHitCriterionMacro extends Macro {
     public static final String SIGNAL_STRENGTH_KEY = "signal_strength";
 
     public static final Codec<TargetHitCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(PROJECTILE_KEY, PROJECTILE_KEY).forGetter(TargetHitCriterionMacro::getProjectileKey),
-        Codec.STRING.optionalFieldOf(HIT_LOCATION_KEY, HIT_LOCATION_KEY).forGetter(TargetHitCriterionMacro::getHitLocationKey),
-        Codec.STRING.optionalFieldOf(SIGNAL_STRENGTH_KEY, SIGNAL_STRENGTH_KEY).forGetter(TargetHitCriterionMacro::getSignalStrengthKey)
+        strictOptionalField(PROJECTILE_KEY, PROJECTILE_KEY).forGetter(TargetHitCriterionMacro::getProjectileKey),
+        strictOptionalField(HIT_LOCATION_KEY, HIT_LOCATION_KEY).forGetter(TargetHitCriterionMacro::getHitLocationKey),
+        strictOptionalField(SIGNAL_STRENGTH_KEY, SIGNAL_STRENGTH_KEY).forGetter(TargetHitCriterionMacro::getSignalStrengthKey)
     ).apply(instance, TargetHitCriterionMacro::new));
 
     private final String projectileKey;

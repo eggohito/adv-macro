@@ -19,8 +19,8 @@ public class KilledByCrossbowCriterionMacro extends Macro {
     public static final String VICTIMS_KEY = "victims";
 
     public static final Codec<KilledByCrossbowCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(UNIQUE_ENTITY_TYPES_KEY, UNIQUE_ENTITY_TYPES_KEY).forGetter(KilledByCrossbowCriterionMacro::getUniqueEntityTypesKey),
-        Codec.STRING.optionalFieldOf(VICTIMS_KEY, VICTIMS_KEY).forGetter(KilledByCrossbowCriterionMacro::getVictimsKey)
+        strictOptionalField(UNIQUE_ENTITY_TYPES_KEY, UNIQUE_ENTITY_TYPES_KEY).forGetter(KilledByCrossbowCriterionMacro::getUniqueEntityTypesKey),
+        strictOptionalField(VICTIMS_KEY, VICTIMS_KEY).forGetter(KilledByCrossbowCriterionMacro::getVictimsKey)
     ).apply(instance, KilledByCrossbowCriterionMacro::new));
 
     private final String uniqueEntityTypesKey;

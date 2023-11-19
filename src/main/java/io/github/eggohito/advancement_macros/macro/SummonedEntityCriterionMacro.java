@@ -14,7 +14,7 @@ public class SummonedEntityCriterionMacro extends Macro {
     public static final String ENTITY_KEY = "entity";
 
     public static final Codec<SummonedEntityCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(ENTITY_KEY, ENTITY_KEY).forGetter(SummonedEntityCriterionMacro::getEntityKey)
+        strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(SummonedEntityCriterionMacro::getEntityKey)
     ).apply(instance, SummonedEntityCriterionMacro::new));
 
     private final String entityKey;

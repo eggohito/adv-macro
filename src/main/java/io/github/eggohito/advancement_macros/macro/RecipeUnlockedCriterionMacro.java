@@ -21,8 +21,8 @@ public class RecipeUnlockedCriterionMacro extends Macro {
     public static final String INGREDIENTS_KEY = "ingredients";
 
     public static final Codec<RecipeUnlockedCriterionMacro> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.STRING.optionalFieldOf(RECIPE_KEY, RECIPE_KEY).forGetter(RecipeUnlockedCriterionMacro::getRecipeKey),
-        Codec.STRING.optionalFieldOf(INGREDIENTS_KEY, INGREDIENTS_KEY).forGetter(RecipeUnlockedCriterionMacro::getIngredientsKey)
+        strictOptionalField(RECIPE_KEY, RECIPE_KEY).forGetter(RecipeUnlockedCriterionMacro::getRecipeKey),
+        strictOptionalField(INGREDIENTS_KEY, INGREDIENTS_KEY).forGetter(RecipeUnlockedCriterionMacro::getIngredientsKey)
     ).apply(instance, RecipeUnlockedCriterionMacro::new));
 
     private final String recipeKey;
