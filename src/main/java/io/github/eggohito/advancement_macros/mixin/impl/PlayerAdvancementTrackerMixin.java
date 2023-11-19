@@ -29,10 +29,15 @@ public abstract class PlayerAdvancementTrackerMixin {
         //  around an issue with the reward function failing entirely if the placeholder key doesn't exist
         for (String otherCriterionName : advancement.criteria().keySet()) {
 
-            //  Replace all the invalid criterion name characters from the criterion name with "_"
-            String processedCriterionName = AdvancementMacros.INVALID_CRITERION_CHARACTERS
+            //  Replace certain characters (e.g: `:`, `.`, `/`, `-`) with an underscore
+            String processedCriterionName = AdvancementMacros.REPLACEABLE_CHARACTERS
                 .matcher(otherCriterionName)
                 .replaceAll("_");
+
+            //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and `_`
+            processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
+                .matcher(processedCriterionName)
+                .replaceAll("");
 
             //  Pass an empty NBT compound to the rewards of the advancement if the other criterion
             //  doesn't have any data set
