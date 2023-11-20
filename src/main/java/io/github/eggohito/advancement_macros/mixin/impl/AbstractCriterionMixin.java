@@ -2,8 +2,8 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
+import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import io.github.eggohito.advancement_macros.access.MacroContext;
-import io.github.eggohito.advancement_macros.access.MacroData;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
@@ -76,7 +76,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         AdvancementCriterion<?> advancementCriterion = advancement.criteria().get(criterionName);
         Macro macro = ((MacroStorage) (Object) advancementCriterion).advancement_macros$getMacro();
 
-        //  Stop early if the macro from the criterion does not exist (e.g: wasn't serialized properly)
+        //  Skip this method handler by this point if the macro from the criterion does not exist (e.g: wasn't serialized properly)
         if (macro == null) {
             return;
         }
@@ -97,8 +97,8 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
 
         //  Pass the serialized NBT data to the rewards of the advancement
         //  that contains the criterion
-        ((MacroData) advancement.rewards())
-            .advancement_macros$getData()
+        ((AdvancementRewardsData) advancement.rewards())
+            .advancement_macros$getNbt()
             .put(processedCriterionName, criterionNbtData);
 
         //  Reset the trigger context to null

@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin.impl;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
-import io.github.eggohito.advancement_macros.access.MacroData;
+import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
@@ -18,7 +18,7 @@ public abstract class PlayerAdvancementTrackerMixin {
     private void advancement_macros$writeEmptyNbtToRewards(AdvancementEntry advancementEntry, String criterionName, CallbackInfoReturnable<Boolean> cir) {
 
         Advancement advancement = advancementEntry.value();
-        NbtCompound macroData = ((MacroData) advancement.rewards()).advancement_macros$getData();
+        NbtCompound macroData = ((AdvancementRewardsData) advancement.rewards()).advancement_macros$getNbt();
 
         //  Skip this method handler by this point if the rewards of the advancement didn't have any data set
         if (macroData.isEmpty()) {

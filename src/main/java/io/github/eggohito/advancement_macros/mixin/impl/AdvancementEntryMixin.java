@@ -1,6 +1,6 @@
 package io.github.eggohito.advancement_macros.mixin.impl;
 
-import io.github.eggohito.advancement_macros.access.IdentifiableAdvancementRewards;
+import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.util.Identifier;
@@ -14,7 +14,7 @@ public abstract class AdvancementEntryMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private static void advancement_macros$cacheIdToRewards(Identifier id, Advancement advancement, CallbackInfo ci) {
-        ((IdentifiableAdvancementRewards) advancement.rewards()).advancement_macros$setId(id);
+        ((AdvancementRewardsData) advancement.rewards()).advancement_macros$setId(id);
     }
 
 }

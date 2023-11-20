@@ -2,7 +2,7 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.eggohito.advancement_macros.access.IdentifiableAdvancementRewards;
+import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -16,7 +16,7 @@ public abstract class AdvancementMixin {
 
     @Inject(method = "fromJson", at = @At("RETURN"))
     private static void advancement_macros$cacheIdToRewards(JsonObject json, AdvancementEntityPredicateDeserializer predicateDeserializer, CallbackInfoReturnable<Advancement> cir, @Local AdvancementRewards advancementRewards) {
-        ((IdentifiableAdvancementRewards) advancementRewards).advancement_macros$setId(predicateDeserializer.getAdvancementId());
+        ((AdvancementRewardsData) advancementRewards).advancement_macros$setId(predicateDeserializer.getAdvancementId());
     }
 
 }
