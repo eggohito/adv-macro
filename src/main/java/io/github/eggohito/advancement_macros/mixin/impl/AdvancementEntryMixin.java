@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AdvancementEntryMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private static void advancement_macros$cacheIdToRewards(Identifier id, Advancement advancement, CallbackInfo ci) {
+    private void advancement_macros$cacheIdToRewards(Identifier id, Advancement advancement, CallbackInfo ci) {
         ((AdvancementRewardsData) advancement.rewards()).advancement_macros$setId(id);
     }
 
