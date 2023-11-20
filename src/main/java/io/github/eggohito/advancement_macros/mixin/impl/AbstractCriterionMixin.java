@@ -81,25 +81,35 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
             return;
         }
 
-        //  Replace certain characters (e.g: `:`, `.`, `/`, `-`) with an underscore
-        String processedCriterionName = AdvancementMacros.REPLACEABLE_CHARACTERS
-            .matcher(criterionName)
-            .replaceAll("_");
-
-        //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and _
-        processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
-            .matcher(processedCriterionName)
-            .replaceAll("");
-
         //  Serialize the data of the criterion trigger to NBT
         NbtCompound criterionNbtData = new NbtCompound();
         macro.writeToNbt(criterionNbtData, advancement_macros$triggerContext);
 
-        //  Pass the serialized NBT data to the rewards of the advancement
-        //  that contains the criterion
-        ((AdvancementRewardsData) advancement.rewards())
-            .advancement_macros$getNbt()
-            .put(processedCriterionName, criterionNbtData);
+        //  Get the duck interface for storing data on the rewards of the advancement
+        AdvancementRewardsData rewardsData = (AdvancementRewardsData) advancement.rewards();
+
+        //  If the advancement only has 1 criterion, put the NBT of the criterion directly
+        if (advancement.criteria().size() == 1) {
+            rewardsData.advancement_macros$setNbt(criterionNbtData);
+        }
+
+        //  Otherwise:
+        else {
+
+            //  Replace certain characters (e.g: `:`, `.`, `/`, `-`) with an underscore
+            String processedCriterionName = AdvancementMacros.REPLACEABLE_CHARACTERS
+                .matcher(criterionName)
+                .replaceAll("_");
+
+            //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and _
+            processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
+                .matcher(processedCriterionName)
+                .replaceAll("");
+
+            //  Put the NBT of the criterion in another NBT compound
+            rewardsData.advancement_macros$getNbt().put(processedCriterionName, criterionNbtData);
+
+        }
 
         //  Reset the trigger context to null
         advancement_macros$triggerContext = null;

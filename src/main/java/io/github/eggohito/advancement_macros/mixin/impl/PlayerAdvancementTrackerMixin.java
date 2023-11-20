@@ -21,7 +21,7 @@ public abstract class PlayerAdvancementTrackerMixin {
         NbtCompound macroData = ((AdvancementRewardsData) advancement.rewards()).advancement_macros$getNbt();
 
         //  Skip this method handler by this point if the rewards of the advancement didn't have any data set
-        if (macroData.isEmpty()) {
+        if (macroData.isEmpty() || advancement.criteria().size() == 1) {
             return;
         }
 
