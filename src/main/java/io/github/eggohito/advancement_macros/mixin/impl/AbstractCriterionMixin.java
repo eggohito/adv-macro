@@ -5,6 +5,7 @@ import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.access.MacroContext;
 import io.github.eggohito.advancement_macros.access.MacroData;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
+import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -35,16 +36,16 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     public void advancement_macros$setContext(Criterion<?> criterion, Consumer<TriggerContext> contextConsumer) {
 
         //  Get the ID of the passed criterion
-        Identifier criterionId = Criteria.getId(criterion);
+        Identifier criterionTriggerId = Criteria.getId(criterion);
 
         //  Don't set the trigger context if the passed criterion trigger is not registered,
         //  or if the criterion trigger doesn't have any registered macro handlers
-        if (criterionId == null || !AdvancementMacros.REGISTRY.containsId(criterionId)) {
+        if (criterionTriggerId == null || !AdvancementMacros.REGISTRY.containsId(criterionTriggerId)) {
             return;
         }
 
         //  Instantiate a trigger context and initialize its values
-        TriggerContext context = new TriggerContext(criterionId);
+        TriggerContext context = new TriggerContext(criterionTriggerId);
         contextConsumer.accept(context);
 
         advancement_macros$triggerContext = context;
@@ -66,11 +67,17 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         AdvancementEntry advancementEntry = conditionsContainer.advancement();
         Advancement advancement = advancementEntry.value();
 
-        //  Get the actual criterion from the criterion
-        AdvancementCriterion<?> advancementCriterion = advancement.criteria().get(criterionName);
+        //  Stop early if the criterion that has the criterion name does not somehow exist in the advancement
+        if (!advancement.criteria().containsKey(criterionName)) {
+            return;
+        }
 
-        //  Skip this method handler if the actual criterion of the criterion is null (it shouldn't be)
-        if (advancementCriterion == null) {
+        //  Get the actual criterion and the macro from the criterion
+        AdvancementCriterion<?> advancementCriterion = advancement.criteria().get(criterionName);
+        Macro macro = ((MacroStorage) (Object) advancementCriterion).advancement_macros$getMacro();
+
+        //  Stop early if the macro from the criterion does not exist (e.g: wasn't serialized properly)
+        if (macro == null) {
             return;
         }
 
@@ -79,16 +86,14 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
             .matcher(criterionName)
             .replaceAll("_");
 
-        //  Remove characters that aren't a to z, A to Z, 0 to 9, and _
+        //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and _
         processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
             .matcher(processedCriterionName)
             .replaceAll("");
 
         //  Serialize the data of the criterion trigger to NBT
         NbtCompound criterionNbtData = new NbtCompound();
-        ((MacroStorage) (Object) advancementCriterion)
-            .advancement_macros$getMacro()
-            .writeToNbt(criterionNbtData, advancement_macros$triggerContext);
+        macro.writeToNbt(criterionNbtData, advancement_macros$triggerContext);
 
         //  Pass the serialized NBT data to the rewards of the advancement
         //  that contains the criterion

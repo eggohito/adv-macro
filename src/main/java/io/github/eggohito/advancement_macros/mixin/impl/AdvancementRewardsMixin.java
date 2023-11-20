@@ -1,7 +1,7 @@
 package io.github.eggohito.advancement_macros.mixin.impl;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
-import io.github.eggohito.advancement_macros.access.AdvancementRewardsAccess;
+import io.github.eggohito.advancement_macros.access.IdentifiableAdvancementRewards;
 import io.github.eggohito.advancement_macros.access.MacroData;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.nbt.NbtCompound;
@@ -21,38 +21,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("unused")
 @Mixin(AdvancementRewards.class)
-public abstract class AdvancementRewardsMixin implements MacroData, AdvancementRewardsAccess {
-
-    @Shadow
-    @Final
-    private CommandFunction.LazyContainer function;
+public abstract class AdvancementRewardsMixin implements MacroData, IdentifiableAdvancementRewards {
 
     @Unique
-    private Identifier advancement_macros$advancementId;
+    private Identifier advancement_macros$id;
 
     @Unique
     private NbtCompound advancement_macros$data = new NbtCompound();
 
     @Override
-    public void advancement_macros$setAdvancementId(Identifier id) {
-        advancement_macros$advancementId = id;
+    public void advancement_macros$setId(Identifier id) {
+        this.advancement_macros$id = id;
     }
 
     @Override
     public NbtCompound advancement_macros$getData() {
-        return advancement_macros$getData(false);
+        return advancement_macros$data;
     }
 
     @Override
-    public NbtCompound advancement_macros$getData(boolean strict) {
-
-        if (advancement_macros$data == null && !strict) {
-            advancement_macros$data = new NbtCompound();
-        }
-
-        return advancement_macros$data;
-
+    public void advancement_macros$setData(NbtCompound data) {
+        this.advancement_macros$data = data == null ? new NbtCompound() : data;
     }
+
+    @Shadow
+    @Final
+    private CommandFunction.LazyContainer function;
 
     @Inject(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/function/CommandFunction$LazyContainer;get(Lnet/minecraft/server/function/CommandFunctionManager;)Ljava/util/Optional;"), cancellable = true)
     private void advancement_macros$overrideFunctionCall(ServerPlayerEntity player, CallbackInfo ci) {
@@ -85,11 +79,11 @@ public abstract class AdvancementRewardsMixin implements MacroData, AdvancementR
                 .execute(function, source, null, advancement_macros$data);
 
         } catch (MacroException e) {
-            AdvancementMacros.LOGGER.error("Error trying to execute reward function \"{}\" for advancement \"{}\": {}", function.getId(), advancement_macros$advancementId, e.getMessage().getString());
+            AdvancementMacros.LOGGER.error("Error trying to execute reward function \"{}\" for advancement \"{}\": {}", function.getId(), advancement_macros$id, e.getMessage().getString());
         }
 
         //  Reset the cached NBT data
-        advancement_macros$data = null;
+        advancement_macros$data = new NbtCompound();
         ci.cancel();
 
     }

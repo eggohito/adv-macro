@@ -18,10 +18,10 @@ public abstract class PlayerAdvancementTrackerMixin {
     private void advancement_macros$writeEmptyNbtToRewards(AdvancementEntry advancementEntry, String criterionName, CallbackInfoReturnable<Boolean> cir) {
 
         Advancement advancement = advancementEntry.value();
-        NbtCompound macroData = ((MacroData) advancement.rewards()).advancement_macros$getData(true);
+        NbtCompound macroData = ((MacroData) advancement.rewards()).advancement_macros$getData();
 
         //  Skip this method handler by this point if the rewards of the advancement didn't have any data set
-        if (macroData == null) {
+        if (macroData.isEmpty()) {
             return;
         }
 

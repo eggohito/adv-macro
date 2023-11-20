@@ -41,8 +41,8 @@
         "UsingitemCriterionMixin",
         "VillagerTradeCriterionMixin",
         "impl.AbstractCriterionMixin",
-        "impl.AdvancementBuilderMixin",
         "impl.AdvancementCriterionMixin",
+        "impl.AdvancementEntryMixin",
         "impl.AdvancementMixin",
         "impl.AdvancementRewardsMixin",
         "impl.PlayerAdvancementTrackerMixin"
