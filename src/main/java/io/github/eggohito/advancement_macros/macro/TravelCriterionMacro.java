@@ -21,7 +21,7 @@ public abstract class TravelCriterionMacro extends Macro {
         this.startLocationKey = startLocationKey;
     }
 
-    protected static <T extends TravelCriterionMacro> Codec<T> getCodec(Function<String, T> macroFunction) {
+    protected static <T extends TravelCriterionMacro> Codec<T> createCodec(Function<String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             strictOptionalField(START_LOCATION_KEY, START_LOCATION_KEY).forGetter(TravelCriterionMacro::getStartLocationKey)
         ).apply(instance, macroFunction));

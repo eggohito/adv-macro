@@ -9,7 +9,7 @@ import net.minecraft.util.Pair;
 
 public class PlayerKilledEntityCriterionMacro extends OnKilledCriterionMacro {
 
-    public static final Codec<PlayerKilledEntityCriterionMacro> CODEC = getCodec(PlayerKilledEntityCriterionMacro::new);
+    public static final Codec<PlayerKilledEntityCriterionMacro> CODEC = createCodec(PlayerKilledEntityCriterionMacro::new);
 
     public PlayerKilledEntityCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
         super(Criteria.PLAYER_KILLED_ENTITY, killerKey, victimKey, killingBlowKey);

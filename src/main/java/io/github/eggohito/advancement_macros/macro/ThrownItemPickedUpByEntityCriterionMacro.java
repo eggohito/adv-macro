@@ -19,7 +19,7 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
     public static final String ITEM_KEY = "item";
     public static final String ENTITY_KEY = "entity";
 
-    public static final Codec<ThrownItemPickedUpByEntityCriterionMacro> CODEC = getCodec(ThrownItemPickedUpByEntityCriterionMacro::new);
+    public static final Codec<ThrownItemPickedUpByEntityCriterionMacro> CODEC = createCodec(ThrownItemPickedUpByEntityCriterionMacro::new);
 
     private final String itemKey;
     private final String entityKey;
@@ -34,7 +34,7 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
         this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, itemKey, entityKey);
     }
 
-    protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
+    protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> createCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getItemKey),
             strictOptionalField(ENTITY_KEY, ENTITY_KEY).forGetter(ThrownItemPickedUpByEntityCriterionMacro::getEntityKey)

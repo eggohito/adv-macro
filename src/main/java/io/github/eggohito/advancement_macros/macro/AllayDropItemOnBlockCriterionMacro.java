@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class AllayDropItemOnBlockCriterionMacro extends ItemCriterionMacro {
 
-    public static final Codec<AllayDropItemOnBlockCriterionMacro> CODEC = getCodec(AllayDropItemOnBlockCriterionMacro::new);
+    public static final Codec<AllayDropItemOnBlockCriterionMacro> CODEC = createCodec(AllayDropItemOnBlockCriterionMacro::new);
 
     public AllayDropItemOnBlockCriterionMacro(String locationKey, String itemKey) {
         super(Criteria.ALLAY_DROP_ITEM_ON_BLOCK, locationKey, itemKey);

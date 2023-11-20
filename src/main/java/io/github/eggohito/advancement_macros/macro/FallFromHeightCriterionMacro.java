@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class FallFromHeightCriterionMacro extends TravelCriterionMacro {
 
-    public static final Codec<FallFromHeightCriterionMacro> CODEC = getCodec(FallFromHeightCriterionMacro::new);
+    public static final Codec<FallFromHeightCriterionMacro> CODEC = createCodec(FallFromHeightCriterionMacro::new);
 
     public FallFromHeightCriterionMacro(String startLocationKey) {
         super(Criteria.FALL_FROM_HEIGHT, startLocationKey);

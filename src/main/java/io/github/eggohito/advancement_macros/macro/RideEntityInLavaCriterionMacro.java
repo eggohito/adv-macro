@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class RideEntityInLavaCriterionMacro extends TravelCriterionMacro {
 
-    public static final Codec<RideEntityInLavaCriterionMacro> CODEC = getCodec(RideEntityInLavaCriterionMacro::new);
+    public static final Codec<RideEntityInLavaCriterionMacro> CODEC = createCodec(RideEntityInLavaCriterionMacro::new);
 
     public RideEntityInLavaCriterionMacro(String startLocationKey) {
         super(Criteria.RIDE_ENTITY_IN_LAVA, startLocationKey);

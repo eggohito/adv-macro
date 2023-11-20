@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class PlacedBlockCriterionMacro extends ItemCriterionMacro {
 
-    public static final Codec<PlacedBlockCriterionMacro> CODEC = getCodec(PlacedBlockCriterionMacro::new);
+    public static final Codec<PlacedBlockCriterionMacro> CODEC = createCodec(PlacedBlockCriterionMacro::new);
 
     public PlacedBlockCriterionMacro(String locationKey, String itemKey) {
         super(Criteria.PLACED_BLOCK, locationKey, itemKey);

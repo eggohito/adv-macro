@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class KillMobNearSculkCatalystCriterionMacro extends OnKilledCriterionMacro {
 
-    public static final Codec<KillMobNearSculkCatalystCriterionMacro> CODEC = getCodec(KillMobNearSculkCatalystCriterionMacro::new);
+    public static final Codec<KillMobNearSculkCatalystCriterionMacro> CODEC = createCodec(KillMobNearSculkCatalystCriterionMacro::new);
 
     public KillMobNearSculkCatalystCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
         super(Criteria.KILL_MOB_NEAR_SCULK_CATALYST, killerKey, victimKey, killingBlowKey);

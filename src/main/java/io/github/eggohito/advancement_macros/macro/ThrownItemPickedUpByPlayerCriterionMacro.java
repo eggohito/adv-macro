@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class ThrownItemPickedUpByPlayerCriterionMacro extends ThrownItemPickedUpByEntityCriterionMacro {
 
-    public static final Codec<ThrownItemPickedUpByPlayerCriterionMacro> CODEC = getCodec(ThrownItemPickedUpByPlayerCriterionMacro::new);
+    public static final Codec<ThrownItemPickedUpByPlayerCriterionMacro> CODEC = createCodec(ThrownItemPickedUpByPlayerCriterionMacro::new);
 
     public ThrownItemPickedUpByPlayerCriterionMacro(String thrownItemKey, String entityKey) {
         super(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER, thrownItemKey, entityKey);

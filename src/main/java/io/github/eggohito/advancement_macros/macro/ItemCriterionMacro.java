@@ -26,7 +26,7 @@ public abstract class ItemCriterionMacro extends Macro {
         this.itemKey = itemKey;
     }
 
-    protected static <T extends ItemCriterionMacro> Codec<T> getCodec(BiFunction<String, String, T> macroFunction) {
+    protected static <T extends ItemCriterionMacro> Codec<T> createCodec(BiFunction<String, String, T> macroFunction) {
         return RecordCodecBuilder.create(instance -> instance.group(
             strictOptionalField(LOCATION_KEY, LOCATION_KEY).forGetter(ItemCriterionMacro::getLocationKey),
             strictOptionalField(ITEM_KEY, ITEM_KEY).forGetter(ItemCriterionMacro::getItemKey)

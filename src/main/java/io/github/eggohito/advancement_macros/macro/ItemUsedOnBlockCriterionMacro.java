@@ -6,7 +6,7 @@ import net.minecraft.util.Pair;
 
 public class ItemUsedOnBlockCriterionMacro extends ItemCriterionMacro {
 
-    public static final Codec<ItemUsedOnBlockCriterionMacro> CODEC = getCodec(ItemUsedOnBlockCriterionMacro::new);
+    public static final Codec<ItemUsedOnBlockCriterionMacro> CODEC = createCodec(ItemUsedOnBlockCriterionMacro::new);
 
     public ItemUsedOnBlockCriterionMacro(String locationKey, String itemKey) {
         super(Criteria.ITEM_USED_ON_BLOCK, locationKey, itemKey);
