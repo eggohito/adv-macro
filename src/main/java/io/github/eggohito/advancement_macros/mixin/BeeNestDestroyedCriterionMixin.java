@@ -6,6 +6,7 @@ import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.BeeNestDestroyedCriterion;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,8 @@ public abstract class BeeNestDestroyedCriterionMixin extends AbstractCriterion<B
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/criterion/BeeNestDestroyedCriterion;trigger(Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Predicate;)V"))
     private void advancement_macros$passContext(ServerPlayerEntity player, BlockState state, ItemStack stack, int beeCount, CallbackInfo ci) {
         ((MacroContext) this).advancement_macros$setContext(this, triggerContext -> triggerContext
-            .add(BeeNestDestroyedCriterionMacro.BLOCK_KEY, state)
+            .add(BeeNestDestroyedCriterionMacro.BLOCK_KEY, Registries.BLOCK.getId(state.getBlock()))
+            .add(BeeNestDestroyedCriterionMacro.STATE_KEY, state)
             .add(BeeNestDestroyedCriterionMacro.ITEM_KEY, stack)
             .add(BeeNestDestroyedCriterionMacro.NUM_BEES_INSIDE_KEY, beeCount));
     }
