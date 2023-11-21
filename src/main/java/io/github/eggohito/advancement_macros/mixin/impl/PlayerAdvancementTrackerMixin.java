@@ -67,7 +67,7 @@ public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTr
 
         //  Reverse the macro data list if the specified pass order is "last"
         //  (meaning the data of the last criterion will be passed)
-        if (criteria.size() > 1 && passOrder == PassOrder.LAST) {
+        if ((criteria.size() > 1 && macroDataList.size() > 1) && passOrder == PassOrder.LAST) {
             Collections.reverse(macroDataList);
         }
 
