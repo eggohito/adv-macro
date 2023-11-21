@@ -2,11 +2,13 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
+import io.github.eggohito.advancement_macros.access.AdvancementData;
 import io.github.eggohito.advancement_macros.access.MacroContext;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
 import io.github.eggohito.advancement_macros.access.PlayerMacroDataTracker;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
+import io.github.eggohito.advancement_macros.util.PassOrder;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
@@ -70,7 +72,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         Advancement advancement = advancementEntry.value();
 
         //  Stop early if the criterion that has the criterion name does not somehow exist in the advancement
-        if (!advancement.criteria().containsKey(criterionName)) {
+        if (!advancement.criteria().containsKey(criterionName) || ((AdvancementData) (Object) advancement).advancement_macros$getPassOrder() == PassOrder.NONE) {
             advancement_macros$triggerContext = null;
             return;
         }

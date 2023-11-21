@@ -23,6 +23,7 @@ public class AdvancementMacros implements ModInitializer {
 	public static final String MOD_NAMESPACE = "advancement-macros";
 	public static final String MAPPING_KEY = of("mapping").toString();
 	public static final String CODEC_TYPE_KEY = of("trigger").toString();
+	public static final String PASS_ORDER_KEY = of("pass_order").toString();
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAMESPACE);
 

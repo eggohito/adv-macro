@@ -43,6 +43,7 @@
         "impl.AbstractCriterionMixin",
         "impl.AdvancementCriterionMixin",
         "impl.AdvancementEntryMixin",
+        "impl.AdvancementMixin",
         "impl.AdvancementRewardsMixin",
         "impl.PlayerAdvancementTrackerMixin"
     ],

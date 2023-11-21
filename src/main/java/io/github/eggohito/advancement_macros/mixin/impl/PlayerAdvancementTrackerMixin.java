@@ -1,8 +1,10 @@
 package io.github.eggohito.advancement_macros.mixin.impl;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
+import io.github.eggohito.advancement_macros.access.AdvancementData;
 import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import io.github.eggohito.advancement_macros.access.PlayerMacroDataTracker;
+import io.github.eggohito.advancement_macros.util.PassOrder;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
@@ -14,12 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
+@SuppressWarnings("DataFlowIssue")
 @Mixin(PlayerAdvancementTracker.class)
 public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTracker {
 
@@ -46,8 +46,11 @@ public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTr
         Advancement advancement = advancementEntry.value();
         Map<String, AdvancementCriterion<?>> criteria = advancement.criteria();
 
+        //  Get the specified pass order from the advancement
+        PassOrder passOrder = ((AdvancementData) (Object) advancement).advancement_macros$getPassOrder();
+
         //  If the advancement has more than 1 criterion:
-        if (criteria.size() > 1) {
+        if (criteria.size() > 1 && passOrder == PassOrder.AUTO) {
 
             //  Pass an empty NBT compound to other criteria that aren't triggered (e.g: specified as optional). This is to work
             //  around an issue with the reward function failing entirely if the placeholder key doesn't exist
@@ -60,12 +63,19 @@ public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTr
 
         //  Create an NBT compound to pass to the rewards of the advancement
         NbtCompound nbtDataToPass = new NbtCompound();
-        Set<Map.Entry<String, NbtCompound>> macroDataSet = macroData.entrySet();
+        List<Map.Entry<String, NbtCompound>> macroDataList = new LinkedList<>(macroData.entrySet());
 
-        for (Map.Entry<String, NbtCompound> entry : macroDataSet) {
+        //  Reverse the macro data list if the specified pass order is "last"
+        //  (meaning the data of the last criterion will be passed)
+        if (criteria.size() > 1 && passOrder == PassOrder.LAST) {
+            Collections.reverse(macroDataList);
+        }
+
+        for (Map.Entry<String, NbtCompound> entry : macroDataList) {
 
             //  Use the data of the criterion directly if the advancement only has one criterion
-            if (criteria.size() == 1) {
+            //  or if the specified pass order is NOT "auto"
+            if (criteria.size() == 1 || passOrder != PassOrder.AUTO) {
                 nbtDataToPass = entry.getValue();
                 break;
             }
