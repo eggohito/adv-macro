@@ -2,50 +2,94 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
+import io.github.eggohito.advancement_macros.access.PlayerMacroDataTracker;
 import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+
 @Mixin(PlayerAdvancementTracker.class)
-public abstract class PlayerAdvancementTrackerMixin {
+public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTracker {
+
+    @Unique
+    private final Map<AdvancementEntry, Map<String, NbtCompound>> advancement_macros$trackedMacroData = new HashMap<>();
+
+    @Override
+    public Map<AdvancementEntry, Map<String, NbtCompound>> advancement_macros$getAll() {
+        return advancement_macros$trackedMacroData;
+    }
 
     @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/AdvancementRewards;apply(Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
     private void advancement_macros$writeEmptyNbtToRewards(AdvancementEntry advancementEntry, String criterionName, CallbackInfoReturnable<Boolean> cir) {
 
-        Advancement advancement = advancementEntry.value();
-        NbtCompound macroData = ((AdvancementRewardsData) advancement.rewards()).advancement_macros$getNbt();
+        Map<String, NbtCompound> macroData = this.advancement_macros$trackedMacroData
+            .computeIfAbsent(advancementEntry, id -> new LinkedHashMap<>());
 
-        //  Skip this method handler by this point if the rewards of the advancement didn't have any data set
-        if (macroData.isEmpty() || advancement.criteria().size() == 1) {
+        //  Skip this method handler by this point if there isn't any tracked macro data
+        if (macroData.isEmpty()) {
             return;
         }
 
-        //  Pass an empty NBT compound to other criteria that aren't triggered (e.g: specified as optional). This is to work
-        //  around an issue with the reward function failing entirely if the placeholder key doesn't exist
-        for (String otherCriterionName : advancement.criteria().keySet()) {
+        //  Get the advancement and its criteria from the advancement entry
+        Advancement advancement = advancementEntry.value();
+        Map<String, AdvancementCriterion<?>> criteria = advancement.criteria();
 
-            //  Replace certain characters (e.g: `:`, `.`, `/`, `-`) with an underscore
-            String processedCriterionName = AdvancementMacros.REPLACEABLE_CHARACTERS
-                .matcher(otherCriterionName)
-                .replaceAll("_");
+        //  If the advancement has more than 1 criterion:
+        if (criteria.size() > 1) {
 
-            //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and `_`
-            processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
-                .matcher(processedCriterionName)
-                .replaceAll("");
-
-            //  Pass an empty NBT compound to the rewards of the advancement if the other criterion
-            //  doesn't have any data set
-            if (!macroData.contains(processedCriterionName)) {
-                macroData.put(processedCriterionName, new NbtCompound());
-            }
+            //  Pass an empty NBT compound to other criteria that aren't triggered (e.g: specified as optional). This is to work
+            //  around an issue with the reward function failing entirely if the placeholder key doesn't exist
+            criteria.keySet()
+                .stream()
+                .filter(Predicate.not(macroData::containsKey))
+                .forEach(name -> macroData.put(name, new NbtCompound()));
 
         }
+
+        //  Create an NBT compound to pass to the rewards of the advancement
+        NbtCompound nbtDataToPass = new NbtCompound();
+        Set<Map.Entry<String, NbtCompound>> macroDataSet = macroData.entrySet();
+
+        for (Map.Entry<String, NbtCompound> entry : macroDataSet) {
+
+            //  Use the data of the criterion directly if the advancement only has one criterion
+            if (criteria.size() == 1) {
+                nbtDataToPass = entry.getValue();
+                break;
+            }
+
+            //  Replace certain characters (e.g: `:`, `.`, `/`, `-`, and ` `) in the name of the
+            //  criterion with an underscore
+            String processedName = AdvancementMacros.REPLACEABLE_CHARACTERS
+                .matcher(entry.getKey())
+                .replaceAll("_");
+
+            //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and `_` from
+            //  the name of the criterion
+            processedName = AdvancementMacros.INVALID_MACRO_CHARACTERS
+                .matcher(processedName)
+                .replaceAll("");
+
+            //  Put the data of the criterion to the NBT compound that'll be passed to the function
+            nbtDataToPass.put(processedName, entry.getValue());
+
+        }
+
+        //  Pass the NBT compound to the rewards of the advancement and clear the tracked macro data for the advancement
+        ((AdvancementRewardsData) advancement.rewards()).advancement_macros$setNbt(nbtDataToPass);
+        this.advancement_macros$trackedMacroData.remove(advancementEntry);
 
     }
 

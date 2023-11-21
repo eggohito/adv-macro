@@ -2,14 +2,15 @@ package io.github.eggohito.advancement_macros.mixin.impl;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
-import io.github.eggohito.advancement_macros.access.AdvancementRewardsData;
 import io.github.eggohito.advancement_macros.access.MacroContext;
 import io.github.eggohito.advancement_macros.access.MacroStorage;
+import io.github.eggohito.advancement_macros.access.PlayerMacroDataTracker;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.advancement.criterion.Criteria;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -53,7 +55,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
     }
 
     @Inject(method = "trigger", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer) {
+    private void advancement_macros$writeNbtToRewards(ServerPlayerEntity player, Predicate<T> predicate, CallbackInfo ci, @Local Criterion.ConditionsContainer<T> conditionsContainer, @Local PlayerAdvancementTracker playerAdvancementTracker) {
 
         //  Skip this method handler if the trigger context of this criterion trigger is either null or empty
         if (advancement_macros$triggerContext == null || advancement_macros$triggerContext.isEmpty()) {
@@ -69,6 +71,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
 
         //  Stop early if the criterion that has the criterion name does not somehow exist in the advancement
         if (!advancement.criteria().containsKey(criterionName)) {
+            advancement_macros$triggerContext = null;
             return;
         }
 
@@ -78,6 +81,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
 
         //  Skip this method handler by this point if the macro from the criterion does not exist (e.g: wasn't serialized properly)
         if (macro == null) {
+            advancement_macros$triggerContext = null;
             return;
         }
 
@@ -85,31 +89,12 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         NbtCompound criterionNbtData = new NbtCompound();
         macro.writeToNbt(criterionNbtData, advancement_macros$triggerContext);
 
-        //  Get the duck interface for storing data on the rewards of the advancement
-        AdvancementRewardsData rewardsData = (AdvancementRewardsData) advancement.rewards();
-
-        //  If the advancement only has 1 criterion, put the NBT of the criterion directly
-        if (advancement.criteria().size() == 1) {
-            rewardsData.advancement_macros$setNbt(criterionNbtData);
-        }
-
-        //  Otherwise:
-        else {
-
-            //  Replace certain characters (e.g: `:`, `.`, `/`, `-`) with an underscore
-            String processedCriterionName = AdvancementMacros.REPLACEABLE_CHARACTERS
-                .matcher(criterionName)
-                .replaceAll("_");
-
-            //  Remove characters that aren't `a` to `z`, `A` to `Z`, `0` to `9`, and _
-            processedCriterionName = AdvancementMacros.INVALID_MACRO_CHARACTERS
-                .matcher(processedCriterionName)
-                .replaceAll("");
-
-            //  Put the NBT of the criterion in another NBT compound
-            rewardsData.advancement_macros$getNbt().put(processedCriterionName, criterionNbtData);
-
-        }
+        //  Directly put the NBT data of the criterion to the rewards of the advancement
+        //  if the advancement only has one criterion
+        ((PlayerMacroDataTracker) playerAdvancementTracker)
+            .advancement_macros$getAll()
+            .computeIfAbsent(advancementEntry, id -> new LinkedHashMap<>())
+            .put(criterionName, criterionNbtData);
 
         //  Reset the trigger context to null
         advancement_macros$triggerContext = null;
