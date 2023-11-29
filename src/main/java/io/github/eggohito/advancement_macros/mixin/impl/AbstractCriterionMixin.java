@@ -95,7 +95,7 @@ public abstract class AbstractCriterionMixin<T extends AbstractCriterionConditio
         //  if the advancement only has one criterion
         ((PlayerMacroDataTracker) playerAdvancementTracker)
             .advancement_macros$getAll()
-            .computeIfAbsent(advancementEntry, id -> new LinkedHashMap<>())
+            .computeIfAbsent(advancementEntry.id(), id -> new LinkedHashMap<>())
             .put(criterionName, criterionNbtData);
 
         //  Reset the trigger context to null

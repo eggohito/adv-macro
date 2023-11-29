@@ -10,6 +10,7 @@ import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,18 +25,19 @@ import java.util.function.Predicate;
 public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTracker {
 
     @Unique
-    private final Map<AdvancementEntry, Map<String, NbtCompound>> advancement_macros$trackedMacroData = new HashMap<>();
+    private final Map<Identifier, Map<String, NbtCompound>> advancement_macros$trackedMacroData = new HashMap<>();
 
     @Override
-    public Map<AdvancementEntry, Map<String, NbtCompound>> advancement_macros$getAll() {
+    public Map<Identifier, Map<String, NbtCompound>> advancement_macros$getAll() {
         return advancement_macros$trackedMacroData;
     }
 
     @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/AdvancementRewards;apply(Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
     private void advancement_macros$writeEmptyNbtToRewards(AdvancementEntry advancementEntry, String criterionName, CallbackInfoReturnable<Boolean> cir) {
 
+        Identifier entryId = advancementEntry.id();
         Map<String, NbtCompound> macroData = this.advancement_macros$trackedMacroData
-            .computeIfAbsent(advancementEntry, id -> new LinkedHashMap<>());
+            .computeIfAbsent(entryId, id -> new LinkedHashMap<>());
 
         //  Skip this method handler by this point if there isn't any tracked macro data
         if (macroData.isEmpty()) {
@@ -99,7 +101,7 @@ public abstract class PlayerAdvancementTrackerMixin implements PlayerMacroDataTr
 
         //  Pass the NBT compound to the rewards of the advancement and clear the tracked macro data for the advancement
         ((AdvancementRewardsData) advancement.rewards()).advancement_macros$setNbt(nbtDataToPass);
-        this.advancement_macros$trackedMacroData.remove(advancementEntry);
+        this.advancement_macros$trackedMacroData.remove(entryId);
 
     }
 
