@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 
 public class UsedEnderEyeCriterionMacro extends Macro {
@@ -55,7 +54,7 @@ public class UsedEnderEyeCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.USED_ENDER_EYE, () -> CODEC);
+        return new Factory(Criteria.USED_ENDER_EYE, () -> CODEC);
     }
 
 }

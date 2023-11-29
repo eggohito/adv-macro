@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 public class SlideDownBlockCriterionMacro extends Macro {
 
@@ -56,7 +55,7 @@ public class SlideDownBlockCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.SLIDE_DOWN_BLOCK, () -> CODEC);
+        return new Factory(Criteria.SLIDE_DOWN_BLOCK, () -> CODEC);
     }
 
 }

@@ -10,7 +10,6 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Pair;
 
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class LightningStrikeCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.LIGHTNING_STRIKE, () -> CODEC);
+        return new Factory(Criteria.LIGHTNING_STRIKE, () -> CODEC);
     }
 
 }

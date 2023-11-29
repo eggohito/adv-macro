@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class KillMobNearSculkCatalystCriterionMacro extends OnKilledCriterionMacro {
 
@@ -18,7 +17,7 @@ public class KillMobNearSculkCatalystCriterionMacro extends OnKilledCriterionMac
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.KILL_MOB_NEAR_SCULK_CATALYST, () -> CODEC);
+        return new Factory(Criteria.KILL_MOB_NEAR_SCULK_CATALYST, () -> CODEC);
     }
 
 }

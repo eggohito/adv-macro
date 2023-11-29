@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 import net.minecraft.util.dynamic.Codecs;
 
 /**
@@ -74,9 +73,6 @@ public abstract class Macro {
         Factory getFactory();
     }
 
-    @FunctionalInterface
-    public interface Factory {
-        Pair<Criterion<?>, Type> getData();
-    }
+    public record Factory(Criterion<?> criterion, Type type) {}
 
 }

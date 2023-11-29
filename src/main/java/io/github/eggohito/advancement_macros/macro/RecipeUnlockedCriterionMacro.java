@@ -12,7 +12,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 
 public class RecipeUnlockedCriterionMacro extends Macro {
@@ -76,7 +75,7 @@ public class RecipeUnlockedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.RECIPE_UNLOCKED, () -> CODEC);
+        return new Factory(Criteria.RECIPE_UNLOCKED, () -> CODEC);
     }
 
 }

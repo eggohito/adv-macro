@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class SummonedEntityCriterionMacro extends Macro {
 
@@ -40,7 +39,7 @@ public class SummonedEntityCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.SUMMONED_ENTITY, () -> CODEC);
+        return new Factory(Criteria.SUMMONED_ENTITY, () -> CODEC);
     }
 
 }

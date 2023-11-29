@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class ItemUsedOnBlockCriterionMacro extends ItemCriterionMacro {
 
@@ -18,7 +17,7 @@ public class ItemUsedOnBlockCriterionMacro extends ItemCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.ITEM_USED_ON_BLOCK, () -> CODEC);
+        return new Factory(Criteria.ITEM_USED_ON_BLOCK, () -> CODEC);
     }
 
 }

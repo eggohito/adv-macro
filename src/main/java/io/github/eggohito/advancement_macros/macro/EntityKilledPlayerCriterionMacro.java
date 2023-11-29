@@ -5,7 +5,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class EntityKilledPlayerCriterionMacro extends OnKilledCriterionMacro {
 
@@ -37,7 +36,7 @@ public class EntityKilledPlayerCriterionMacro extends OnKilledCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.ENTITY_KILLED_PLAYER, () -> CODEC);
+        return new Factory(Criteria.ENTITY_KILLED_PLAYER, () -> CODEC);
     }
 
 }

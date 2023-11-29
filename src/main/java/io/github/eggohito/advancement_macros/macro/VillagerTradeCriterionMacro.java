@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class VillagerTradeCriterionMacro extends Macro {
 
@@ -56,7 +55,7 @@ public class VillagerTradeCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.VILLAGER_TRADE, () -> CODEC);
+        return new Factory(Criteria.VILLAGER_TRADE, () -> CODEC);
     }
 
 }

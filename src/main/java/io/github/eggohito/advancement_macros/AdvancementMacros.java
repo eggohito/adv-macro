@@ -8,13 +8,13 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -153,11 +153,8 @@ public class AdvancementMacros implements ModInitializer {
 
 		Macro.Factory factory = supplier.getFactory();
 
-		Criterion<?> criterion = factory.getData().getLeft();
-		Macro.Type macroType = factory.getData().getRight();
-
-		Identifier macroId = Criteria.getId(criterion);
-		Registry.register(REGISTRY, macroId, macroType);
+		Identifier macroId = Objects.requireNonNull(Criteria.getId(factory.criterion()), "Provided criterion cannot be null!");
+		Registry.register(REGISTRY, macroId, factory.type());
 
 	}
 

@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class InventoryChangedCriterionMacro extends Macro {
 
@@ -79,7 +78,7 @@ public class InventoryChangedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.INVENTORY_CHANGED, () -> CODEC);
+        return new Factory(Criteria.INVENTORY_CHANGED, () -> CODEC);
     }
 
 }

@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class ItemDurabilityChangedCriterionMacro extends Macro {
 
@@ -67,7 +66,7 @@ public class ItemDurabilityChangedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.ITEM_DURABILITY_CHANGED, () -> CODEC);
+        return new Factory(Criteria.ITEM_DURABILITY_CHANGED, () -> CODEC);
     }
 
 }

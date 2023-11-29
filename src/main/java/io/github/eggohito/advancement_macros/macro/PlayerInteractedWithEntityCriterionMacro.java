@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class PlayerInteractedWithEntityCriterionMacro extends Macro {
 
@@ -56,7 +55,7 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.PLAYER_INTERACTED_WITH_ENTITY, () -> CODEC);
+        return new Factory(Criteria.PLAYER_INTERACTED_WITH_ENTITY, () -> CODEC);
     }
 
 }

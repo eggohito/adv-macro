@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class PlacedBlockCriterionMacro extends ItemCriterionMacro {
 
@@ -18,7 +17,7 @@ public class PlacedBlockCriterionMacro extends ItemCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.PLACED_BLOCK, () -> CODEC);
+        return new Factory(Criteria.PLACED_BLOCK, () -> CODEC);
     }
 
 }

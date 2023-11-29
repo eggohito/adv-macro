@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 
 public class TargetHitCriterionMacro extends Macro {
@@ -68,7 +67,7 @@ public class TargetHitCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.TARGET_HIT, () -> CODEC);
+        return new Factory(Criteria.TARGET_HIT, () -> CODEC);
     }
 
 }

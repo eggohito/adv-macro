@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class HeroOfTheVillageCriterionMacro extends TickCriterionMacro {
 
@@ -14,7 +13,7 @@ public class HeroOfTheVillageCriterionMacro extends TickCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.HERO_OF_THE_VILLAGE, () -> CODEC);
+        return new Factory(Criteria.HERO_OF_THE_VILLAGE, () -> CODEC);
     }
 
 }

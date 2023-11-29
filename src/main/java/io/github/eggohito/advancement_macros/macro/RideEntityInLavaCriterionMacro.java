@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class RideEntityInLavaCriterionMacro extends TravelCriterionMacro {
 
@@ -18,7 +17,7 @@ public class RideEntityInLavaCriterionMacro extends TravelCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.RIDE_ENTITY_IN_LAVA, () -> CODEC);
+        return new Factory(Criteria.RIDE_ENTITY_IN_LAVA, () -> CODEC);
     }
 
 }

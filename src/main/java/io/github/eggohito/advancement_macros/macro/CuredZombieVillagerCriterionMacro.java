@@ -8,7 +8,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class CuredZombieVillagerCriterionMacro extends Macro {
 
@@ -55,7 +54,7 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.CURED_ZOMBIE_VILLAGER, () -> CODEC);
+        return new Factory(Criteria.CURED_ZOMBIE_VILLAGER, () -> CODEC);
     }
 
 }

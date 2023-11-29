@@ -11,7 +11,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class RecipeCraftedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.RECIPE_CRAFTED, () -> CODEC);
+        return new Factory(Criteria.RECIPE_CRAFTED, () -> CODEC);
     }
 
 }

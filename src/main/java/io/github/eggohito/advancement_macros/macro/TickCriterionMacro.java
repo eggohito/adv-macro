@@ -5,7 +5,6 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class TickCriterionMacro extends Macro {
 
@@ -22,7 +21,7 @@ public class TickCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.TICK, () -> CODEC);
+        return new Factory(Criteria.TICK, () -> CODEC);
     }
 
 }

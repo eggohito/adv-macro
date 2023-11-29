@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class EffectsChangedCriterionMacro extends Macro {
 
@@ -48,7 +47,7 @@ public class EffectsChangedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.EFFECTS_CHANGED, () -> CODEC);
+        return new Factory(Criteria.EFFECTS_CHANGED, () -> CODEC);
     }
 
 }

@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.util.Pair;
 
 import java.util.Collection;
 
@@ -94,7 +93,7 @@ public class FishingRodHookedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.FISHING_ROD_HOOKED, () -> CODEC);
+        return new Factory(Criteria.FISHING_ROD_HOOKED, () -> CODEC);
     }
 
 }

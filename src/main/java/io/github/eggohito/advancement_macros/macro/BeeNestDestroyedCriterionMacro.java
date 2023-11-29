@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class BeeNestDestroyedCriterionMacro extends Macro {
 
@@ -77,7 +76,7 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.BEE_NEST_DESTROYED, () -> CODEC);
+        return new Factory(Criteria.BEE_NEST_DESTROYED, () -> CODEC);
     }
 
 }

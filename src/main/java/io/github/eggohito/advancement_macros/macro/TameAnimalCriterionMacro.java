@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class TameAnimalCriterionMacro extends Macro {
 
@@ -40,7 +39,7 @@ public class TameAnimalCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.TAME_ANIMAL, () -> CODEC);
+        return new Factory(Criteria.TAME_ANIMAL, () -> CODEC);
     }
 
 }

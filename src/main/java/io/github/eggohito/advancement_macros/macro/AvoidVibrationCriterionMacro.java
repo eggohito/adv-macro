@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class AvoidVibrationCriterionMacro extends TickCriterionMacro {
 
@@ -14,7 +13,7 @@ public class AvoidVibrationCriterionMacro extends TickCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.AVOID_VIBRATION, () -> CODEC);
+        return new Factory(Criteria.AVOID_VIBRATION, () -> CODEC);
     }
 
 }

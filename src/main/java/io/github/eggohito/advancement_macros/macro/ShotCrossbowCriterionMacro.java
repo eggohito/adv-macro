@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class ShotCrossbowCriterionMacro extends Macro {
 
@@ -41,7 +40,7 @@ public class ShotCrossbowCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.SHOT_CROSSBOW, () -> CODEC);
+        return new Factory(Criteria.SHOT_CROSSBOW, () -> CODEC);
     }
 
 }

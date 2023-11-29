@@ -5,7 +5,6 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class StartedRidingCriterionMacro extends Macro {
 
@@ -26,7 +25,7 @@ public class StartedRidingCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.STARTED_RIDING, () -> CODEC);
+        return new Factory(Criteria.STARTED_RIDING, () -> CODEC);
     }
 
 }

@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class EntityHurtPlayerCriterionMacro extends Macro {
 
@@ -92,7 +91,7 @@ public class EntityHurtPlayerCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.ENTITY_HURT_PLAYER, () -> CODEC);
+        return new Factory(Criteria.ENTITY_HURT_PLAYER, () -> CODEC);
     }
 
 }

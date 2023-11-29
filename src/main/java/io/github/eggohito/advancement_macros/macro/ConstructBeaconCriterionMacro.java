@@ -6,7 +6,6 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class ConstructBeaconCriterionMacro extends Macro {
 
@@ -39,7 +38,7 @@ public class ConstructBeaconCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.CONSTRUCT_BEACON, () -> CODEC);
+        return new Factory(Criteria.CONSTRUCT_BEACON, () -> CODEC);
     }
 
 }

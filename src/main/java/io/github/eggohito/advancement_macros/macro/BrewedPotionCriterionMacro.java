@@ -9,7 +9,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class BrewedPotionCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.BREWED_POTION, () -> CODEC);
+        return new Factory(Criteria.BREWED_POTION, () -> CODEC);
     }
 
 }

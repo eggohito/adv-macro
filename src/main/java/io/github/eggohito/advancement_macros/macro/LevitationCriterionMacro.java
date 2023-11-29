@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 
 public class LevitationCriterionMacro extends Macro {
@@ -55,7 +54,7 @@ public class LevitationCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.LEVITATION, () -> CODEC);
+        return new Factory(Criteria.LEVITATION, () -> CODEC);
     }
 
 }

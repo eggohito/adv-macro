@@ -2,7 +2,6 @@ package io.github.eggohito.advancement_macros.macro;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.util.Pair;
 
 public class FallFromHeightCriterionMacro extends TravelCriterionMacro {
 
@@ -18,7 +17,7 @@ public class FallFromHeightCriterionMacro extends TravelCriterionMacro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.FALL_FROM_HEIGHT, () -> CODEC);
+        return new Factory(Criteria.FALL_FROM_HEIGHT, () -> CODEC);
     }
 
 }

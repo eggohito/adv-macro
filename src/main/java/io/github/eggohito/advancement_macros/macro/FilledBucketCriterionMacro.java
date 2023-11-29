@@ -8,7 +8,6 @@ import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 public class FilledBucketCriterionMacro extends Macro {
 
@@ -41,7 +40,7 @@ public class FilledBucketCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.FILLED_BUCKET, () -> CODEC);
+        return new Factory(Criteria.FILLED_BUCKET, () -> CODEC);
     }
 
 }

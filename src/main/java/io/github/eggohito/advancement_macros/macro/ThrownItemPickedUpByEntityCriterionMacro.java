@@ -9,7 +9,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
 
 import java.util.function.BiFunction;
 
@@ -62,7 +61,7 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, () -> CODEC);
+        return new Factory(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, () -> CODEC);
     }
 
 }

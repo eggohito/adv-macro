@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.util.Pair;
 
 import java.util.Collection;
 
@@ -51,7 +50,7 @@ public class ChanneledLightningCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.CHANNELED_LIGHTNING, () -> CODEC);
+        return new Factory(Criteria.CHANNELED_LIGHTNING, () -> CODEC);
     }
 
 }

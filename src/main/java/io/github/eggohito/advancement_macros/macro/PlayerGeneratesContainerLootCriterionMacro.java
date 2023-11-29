@@ -7,7 +7,6 @@ import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
 
@@ -40,7 +39,7 @@ public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
     }
 
     public static Factory getFactory() {
-        return () -> new Pair<>(Criteria.PLAYER_GENERATES_CONTAINER_LOOT, () -> CODEC);
+        return new Factory(Criteria.PLAYER_GENERATES_CONTAINER_LOOT, () -> CODEC);
     }
 
 }
