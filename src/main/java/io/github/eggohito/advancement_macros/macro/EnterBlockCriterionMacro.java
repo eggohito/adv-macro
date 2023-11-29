@@ -25,7 +25,6 @@ public class EnterBlockCriterionMacro extends Macro {
     private final String stateKey;
 
     public EnterBlockCriterionMacro(String blockKey, String stateKey) {
-        super(Criteria.ENTER_BLOCK);
         this.blockKey = blockKey;
         this.stateKey = stateKey;
     }

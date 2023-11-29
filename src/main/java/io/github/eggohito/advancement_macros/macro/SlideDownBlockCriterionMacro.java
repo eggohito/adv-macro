@@ -25,7 +25,6 @@ public class SlideDownBlockCriterionMacro extends Macro {
     private final String stateKey;
 
     public SlideDownBlockCriterionMacro(String blockKey, String stateKey) {
-        super(Criteria.SLIDE_DOWN_BLOCK);
         this.blockKey = blockKey;
         this.stateKey = stateKey;
     }

@@ -23,7 +23,6 @@ public class EffectsChangedCriterionMacro extends Macro {
     private final String sourceKey;
 
     public EffectsChangedCriterionMacro(String effectsKey, String sourceKey) {
-        super(Criteria.EFFECTS_CHANGED);
         this.effectsKey = effectsKey;
         this.sourceKey = sourceKey;
     }

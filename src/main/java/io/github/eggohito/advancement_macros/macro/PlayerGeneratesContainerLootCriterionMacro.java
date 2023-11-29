@@ -20,7 +20,6 @@ public class PlayerGeneratesContainerLootCriterionMacro extends Macro {
     private final String lootTableKey;
 
     public PlayerGeneratesContainerLootCriterionMacro(String lootTableIdKey) {
-        super(Criteria.PLAYER_GENERATES_CONTAINER_LOOT);
         this.lootTableKey = lootTableIdKey;
     }
 

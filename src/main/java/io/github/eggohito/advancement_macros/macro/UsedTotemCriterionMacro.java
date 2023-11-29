@@ -21,7 +21,6 @@ public class UsedTotemCriterionMacro extends Macro {
     private final String itemKey;
 
     public UsedTotemCriterionMacro(String itemKey) {
-        super(Criteria.USED_TOTEM);
         this.itemKey = itemKey;
     }
 

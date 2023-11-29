@@ -8,10 +8,6 @@ public class SleptInBedCriterionMacro extends TickCriterionMacro {
 
     public static final Codec<SleptInBedCriterionMacro> CODEC = createEmptyCodec(SleptInBedCriterionMacro::new);
 
-    public SleptInBedCriterionMacro() {
-        super(Criteria.SLEPT_IN_BED);
-    }
-
     @Override
     public Type getType() {
         return () -> CODEC;

@@ -9,7 +9,7 @@ public class KillMobNearSculkCatalystCriterionMacro extends OnKilledCriterionMac
     public static final Codec<KillMobNearSculkCatalystCriterionMacro> CODEC = createCodec(KillMobNearSculkCatalystCriterionMacro::new);
 
     public KillMobNearSculkCatalystCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
-        super(Criteria.KILL_MOB_NEAR_SCULK_CATALYST, killerKey, victimKey, killingBlowKey);
+        super(killerKey, victimKey, killingBlowKey);
     }
 
     @Override

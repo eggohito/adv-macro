@@ -24,7 +24,6 @@ public class EnchantedItemCriterionMacro extends Macro {
     private final String levelsKey;
 
     public EnchantedItemCriterionMacro(String itemKey, String levelsKey) {
-        super(Criteria.ENCHANTED_ITEM);
         this.itemKey = itemKey;
         this.levelsKey = levelsKey;
     }

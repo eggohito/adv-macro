@@ -34,7 +34,6 @@ public class PlayerHurtEntityCriterionMacro extends Macro {
     private final String damageBlockedKey;
 
     public PlayerHurtEntityCriterionMacro(String entityKey, String damageTypeKey, String damageDealtKey, String damageTakenKey, String damageBlockedKey) {
-        super(Criteria.PLAYER_HURT_ENTITY);
         this.entityKey = entityKey;
         this.damageTypeKey = damageTypeKey;
         this.damageDealtKey = damageDealtKey;

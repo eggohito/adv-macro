@@ -20,7 +20,6 @@ public class SummonedEntityCriterionMacro extends Macro {
     private final String entityKey;
 
     public SummonedEntityCriterionMacro(String entityKey) {
-        super(Criteria.SUMMONED_ENTITY);
         this.entityKey = entityKey;
     }
 

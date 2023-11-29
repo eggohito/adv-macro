@@ -28,7 +28,6 @@ public class TargetHitCriterionMacro extends Macro {
     private final String signalStrengthKey;
 
     public TargetHitCriterionMacro(String projectileKey, String hitLocationKey, String signalStrengthKey) {
-        super(Criteria.TARGET_HIT);
         this.projectileKey = projectileKey;
         this.hitLocationKey = hitLocationKey;
         this.signalStrengthKey = signalStrengthKey;

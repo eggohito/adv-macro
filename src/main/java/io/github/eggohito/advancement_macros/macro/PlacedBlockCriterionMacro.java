@@ -9,7 +9,7 @@ public class PlacedBlockCriterionMacro extends ItemCriterionMacro {
     public static final Codec<PlacedBlockCriterionMacro> CODEC = createCodec(PlacedBlockCriterionMacro::new);
 
     public PlacedBlockCriterionMacro(String locationKey, String itemKey) {
-        super(Criteria.PLACED_BLOCK, locationKey, itemKey);
+        super(locationKey, itemKey);
     }
 
     @Override

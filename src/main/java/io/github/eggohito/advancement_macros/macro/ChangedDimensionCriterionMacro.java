@@ -24,7 +24,6 @@ public class ChangedDimensionCriterionMacro extends Macro {
     private final String toKey;
 
     public ChangedDimensionCriterionMacro(String fromKey, String toKey) {
-        super(Criteria.CHANGED_DIMENSION);
         this.fromKey = fromKey;
         this.toKey = toKey;
     }

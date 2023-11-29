@@ -8,10 +8,6 @@ public class HeroOfTheVillageCriterionMacro extends TickCriterionMacro {
 
     public static final Codec<HeroOfTheVillageCriterionMacro> CODEC = createEmptyCodec(HeroOfTheVillageCriterionMacro::new);
 
-    public HeroOfTheVillageCriterionMacro() {
-        super(Criteria.HERO_OF_THE_VILLAGE);
-    }
-
     @Override
     public Type getType() {
         return () -> CODEC;

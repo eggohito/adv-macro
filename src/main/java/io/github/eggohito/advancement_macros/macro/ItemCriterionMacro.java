@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +19,7 @@ public abstract class ItemCriterionMacro extends Macro {
     private final String locationKey;
     private final String itemKey;
 
-    public ItemCriterionMacro(Criterion<?> baseCriterion, String locationKey, String itemKey) {
-        super(baseCriterion);
+    public ItemCriterionMacro(String locationKey, String itemKey) {
         this.locationKey = locationKey;
         this.itemKey = itemKey;
     }

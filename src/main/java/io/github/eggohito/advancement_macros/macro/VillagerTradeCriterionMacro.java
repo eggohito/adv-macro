@@ -25,7 +25,6 @@ public class VillagerTradeCriterionMacro extends Macro {
     private final String itemKey;
 
     public VillagerTradeCriterionMacro(String villagerKey, String itemKey) {
-        super(Criteria.VILLAGER_TRADE);
         this.villagerKey = villagerKey;
         this.itemKey = itemKey;
     }

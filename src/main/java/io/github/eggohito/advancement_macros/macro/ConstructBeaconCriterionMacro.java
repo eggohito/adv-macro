@@ -19,7 +19,6 @@ public class ConstructBeaconCriterionMacro extends Macro {
     private final String levelKey;
 
     public ConstructBeaconCriterionMacro(String levelKey) {
-        super(Criteria.CONSTRUCT_BEACON);
         this.levelKey = levelKey;
     }
 

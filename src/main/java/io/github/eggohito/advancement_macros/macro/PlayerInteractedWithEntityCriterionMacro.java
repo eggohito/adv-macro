@@ -25,7 +25,6 @@ public class PlayerInteractedWithEntityCriterionMacro extends Macro {
     private final String interactedEntityKey;
 
     public PlayerInteractedWithEntityCriterionMacro(String usedItemKey, String interactedEntityKey) {
-        super(Criteria.PLAYER_INTERACTED_WITH_ENTITY);
         this.usedItemKey = usedItemKey;
         this.interactedEntityKey = interactedEntityKey;
     }

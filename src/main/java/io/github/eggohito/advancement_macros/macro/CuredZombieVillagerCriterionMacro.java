@@ -24,7 +24,6 @@ public class CuredZombieVillagerCriterionMacro extends Macro {
     private final String villagerKey;
 
     public CuredZombieVillagerCriterionMacro(String zombieKey, String villagerKey) {
-        super(Criteria.CURED_ZOMBIE_VILLAGER);
         this.zombieKey = zombieKey;
         this.villagerKey = villagerKey;
     }

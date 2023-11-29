@@ -24,7 +24,6 @@ public class LevitationCriterionMacro extends Macro {
     private final String durationKey;
 
     public LevitationCriterionMacro(String startLocationKey, String durationKey) {
-        super(Criteria.LEVITATION);
         this.startLocationKey = startLocationKey;
         this.durationKey = durationKey;
     }

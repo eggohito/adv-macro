@@ -20,7 +20,6 @@ public class TameAnimalCriterionMacro extends Macro {
     private final String entityKey;
 
     public TameAnimalCriterionMacro(String entityKey) {
-        super(Criteria.TAME_ANIMAL);
         this.entityKey = entityKey;
     }
 

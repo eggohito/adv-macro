@@ -21,7 +21,6 @@ public class ShotCrossbowCriterionMacro extends Macro {
     private final String itemKey;
 
     public ShotCrossbowCriterionMacro(String itemKey) {
-        super(Criteria.SHOT_CROSSBOW);
         this.itemKey = itemKey;
     }
 

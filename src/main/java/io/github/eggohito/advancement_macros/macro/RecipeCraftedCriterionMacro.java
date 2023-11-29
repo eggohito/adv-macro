@@ -29,7 +29,6 @@ public class RecipeCraftedCriterionMacro extends Macro {
     private final String ingredientsKey;
 
     public RecipeCraftedCriterionMacro(String recipeKey, String ingredientsKey) {
-        super(Criteria.RECIPE_CRAFTED);
         this.recipeKey = recipeKey;
         this.ingredientsKey = ingredientsKey;
     }
@@ -56,14 +55,14 @@ public class RecipeCraftedCriterionMacro extends Macro {
 
         context.<List<ItemStack>>ifPresent(INGREDIENTS_KEY, ingredients -> {
 
-           NbtList ingredientsNbt = new NbtList();
-           for (ItemStack stack : ingredients) {
-               ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack)
-                   .resultOrPartial(AdvancementMacros.LOGGER::error)
-                   .ifPresent(ingredientsNbt::add);
-           }
+            NbtList ingredientsNbt = new NbtList();
+            for (ItemStack stack : ingredients) {
+                ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack)
+                    .resultOrPartial(AdvancementMacros.LOGGER::error)
+                    .ifPresent(ingredientsNbt::add);
+            }
 
-           rootNbt.put(ingredientsKey, ingredientsNbt);
+            rootNbt.put(ingredientsKey, ingredientsNbt);
 
         });
 

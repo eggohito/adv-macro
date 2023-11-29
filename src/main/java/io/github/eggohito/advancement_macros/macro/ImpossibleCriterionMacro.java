@@ -12,7 +12,7 @@ public class ImpossibleCriterionMacro extends Macro {
     public static final Codec<ImpossibleCriterionMacro> CODEC = createEmptyCodec(ImpossibleCriterionMacro::new);
 
     public ImpossibleCriterionMacro() {
-        super(Criteria.IMPOSSIBLE);
+
     }
 
     @Override

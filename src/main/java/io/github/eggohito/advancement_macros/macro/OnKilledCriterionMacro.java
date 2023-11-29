@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
 import org.apache.commons.lang3.function.TriFunction;
@@ -20,8 +19,7 @@ public abstract class OnKilledCriterionMacro extends Macro {
     private final String victimKey;
     private final String killingBlowKey;
 
-    public OnKilledCriterionMacro(Criterion<?> baseCriterion, String killerKey, String victimKey, String killingBlowKey) {
-        super(baseCriterion);
+    public OnKilledCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
         this.killerKey = killerKey;
         this.victimKey = victimKey;
         this.killingBlowKey = killingBlowKey;

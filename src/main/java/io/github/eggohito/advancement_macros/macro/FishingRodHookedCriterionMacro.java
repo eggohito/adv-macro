@@ -36,7 +36,6 @@ public class FishingRodHookedCriterionMacro extends Macro {
     private final String itemKey;
 
     public FishingRodHookedCriterionMacro(String fishingBobberKey, String fishingRodKey, String entityKey, String itemKey) {
-        super(Criteria.FISHING_ROD_HOOKED);
         this.fishingBobberKey = fishingBobberKey;
         this.fishingRodKey = fishingRodKey;
         this.entityKey = entityKey;

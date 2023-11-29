@@ -24,7 +24,6 @@ public class ChanneledLightningCriterionMacro extends Macro {
     private final String victimsKey;
 
     public ChanneledLightningCriterionMacro(String victimsKey) {
-        super(Criteria.CHANNELED_LIGHTNING);
         this.victimsKey = victimsKey;
     }
 

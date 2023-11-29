@@ -21,7 +21,6 @@ public class ConsumeItemCriterionMacro extends Macro {
     private final String itemKey;
 
     public ConsumeItemCriterionMacro(String itemKey) {
-        super(Criteria.CONSUME_ITEM);
         this.itemKey = itemKey;
     }
 

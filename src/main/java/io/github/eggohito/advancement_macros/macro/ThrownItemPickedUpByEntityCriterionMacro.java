@@ -6,7 +6,6 @@ import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -24,14 +23,9 @@ public class ThrownItemPickedUpByEntityCriterionMacro extends Macro {
     private final String itemKey;
     private final String entityKey;
 
-    public ThrownItemPickedUpByEntityCriterionMacro(Criterion<?> baseCriterion, String itemKey, String entityKey) {
-        super(baseCriterion);
+    public ThrownItemPickedUpByEntityCriterionMacro(String itemKey, String entityKey) {
         this.itemKey = itemKey;
         this.entityKey = entityKey;
-    }
-
-    public ThrownItemPickedUpByEntityCriterionMacro(String itemKey, String entityKey) {
-        this(Criteria.THROWN_ITEM_PICKED_UP_BY_ENTITY, itemKey, entityKey);
     }
 
     protected static <T extends ThrownItemPickedUpByEntityCriterionMacro> Codec<T> createCodec(BiFunction<String, String, T> macroFunction) {

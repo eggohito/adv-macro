@@ -4,21 +4,12 @@ import com.mojang.serialization.Codec;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 
 public class TickCriterionMacro extends Macro {
 
     public static final Codec<TickCriterionMacro> CODEC = createEmptyCodec(TickCriterionMacro::new);
-
-    public TickCriterionMacro() {
-        super(Criteria.TICK);
-    }
-
-    public TickCriterionMacro(Criterion<?> baseCriterion) {
-        super(baseCriterion);
-    }
 
     @Override
     public Type getType() {

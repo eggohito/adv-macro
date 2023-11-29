@@ -12,7 +12,7 @@ public class EntityKilledPlayerCriterionMacro extends OnKilledCriterionMacro {
     public static final Codec<EntityKilledPlayerCriterionMacro> CODEC = createCodec(EntityKilledPlayerCriterionMacro::new);
 
     public EntityKilledPlayerCriterionMacro(String killerKey, String victimKey, String killingBlowKey) {
-        super(Criteria.ENTITY_KILLED_PLAYER, killerKey, victimKey, killingBlowKey);
+        super(killerKey, victimKey, killingBlowKey);
     }
 
     @Override

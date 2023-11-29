@@ -24,7 +24,6 @@ public class UsedEnderEyeCriterionMacro extends Macro {
     private final String strongholdLocationKey;
 
     public UsedEnderEyeCriterionMacro(String distanceKey, String strongholdLocationKey) {
-        super(Criteria.USED_ENDER_EYE);
         this.distanceKey = distanceKey;
         this.strongholdLocationKey = strongholdLocationKey;
     }

@@ -31,7 +31,7 @@ public class BeeNestDestroyedCriterionMacro extends Macro {
     private final String numBeesInsideKey;
 
     public BeeNestDestroyedCriterionMacro(String blockKey, String stateKey, String itemKey, String numBeesInsideKey) {
-        super(Criteria.BEE_NEST_DESTROYED);
+        
         this.blockKey = blockKey;
         this.stateKey = stateKey;
         this.itemKey = itemKey;

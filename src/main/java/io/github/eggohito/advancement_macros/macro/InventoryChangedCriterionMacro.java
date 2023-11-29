@@ -30,7 +30,6 @@ public class InventoryChangedCriterionMacro extends Macro {
     private final String emptySlotsKey;
 
     public InventoryChangedCriterionMacro(String itemKey, String fullSlotsKey, String occupiedSlotsKey, String emptySlotsKey) {
-        super(Criteria.INVENTORY_CHANGED);
         this.itemKey = itemKey;
         this.fullSlotsKey = fullSlotsKey;
         this.occupiedSlotsKey = occupiedSlotsKey;

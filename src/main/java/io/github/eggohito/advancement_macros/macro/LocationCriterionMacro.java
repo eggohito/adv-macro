@@ -8,10 +8,6 @@ public class LocationCriterionMacro extends TickCriterionMacro {
 
     public static final Codec<LocationCriterionMacro> CODEC = createEmptyCodec(LocationCriterionMacro::new);
 
-    public LocationCriterionMacro() {
-        super(Criteria.LOCATION);
-    }
-
     @Override
     public Type getType() {
         return () -> CODEC;

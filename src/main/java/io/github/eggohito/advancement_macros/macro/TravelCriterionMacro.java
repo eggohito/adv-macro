@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.eggohito.advancement_macros.api.Macro;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
 import io.github.eggohito.advancement_macros.util.NbtUtil;
-import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Vec3d;
 
@@ -16,8 +15,7 @@ public abstract class TravelCriterionMacro extends Macro {
     public static final String START_LOCATION_KEY = "start_location";
     private final String startLocationKey;
 
-    public TravelCriterionMacro(Criterion<?> baseCriterion, String startLocationKey) {
-        super(baseCriterion);
+    public TravelCriterionMacro(String startLocationKey) {
         this.startLocationKey = startLocationKey;
     }
 

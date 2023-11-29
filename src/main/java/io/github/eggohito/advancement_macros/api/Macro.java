@@ -1,12 +1,13 @@
 package io.github.eggohito.advancement_macros.api;
 
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Decoder;
+import com.mojang.serialization.Encoder;
+import com.mojang.serialization.MapCodec;
 import io.github.eggohito.advancement_macros.AdvancementMacros;
 import io.github.eggohito.advancement_macros.data.TriggerContext;
-import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.dynamic.Codecs;
 
@@ -32,24 +33,6 @@ public abstract class Macro {
      */
     public static MapCodec<String> strictOptionalField(String field, String fallback) {
         return Codecs.createStrictOptionalFieldCodec(MAPPING_NAME_CODEC, field, fallback);
-    }
-
-    private final Identifier id;
-
-    /**
-     *      <p>Instantiate a {@link Macro} instance for the specified {@link Criterion}.</p>
-     *
-     *      @param baseCriterion    The criterion trigger to base this macro handler from.
-     */
-    public Macro(Criterion<?> baseCriterion) {
-        this.id = Criteria.getId(baseCriterion);
-    }
-
-    /**
-     *      @return     The {@linkplain Identifier ID} of the criterion trigger this macro corresponds with.
-     */
-    public Identifier getId() {
-        return id;
     }
 
     /**

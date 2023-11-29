@@ -9,7 +9,7 @@ public class ThrownItemPickedUpByPlayerCriterionMacro extends ThrownItemPickedUp
     public static final Codec<ThrownItemPickedUpByPlayerCriterionMacro> CODEC = createCodec(ThrownItemPickedUpByPlayerCriterionMacro::new);
 
     public ThrownItemPickedUpByPlayerCriterionMacro(String thrownItemKey, String entityKey) {
-        super(Criteria.THROWN_ITEM_PICKED_UP_BY_PLAYER, thrownItemKey, entityKey);
+        super(thrownItemKey, entityKey);
     }
 
     @Override

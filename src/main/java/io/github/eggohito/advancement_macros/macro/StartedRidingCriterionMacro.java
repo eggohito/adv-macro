@@ -12,7 +12,7 @@ public class StartedRidingCriterionMacro extends Macro {
     public static final Codec<StartedRidingCriterionMacro> CODEC = createEmptyCodec(StartedRidingCriterionMacro::new);
 
     public StartedRidingCriterionMacro() {
-        super(Criteria.STARTED_RIDING);
+
     }
 
     @Override

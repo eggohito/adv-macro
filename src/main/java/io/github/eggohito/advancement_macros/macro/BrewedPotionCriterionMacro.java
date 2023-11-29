@@ -27,7 +27,6 @@ public class BrewedPotionCriterionMacro extends Macro {
     private final String statusEffectsKey;
 
     public BrewedPotionCriterionMacro(String potionKey, String statusEffectsKey) {
-        super(Criteria.BREWED_POTION);
         this.potionKey = potionKey;
         this.statusEffectsKey = statusEffectsKey;
     }

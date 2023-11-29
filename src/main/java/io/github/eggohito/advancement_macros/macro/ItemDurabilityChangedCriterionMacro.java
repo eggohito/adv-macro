@@ -27,7 +27,6 @@ public class ItemDurabilityChangedCriterionMacro extends Macro {
     private final String durabilityKey;
 
     public ItemDurabilityChangedCriterionMacro(String itemKey, String deltaKey, String durabilityKey) {
-        super(Criteria.ITEM_DURABILITY_CHANGED);
         this.itemKey = itemKey;
         this.deltaKey = deltaKey;
         this.durabilityKey = durabilityKey;

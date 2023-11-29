@@ -28,7 +28,6 @@ public class LightningStrikeCriterionMacro extends Macro {
     private final String bystandersKey;
 
     public LightningStrikeCriterionMacro(String lightningKey, String bystandersKey) {
-        super(Criteria.LIGHTNING_STRIKE);
         this.lightningKey = lightningKey;
         this.bystandersKey = bystandersKey;
     }

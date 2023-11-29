@@ -29,7 +29,6 @@ public class RecipeUnlockedCriterionMacro extends Macro {
     private final String ingredientsKey;
 
     public RecipeUnlockedCriterionMacro(String recipeKey, String ingredientsKey) {
-        super(Criteria.RECIPE_UNLOCKED);
         this.recipeKey = recipeKey;
         this.ingredientsKey = ingredientsKey;
     }

@@ -21,7 +21,6 @@ public class FilledBucketCriterionMacro extends Macro {
     private final String itemKey;
 
     public FilledBucketCriterionMacro(String itemKey) {
-        super(Criteria.FILLED_BUCKET);
         this.itemKey = itemKey;
     }
 

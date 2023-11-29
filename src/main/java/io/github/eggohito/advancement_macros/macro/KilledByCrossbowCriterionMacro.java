@@ -27,7 +27,6 @@ public class KilledByCrossbowCriterionMacro extends Macro {
     private final String victimsKey;
 
     public KilledByCrossbowCriterionMacro(String uniqueEntityTypesKey, String victimsKey) {
-        super(Criteria.KILLED_BY_CROSSBOW);
         this.uniqueEntityTypesKey = uniqueEntityTypesKey;
         this.victimsKey = victimsKey;
     }

@@ -9,7 +9,7 @@ public class NetherTravelCriterionMacro extends TravelCriterionMacro {
     public static final Codec<NetherTravelCriterionMacro> CODEC = createCodec(NetherTravelCriterionMacro::new);
 
     public NetherTravelCriterionMacro(String startLocationKey) {
-        super(Criteria.NETHER_TRAVEL, startLocationKey);
+        super(startLocationKey);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class BredAnimalsCriterionMacro extends Macro {
     private final String childKey;
 
     public BredAnimalsCriterionMacro(String parentKey, String partnerKey, String childKey) {
-        super(Criteria.BRED_ANIMALS);
         this.parentKey = parentKey;
         this.partnerKey = partnerKey;
         this.childKey = childKey;

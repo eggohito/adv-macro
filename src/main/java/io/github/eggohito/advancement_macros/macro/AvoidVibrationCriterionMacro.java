@@ -8,10 +8,6 @@ public class AvoidVibrationCriterionMacro extends TickCriterionMacro {
 
     public static final Codec<AvoidVibrationCriterionMacro> CODEC = createEmptyCodec(AvoidVibrationCriterionMacro::new);
 
-    public AvoidVibrationCriterionMacro() {
-        super(Criteria.AVOID_VIBRATION);
-    }
-
     @Override
     public Type getType() {
         return () -> CODEC;
